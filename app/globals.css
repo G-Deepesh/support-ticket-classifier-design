@@ -179,13 +179,13 @@ button { font: inherit; }
 
 /* Give the hero mark more presence while keeping it contained inside the card. */
 .hero-card { overflow: hidden; }
-.hero-visual { min-width: 250px; min-height: 250px; margin-right: 22px; transform: scale(1.08); transform-origin: center right; animation: lucent-float 4.8s ease-in-out infinite; }
+.hero-visual { min-width: 250px; min-height: 250px; margin-right: -6px; transform: translate(30px, 16px) rotate(7deg) scale(1.08); transform-origin: center right; animation: lucent-float 4.8s ease-in-out infinite; }
 .hero-visual .lucent-logo { width: 132px; height: 132px; }
 .hero-visual .lucent-logo span { font-size: 68px; }
 .hero-visual .orbit.orbit-a { width: 232px; height: 112px; }
 .hero-visual .orbit.orbit-b { width: 208px; height: 208px; }
-@keyframes lucent-float { 0%, 100% { transform: scale(1.08) translateY(0); } 50% { transform: scale(1.08) translateY(-12px); } }
-@media (max-width: 760px) { .hero-visual { min-width: 210px; min-height: 210px; margin-right: 0; transform: scale(.92); } @keyframes lucent-float { 0%, 100% { transform: scale(.92) translateY(0); } 50% { transform: scale(.92) translateY(-9px); } } }
+@keyframes lucent-float { 0%, 100% { transform: translate(30px, 16px) rotate(7deg) scale(1.08); } 50% { transform: translate(30px, 4px) rotate(7deg) scale(1.08); } }
+@media (max-width: 760px) { .hero-visual { min-width: 210px; min-height: 210px; margin-right: 0; transform: translate(10px, 8px) rotate(5deg) scale(.92); } @keyframes lucent-float { 0%, 100% { transform: translate(10px, 8px) rotate(5deg) scale(.92); } 50% { transform: translate(10px, 0) rotate(5deg) scale(.92); } } }
 .human-action-badge:hover { filter: brightness(.97); transform: translateY(-1px); }
 .hero-metrics > .demo-toggle.is-on .demo-toggle-track span { transform: translateX(12px); }
 .hero-metrics > .demo-toggle > span:last-child { color: inherit; font-size: 9px; }
