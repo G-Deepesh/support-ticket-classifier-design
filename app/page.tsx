@@ -209,7 +209,7 @@ export default function Page() {
 }
 
 function EmailView() {
-  return <section className="email-view glass-panel" aria-labelledby="email-title"><p className="eyebrow">E-mail</p><h2 id="email-title">Reach out to us</h2><p className="email-intro">For any queries, send us an email and our team will get back to you.</p><a className="email-contact-card" href="mailto:dg612007@gmail.com"><span className="email-icon"><Mail /></span><span><strong>dg612007@gmail.com</strong><small>Contact us for any queries</small></span><ChevronRight /></a></section>
+  return <section className="email-view glass-panel" aria-labelledby="email-title"><p className="eyebrow">E-mail</p><h2 id="email-title">Reach out to us</h2><p className="email-intro">For any queries, send us an email and our team will get back to you.</p><a className="email-contact-card" href="https://mail.google.com/mail/?view=cm&fs=1&to=dg612007@gmail.com&su=Query%20for%20Lucent&body=Hi%20Lucent%20team%2C%0A%0AI%20have%20a%20query%20about%20your%20workspace." target="_blank" rel="noreferrer"><span className="email-icon"><Mail /></span><span><strong>dg612007@gmail.com</strong><small>Contact us for any queries</small></span><ChevronRight /></a></section>
 }
 
 function WebsiteChatsView() {
