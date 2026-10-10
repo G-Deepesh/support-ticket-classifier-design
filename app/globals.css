@@ -205,10 +205,13 @@ button { font: inherit; }
 @media (max-width: 600px) { .analytics-actions { justify-content: flex-start; } }
 
 /* Keep the Lucent mark neatly nested inside the two hero rings. */
+.hero-visual { width: 250px; height: 190px; }
 .hero-visual .orbit { border-color: #000; border-width: 2px; opacity: 1; box-shadow: 0 0 0 1px rgba(0,0,0,.08); }
-.hero-visual .lucent-logo { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; border-radius: 34% 66% 58% 42% / 44% 38% 62% 56%; transform: translate(-50%, -50%) rotate(-12deg); }
-.hero-visual .lucent-logo span { font-size: 38px; }
-@media (max-width: 600px) { .hero-visual .lucent-logo { width: 64px; height: 64px; } .hero-visual .lucent-logo span { font-size: 32px; } }
+.hero-visual .orbit.orbit-a { width: 224px; height: 148px; }
+.hero-visual .orbit.orbit-b { width: 244px; height: 166px; }
+.hero-visual .lucent-logo { position: absolute; left: 50%; top: 50%; width: 108px; height: 108px; border-radius: 34% 66% 58% 42% / 44% 38% 62% 56%; transform: translate(-50%, -50%) rotate(-12deg); }
+.hero-visual .lucent-logo span { font-size: 52px; }
+@media (max-width: 600px) { .hero-visual { width: 210px; height: 160px; } .hero-visual .orbit.orbit-a { width: 188px; height: 126px; } .hero-visual .orbit.orbit-b { width: 204px; height: 142px; } .hero-visual .lucent-logo { width: 88px; height: 88px; } .hero-visual .lucent-logo span { font-size: 43px; } }
 
 /* Keep demo mode visually consistent with the surrounding overview metrics. */
 .hero-metrics > .demo-toggle { min-height: 44px; padding: 12px 14px; border: 1px solid rgba(255,255,255,.82); border-radius: 16px; background: rgba(255,255,255,.3); color: #7b8798; box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 8px 18px rgba(91,77,38,.06); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); font-size: 9px; font-weight: 400; }
