@@ -77,6 +77,19 @@ button { font: inherit; }
 @keyframes fluid-drift-two { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(72px, -38px, 0) scale(1.16); } 100% { transform: translate3d(-42px, -82px, 0) scale(.9); } }
 @keyframes fluid-shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 @keyframes fluid-float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-7px) rotate(.8deg); } }
+
+/* Give every primary section title a consistent, confident hierarchy. */
+.hero-copy h2,
+.section-heading h3,
+.knowledge-heading h2,
+.view-heading h2,
+.view-header h2,
+.page-heading h2,
+.card-heading h3,
+.profile-settings-title,
+.mobile-title {
+  font-weight: 800;
+}
 .glass-panel { background-size: 180% 180%; animation: fluid-shimmer 18s ease-in-out infinite; }
 
 /* Keep the full workspace inside the viewport without clipping on the right. */
