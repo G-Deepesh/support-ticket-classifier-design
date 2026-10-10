@@ -180,12 +180,12 @@ button { font: inherit; }
 /* Give the hero mark more presence while keeping it contained inside the card. */
 .hero-card { overflow: hidden; }
 .hero-visual { min-width: 250px; min-height: 250px; margin-right: 4px; transform: translate(4px, 14px) rotate(16deg) scale(.82); transform-origin: center right; animation: lucent-float 4.8s ease-in-out infinite; }
-.hero-visual .lucent-logo { width: 104px; height: 104px; transform: rotate(-16deg); }
+.hero-visual .lucent-logo { width: 104px; height: 104px; transform: rotate(0deg); }
 .hero-visual .lucent-logo span { font-size: 54px; }
 .hero-visual .orbit.orbit-a { width: 308px; height: 118px; transform: rotate(-18deg); }
 .hero-visual .orbit.orbit-b { width: 270px; height: 270px; }
 @keyframes lucent-float { 0%, 100% { transform: translate(4px, 14px) rotate(16deg) scale(.82); } 50% { transform: translate(4px, 5px) rotate(16deg) scale(.82); } }
-@media (max-width: 760px) { .hero-visual { min-width: 210px; min-height: 210px; margin-right: 0; transform: translate(34px, 22px) rotate(12deg) scale(.92); } .hero-visual .lucent-logo { transform: rotate(-12deg); } .hero-visual .orbit.orbit-a { transform: rotate(-14deg); } @keyframes lucent-float { 0%, 100% { transform: translate(34px, 22px) rotate(12deg) scale(.92); } 50% { transform: translate(34px, 14px) rotate(12deg) scale(.92); } } }
+@media (max-width: 760px) { .hero-visual { min-width: 210px; min-height: 210px; margin-right: 0; transform: translate(34px, 22px) rotate(12deg) scale(.92); } .hero-visual .lucent-logo { transform: rotate(0deg); } .hero-visual .orbit.orbit-a { transform: rotate(-14deg); } @keyframes lucent-float { 0%, 100% { transform: translate(34px, 22px) rotate(12deg) scale(.92); } 50% { transform: translate(34px, 14px) rotate(12deg) scale(.92); } } }
 .human-action-badge:hover { filter: brightness(.97); transform: translateY(-1px); }
 .hero-metrics > .demo-toggle.is-on .demo-toggle-track span { transform: translateX(12px); }
 .hero-metrics > .demo-toggle > span:last-child { color: inherit; font-size: 9px; }
