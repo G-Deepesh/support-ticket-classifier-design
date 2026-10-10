@@ -55,10 +55,12 @@ button { font: inherit; }
 .analytics-heading p:not(.eyebrow) { margin: 0; color: #8190a3; font-size: 13px; }
 .analytics-count { flex: 0 0 auto; padding: 8px 12px; border: 1px solid rgba(255,255,255,.8); border-radius: 999px; background: rgba(255,255,255,.46); color: #68768d; font-size: 11px; font-weight: 700; }
 .analytics-table-wrap { overflow: visible; background: transparent; }
-.analytics-table { width: 100%; min-width: 0; table-layout: fixed; border-collapse: collapse; text-align: left; }
-.analytics-table th { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,.88); border-right: 1px solid rgba(255,255,255,.88); color: #8995a7; font-size: 8px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
-.analytics-table td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,.78); border-right: 1px solid rgba(255,255,255,.78); color: #68768a; font-size: 11px; white-space: normal; overflow-wrap: anywhere; }
-.analytics-table th:last-child, .analytics-table td:last-child { border-right: 0; }
+.analytics-table { width: 100%; min-width: 0; table-layout: fixed; border-collapse: separate; border-spacing: 0 8px; text-align: left; }
+.analytics-table th { padding: 4px 10px 8px; color: #8995a7; font-size: 8px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.analytics-table td { padding: 12px 10px; border-top: 1px solid rgba(255,255,255,.92); border-bottom: 1px solid rgba(255,255,255,.92); border-right: 1px solid rgba(255,255,255,.72); background: rgba(255,255,255,.24); color: #68768a; font-size: 11px; white-space: normal; overflow-wrap: anywhere; }
+.analytics-table tbody tr td:first-child { border-left: 1px solid rgba(255,255,255,.92); border-radius: 14px 0 0 14px; }
+.analytics-table tbody tr td:last-child { border-right: 1px solid rgba(255,255,255,.92); border-radius: 0 14px 14px 0; }
+.analytics-table tbody tr:hover td { background: rgba(255,255,255,.42); }
 .analytics-table th:nth-child(1), .analytics-table td:nth-child(1) { width: 10%; }
 .analytics-table th:nth-child(2), .analytics-table td:nth-child(2) { width: 18%; }
 .analytics-table th:nth-child(3), .analytics-table td:nth-child(3) { width: 14%; }
