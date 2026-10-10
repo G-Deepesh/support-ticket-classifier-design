@@ -19,6 +19,7 @@ import {
   MoreHorizontal,
   Sparkles,
   Users,
+  Workflow,
   X,
 } from 'lucide-react'
 
@@ -30,7 +31,8 @@ const mainItems = [
 const workspaceItems = [
   { label: 'Analytics', icon: BarChart3 },
   { label: 'All Tickets', icon: ListTodo },
-]
+  { label: 'AI Workflow', icon: Workflow },
+  ]
 const channelItems = [
   { label: 'Website chats', icon: MessageCircle },
   { label: 'E-mail', icon: CircleHelp },
