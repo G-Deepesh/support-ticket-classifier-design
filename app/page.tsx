@@ -25,7 +25,7 @@ import {
 
 const mainItems = [
   { label: 'Overview', icon: LayoutDashboard },
-  { label: 'Inbox', icon: Inbox, badge: '12' },
+  { label: 'Inbox', icon: Inbox },
   { label: 'Customers', icon: Users },
 ]
 const workspaceItems = [
@@ -126,7 +126,7 @@ export default function Page() {
           <fieldset><legend>Text style</legend><div className="text-style-options">{['Modern', 'Classic', 'Friendly'].map((style) => <button type="button" key={style} className={textStyle === style ? 'selected' : ''} onClick={() => setTextStyle(style)}>{style}</button>)}</div></fieldset>
         </div>}
         <nav className="sidebar-nav" aria-label="Primary navigation">
-          <NavGroup title="Main" items={mainItems} active={active} onSelect={selectItem} />
+          <NavGroup title="Main" items={mainItems.map((item) => item.label === 'Inbox' ? { ...item, badge: String(analyticsTickets.filter((ticket) => Number.parseInt(ticket.confidence, 10) < 90).length) } : item)} active={active} onSelect={selectItem} />
           <NavGroup title="Workspace &amp; Website chats" items={workspaceItems} active={active} onSelect={selectItem} />
           <NavGroup title="Channels" items={channelItems} active={active} onSelect={selectItem} />
         </nav>
