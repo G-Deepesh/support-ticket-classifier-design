@@ -129,8 +129,8 @@ export default function Page() {
               <div className="hero-metrics" aria-label="Overview metrics">
                 <div><strong>142</strong><span>Tickets sorted</span></div>
                 <div><strong>94.6%</strong><span>Lucent accuracy</span></div>
-                <button className={`demo-ticket-button hero-demo-button demo-toggle ${demoMode ? 'is-on' : ''}`} type="button" role="switch" aria-checked={demoMode} onClick={toggleDemoMode}><span className="demo-toggle-track" aria-hidden="true"><span /></span><span>{demoMode ? 'Demo mode on' : 'Demo mode off'}</span></button>
                 <div><strong>14m</strong><span>Average accuracy time</span></div>
+                <button className={`demo-ticket-button hero-demo-button demo-toggle ${demoMode ? 'is-on' : ''}`} type="button" role="switch" aria-checked={demoMode} onClick={toggleDemoMode}><span className="demo-toggle-track" aria-hidden="true"><span /></span><span>{demoMode ? 'Demo mode on' : 'Demo mode off'}</span></button>
               </div>
             </div>
             <div className="hero-visual" aria-hidden="true"><div className="orbit orbit-a" /><div className="orbit orbit-b" /><div className="lucent-logo"><span>L</span></div></div>
