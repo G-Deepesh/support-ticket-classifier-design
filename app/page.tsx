@@ -12,6 +12,7 @@ import {
   Clock3,
   Inbox,
   LayoutDashboard,
+  ListTodo,
   Menu,
   MessageCircle,
   MoreHorizontal,
@@ -28,6 +29,7 @@ const mainItems = [
 ]
 const workspaceItems = [
   { label: 'Analytics', icon: BarChart3 },
+  { label: 'All Tickets', icon: ListTodo },
   { label: 'Integrations', icon: Settings2 },
 ]
 const channelItems = [
@@ -139,7 +141,7 @@ export default function Page() {
           <div className="qunexa-cylinder"><span>QUNEXA</span></div>
         </div>
         <div className={`dashboard-content ${catalogueBlur ? 'catalogue-blur' : ''}`}>
-          {active === 'Analytics' ? <><AnalyticsView tickets={analyticsTickets} onUpdate={(id, status) => setAnalyticsTickets((current) => current.map((ticket) => ticket.id === id ? { ...ticket, status } : ticket))} onActionClick={setActionTicket} />{humanOverrideNotice && <div className="override-notice" role="status"><span className="override-notice-icon"><Check /></span><span><strong>Fixed with human override</strong><small>The ticket has been updated and routed for human review.</small></span><button type="button" aria-label="Dismiss notification" onClick={() => setHumanOverrideNotice(false)}><X /></button></div>}{actionTicket && <div className="action-dialog-backdrop" role="presentation" onMouseDown={() => setActionTicket(null)}><div className="action-dialog" role="dialog" aria-modal="true" aria-labelledby="action-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close action details" onClick={() => setActionTicket(null)}><X /></button><p className="eyebrow">Human action</p><h3 id="action-dialog-title">{Number.parseInt(actionTicket.confidence, 10) < 90 ? 'Action required' : 'Action not required'}</h3><p className="action-dialog-message">{actionTicket.message}</p><dl className="action-dialog-details"><div><dt>Ticket</dt><dd>{actionTicket.id}</dd></div><div><dt>AI confidence</dt><dd>{actionTicket.confidence}</dd></div><div><dt>Reasoning</dt><dd>{actionTicket.reasoning}</dd></div><div><dt>Human override</dt><dd>Fix with human override</dd></div></dl><div className="action-dialog-actions"><button className="text-button" type="button" onClick={() => setActionTicket(null)}>No, keep automated</button><button className="demo-submit override-confirm" type="button" onClick={confirmHumanOverride}>Yes, fix it</button></div></div></div>}</> : <>
+          {active === 'Analytics' || active === 'All Tickets' ? <><AnalyticsView title={active === 'All Tickets' ? 'All tickets' : 'Ticket analytics'} tickets={analyticsTickets} onUpdate={(id, status) => setAnalyticsTickets((current) => current.map((ticket) => ticket.id === id ? { ...ticket, status } : ticket))} onActionClick={setActionTicket} />{humanOverrideNotice && <div className="override-notice" role="status"><span className="override-notice-icon"><Check /></span><span><strong>Fixed with human override</strong><small>The ticket has been updated and routed for human review.</small></span><button type="button" aria-label="Dismiss notification" onClick={() => setHumanOverrideNotice(false)}><X /></button></div>}{actionTicket && <div className="action-dialog-backdrop" role="presentation" onMouseDown={() => setActionTicket(null)}><div className="action-dialog" role="dialog" aria-modal="true" aria-labelledby="action-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close action details" onClick={() => setActionTicket(null)}><X /></button><p className="eyebrow">Human action</p><h3 id="action-dialog-title">{Number.parseInt(actionTicket.confidence, 10) < 90 ? 'Action required' : 'Action not required'}</h3><p className="action-dialog-message">{actionTicket.message}</p><dl className="action-dialog-details"><div><dt>Ticket</dt><dd>{actionTicket.id}</dd></div><div><dt>AI confidence</dt><dd>{actionTicket.confidence}</dd></div><div><dt>Reasoning</dt><dd>{actionTicket.reasoning}</dd></div><div><dt>Human override</dt><dd>Fix with human override</dd></div></dl><div className="action-dialog-actions"><button className="text-button" type="button" onClick={() => setActionTicket(null)}>No, keep automated</button><button className="demo-submit override-confirm" type="button" onClick={confirmHumanOverride}>Yes, fix it</button></div></div></div>}</> : <>
           <section className="hero-card glass-panel">
             <div className="hero-copy">
               <h2>Every conversation,<br /><em>understood.</em></h2>
@@ -169,9 +171,9 @@ export default function Page() {
   )
 }
 
-function AnalyticsView({ tickets, onUpdate, onActionClick }: { tickets: AnalyticsTicket[]; onUpdate: (id: string, status: string) => void; onActionClick: (ticket: AnalyticsTicket) => void }) {
+function AnalyticsView({ title, tickets, onUpdate, onActionClick }: { title: string; tickets: AnalyticsTicket[]; onUpdate: (id: string, status: string) => void; onActionClick: (ticket: AnalyticsTicket) => void }) {
   return <section className="analytics-view glass-panel" aria-labelledby="analytics-title">
-    <div className="analytics-heading"><div><p className="eyebrow">Workspace insights</p><h2 id="analytics-title">Ticket analytics</h2><p>Review every classified conversation and update its status in place.</p></div><div className="analytics-actions"><span className="analytics-count">{tickets.length} tickets</span></div></div>
+    <div className="analytics-heading"><div><p className="eyebrow">Workspace insights</p><h2 id="analytics-title">{title}</h2><p>Review every classified conversation and update its status in place.</p></div><div className="analytics-actions"><span className="analytics-count">{tickets.length} tickets</span></div></div>
     <div className="analytics-table-wrap"><table className="analytics-table"><thead><tr><th>ID</th><th>Customer message</th><th>Category</th><th>Department</th><th>Priority</th><th>AI confidence</th><th>Reasoning</th><th>Status</th><th>Human action</th></tr></thead><tbody>{tickets.map((ticket) => <tr key={ticket.id}><td className="ticket-id">{ticket.id}</td><td className="message-cell">{ticket.message}</td><td>{ticket.category}</td><td>{ticket.department}</td><td><span className={`table-priority ${ticket.priority.toLowerCase()}`}><i />{ticket.priority}</span></td><td className="confidence-cell">{ticket.confidence}</td><td className="reasoning-cell">{ticket.reasoning}</td><td><select className={`table-status-select ${ticket.status.toLowerCase().replace(' ', '-')}`} value={ticket.status} onChange={(event) => onUpdate(ticket.id, event.target.value)} aria-label={`Update status for ${ticket.id}`}><option>Open</option><option>In progress</option><option>Review</option><option>Resolved</option></select></td><td className="human-action-cell"><button type="button" className={`human-action-badge ${Number.parseInt(ticket.confidence, 10) < 90 ? 'required' : 'not-required'}`} onClick={() => onActionClick(ticket)}>{Number.parseInt(ticket.confidence, 10) < 90 ? 'Action required' : 'Action not required'}</button></td></tr>)}</tbody></table></div>
   </section>
 }
