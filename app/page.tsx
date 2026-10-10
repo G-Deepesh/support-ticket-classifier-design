@@ -43,6 +43,14 @@ const tickets = [
   { initials: 'JP', name: 'James Park', subject: 'Order still says pending', time: '1h ago', tag: 'Order status', tone: 'amber', priority: 'Normal' },
 ]
 
+const analyticsTickets = [
+  { id: '#QX-1048', message: 'Can’t access my account', category: 'Authentication', department: 'Support', priority: 'High', reasoning: 'Login failure detected', status: 'Open' },
+  { id: '#QX-1047', message: 'Question about my invoice', category: 'Billing', department: 'Finance', priority: 'Normal', reasoning: 'Invoice clarification', status: 'In progress' },
+  { id: '#QX-1046', message: 'Feature request: dark mode', category: 'Feedback', department: 'Product', priority: 'Low', reasoning: 'Product suggestion', status: 'Review' },
+  { id: '#QX-1045', message: 'Order still says pending', category: 'Order status', department: 'Operations', priority: 'Normal', reasoning: 'Fulfillment delay', status: 'Resolved' },
+  { id: '#QX-1044', message: 'Refund has not arrived yet', category: 'Refunds', department: 'Finance', priority: 'High', reasoning: 'Payment follow-up', status: 'Open' },
+]
+
 export default function Page() {
   const [active, setActive] = useState('Overview')
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -102,6 +110,7 @@ export default function Page() {
           <div className="qunexa-cylinder"><span>QUNEXA</span></div>
         </div>
         <div className={`dashboard-content ${catalogueBlur ? 'catalogue-blur' : ''}`}>
+          {active === 'Analytics' ? <AnalyticsView /> : <>
           <section className="hero-card glass-panel">
             <div className="hero-copy"><div className="status-pill"><span className="status-dot" /> AI classifier is active</div><h2>Every conversation,<br /><em>understood.</em></h2><p>Lucent sorts, prioritizes, and routes every incoming ticket so your team can focus on what matters.</p><button className="primary-button" onClick={() => selectItem('Inbox')}>Review inbox <ChevronRight /></button></div>
             <div className="hero-visual" aria-hidden="true"><div className="orbit orbit-a" /><div className="orbit orbit-b" /><div className="orbital-core"><WandSparkles /></div><div className="float-card float-card-top"><span className="mini-icon peach"><Inbox /></span><span><b>142</b><small>tickets sorted</small></span><span className="trend">+18%</span></div><div className="float-card float-card-bottom"><span className="mini-icon lavender"><Sparkles /></span><span><b>94.6%</b><small>AI confidence</small></span></div></div>
@@ -113,11 +122,19 @@ export default function Page() {
             <div className="tickets-card glass-panel"><div className="section-heading"><div><p className="eyebrow">Needs your attention</p><h3>Recent tickets</h3></div><button className="text-button" onClick={() => selectItem('Inbox')}>View all <ChevronRight /></button></div><div className="ticket-list">{tickets.map((ticket) => <button className="ticket-row" key={ticket.name} onClick={() => selectItem('Inbox')}><div className={`avatar ticket-avatar ${ticket.tone}`}>{ticket.initials}</div><div className="ticket-main"><strong>{ticket.subject}</strong><span>{ticket.name} · {ticket.time}</span></div><span className={`ticket-tag ${ticket.tone}`}>{ticket.tag}</span><span className={`priority ${ticket.priority.toLowerCase()}`}><i />{ticket.priority}</span><ChevronRight className="row-arrow" /></button>)}</div></div>
             <div className="channels-card glass-panel"><div className="section-heading"><div><p className="eyebrow">Live overview</p><h3>By channel</h3></div><button className="icon-button"><MoreHorizontal /></button></div><div className="donut-wrap"><div className="donut"><div className="donut-center"><strong>642</strong><span>this week</span></div></div><div className="channel-legend"><Legend label="Website chats" value="48%" color="pink" /><Legend label="E-mail" value="32%" color="purple" /><Legend label="WhatsApp" value="20%" color="blue" /></div></div><div className="mini-insight"><Sparkles /><span>Website chats are up <b>24%</b> this week</span></div></div>
           </section>
+          </>}
         </div>
         <footer className="content-footer"><span>Lucent AI is learning from your team’s resolutions.</span><button className="help-button"><CircleHelp /> Need help?</button></footer>
       </section>
     </main>
   )
+}
+
+function AnalyticsView() {
+  return <section className="analytics-view glass-panel" aria-labelledby="analytics-title">
+    <div className="analytics-heading"><div><p className="eyebrow">Workspace insights</p><h2 id="analytics-title">Ticket analytics</h2><p>Review every classified conversation and the reasoning behind its route.</p></div><span className="analytics-count">642 tickets</span></div>
+    <div className="analytics-table-wrap"><table className="analytics-table"><thead><tr><th>ID</th><th>Customer message</th><th>Category</th><th>Department</th><th>Priority</th><th>Reasoning</th><th>Status</th></tr></thead><tbody>{analyticsTickets.map((ticket) => <tr key={ticket.id}><td className="ticket-id">{ticket.id}</td><td className="message-cell">{ticket.message}</td><td>{ticket.category}</td><td>{ticket.department}</td><td><span className={`table-priority ${ticket.priority.toLowerCase()}`}><i />{ticket.priority}</span></td><td className="reasoning-cell">{ticket.reasoning}</td><td><span className={`table-status ${ticket.status.toLowerCase().replace(' ', '-')}`}>{ticket.status}</span></td></tr>)}</tbody></table></div>
+  </section>
 }
 
 function NavGroup({ title, items, active, onSelect }: { title: string; items: { label: string; icon: typeof Inbox; badge?: string }[]; active: string; onSelect: (label: string) => void }) {
