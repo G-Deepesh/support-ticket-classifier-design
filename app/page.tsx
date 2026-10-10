@@ -47,6 +47,10 @@ export default function Page() {
   const [active, setActive] = useState('Overview')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [catalogueBlur, setCatalogueBlur] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [profileName, setProfileName] = useState('Jordan Davis')
+  const [occupation, setOccupation] = useState('Support Admin')
+  const [textStyle, setTextStyle] = useState('Modern')
 
   const selectItem = (label: string) => {
     setActive(label)
@@ -67,14 +71,19 @@ export default function Page() {
       </div>
 
       <aside className={`sidebar glass-panel ${sidebarOpen ? 'sidebar-open' : ''}`}>
-        <div className="sidebar-header">
-          <div className="brand-mark"><Sparkles /></div>
-          <div><p className="brand-name">lucent</p><p className="brand-caption">support intelligence</p></div>
+        <div className="sidebar-header sidebar-header-minimal">
           <button className="icon-button close-sidebar" aria-label="Close navigation" onClick={() => setSidebarOpen(false)}><X /></button>
         </div>
-        <div className="workspace-switcher glass-inset">
-          <div className="workspace-avatar">A</div><div className="workspace-copy"><strong>Acme Studio</strong><span>Business workspace</span></div><ChevronDown />
-        </div>
+        <button className="profile-panel glass-inset" onClick={() => setProfileOpen((open) => !open)} aria-expanded={profileOpen}>
+          <div className="avatar user-avatar">{profileName.split(' ').map((part) => part[0]).join('')}</div>
+          <div className="workspace-copy"><strong>{profileName}</strong><span>{occupation}</span></div><ChevronDown className={profileOpen ? 'profile-chevron-open' : ''} />
+        </button>
+        {profileOpen && <div className="profile-settings glass-panel">
+          <p className="profile-settings-title">Profile settings</p>
+          <label>Name<input value={profileName} onChange={(event) => setProfileName(event.target.value)} /></label>
+          <label>Occupation<input value={occupation} onChange={(event) => setOccupation(event.target.value)} /></label>
+          <fieldset><legend>Text style</legend><div className="text-style-options">{['Modern', 'Classic', 'Friendly'].map((style) => <button type="button" key={style} className={textStyle === style ? 'selected' : ''} onClick={() => setTextStyle(style)}>{style}</button>)}</div></fieldset>
+        </div>}
         <nav className="sidebar-nav" aria-label="Primary navigation">
           <NavGroup title="Main" items={mainItems} active={active} onSelect={selectItem} />
           <NavGroup title="Workspace & Website chats" items={workspaceItems} active={active} onSelect={selectItem} />
@@ -83,7 +92,6 @@ export default function Page() {
         <div className="sidebar-bottom">
           <button className="nav-item" onClick={() => selectItem('Knowledge base')}><BookOpen /> <span>Knowledge base</span></button>
           <div className="usage-card glass-inset"><div className="usage-top"><span>AI triage usage</span><span>78%</span></div><div className="usage-bar"><span /></div><p>1,560 of 2,000 tickets classified</p></div>
-          <div className="user-row"><div className="avatar user-avatar">JD</div><div className="workspace-copy"><strong>Jordan Davis</strong><span>Admin</span></div><MoreHorizontal /></div>
         </div>
       </aside>
 
