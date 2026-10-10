@@ -72,7 +72,8 @@ export default function Page() {
   const [humanOverrideNotice, setHumanOverrideNotice] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
   const [chatQuery, setChatQuery] = useState('')
-  const [chatMessages, setChatMessages] = useState([{ role: 'assistant', text: 'Hi, I’m Lucent. How can I help with your workspace today?' }])
+  const [chatMessages, setChatMessages] = useState([{ role: 'assistant', text: 'Hi, I’m Lucent. Tell me what you need help with and I’ll guide you step by step.' }])
+  const [chatGuide, setChatGuide] = useState<string[]>([])
 
   const sendChatQuery = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -90,19 +91,28 @@ export default function Page() {
             ? 'Inbox'
             : 'Overview'
     const routeMessage = route === 'Customers'
-      ? 'I’m taking you to Customers so you can review the continent breakdown.'
+      ? 'I understand you need customer context. I’m opening Customers so you can review the account and continent details.'
       : route === 'Analytics'
-        ? 'I’m taking you to Analytics so you can review the charts.'
+        ? 'I understand you need performance context. I’m opening Analytics so you can review the charts and trends.'
         : route === 'All Tickets'
-          ? 'I’m taking you to All Tickets so you can review every query.'
+          ? 'I understand you want to investigate a query. I’m opening All Tickets so you can review the full record.'
           : route === 'Inbox'
-            ? 'I’m taking you to Inbox so you can handle the tickets needing human action.'
-            : 'I’m taking you to Overview for a workspace summary.'
+            ? 'I understand this needs attention. I’m opening Inbox so you can handle the human follow-up.'
+            : 'I understand you need a workspace overview. I’m opening Overview to help you find the right starting point.'
+    const guide = route === 'Customers'
+      ? ['Open the matching customer record.', 'Review recent activity and related tickets.', 'Use the customer context to decide the next response.']
+      : route === 'Analytics'
+        ? ['Review the main trend or chart.', 'Compare the timeframe and channel breakdown.', 'Use the insight to prioritize the next action.']
+        : route === 'All Tickets'
+          ? ['Open the matching query record.', 'Review its keywords, department, and priority.', 'Route it to Inbox when a human response is needed.']
+          : route === 'Inbox'
+            ? ['Open the urgent or human-attention ticket.', 'Review the conversation context.', 'Send the response or escalate it to the right teammate.']
+            : ['Start with the workspace summary.', 'Use the sidebar to open Analytics, All Tickets, or Customers.', 'Ask Lucent another question whenever you need a guided path.']
 
     setChatMessages((current) => [...current, { role: 'user', text: message }, { role: 'assistant', text: routeMessage }])
+    setChatGuide(guide)
     setActive(route)
     setChatQuery('')
-    window.setTimeout(() => setChatOpen(false), 650)
   }
 
   const confirmHumanOverride = () => {
@@ -191,7 +201,7 @@ export default function Page() {
               </div>
               {demoDialogOpen && <div className="demo-dialog-backdrop" role="presentation" onMouseDown={() => setDemoDialogOpen(false)}><div className="demo-dialog glass-panel" role="dialog" aria-modal="true" aria-labelledby="demo-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close demo query" onClick={() => setDemoDialogOpen(false)}><X /></button><p className="eyebrow">Live demo mode</p><h3 id="demo-dialog-title">Add a customer query</h3><p>Enter a message and watch it appear at the top of Analytics.</p><form onSubmit={(event) => { event.preventDefault(); addDemoTicket(demoQuery) }}><label htmlFor="demo-query">Customer message</label><textarea id="demo-query" value={demoQuery} onChange={(event) => setDemoQuery(event.target.value)} placeholder="e.g. Where is my latest order?" autoFocus /><div className="demo-dialog-actions"><button className="text-button" type="button" onClick={() => setDemoDialogOpen(false)}>Cancel</button><button className="demo-submit" type="submit" disabled={!demoQuery.trim()}>Classify query</button></div></form></div></div>}
             </div>
-            <button className="hero-visual" type="button" aria-label="Open Lucent chat assistant" onClick={() => setChatOpen(true)}><div className="orbit orbit-a" aria-hidden="true" /><div className="orbit orbit-b" aria-hidden="true" /><div className="lucent-logo" aria-hidden="true"><span>L</span></div></button>{chatOpen && <div className="chat-dialog-backdrop" role="presentation" onMouseDown={() => setChatOpen(false)}><section className="chat-dialog" role="dialog" aria-modal="true" aria-labelledby="chat-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close Lucent chat" onClick={() => setChatOpen(false)}><X /></button><p className="eyebrow">Lucent assistant</p><h3 id="chat-dialog-title">How can I help?</h3><div className="chat-messages" aria-live="polite">{chatMessages.map((message, index) => <div className={`chat-message ${message.role}`} key={`${message.role}-${index}`}>{message.text}</div>)}</div><form className="chat-form" onSubmit={sendChatQuery}><input value={chatQuery} onChange={(event) => setChatQuery(event.target.value)} placeholder="Type your query..." aria-label="Your query" /><button className="demo-submit" type="submit" disabled={!chatQuery.trim()}>Send</button></form></section></div>}
+            <button className="hero-visual" type="button" aria-label="Open Lucent chat assistant" onClick={() => setChatOpen(true)}><div className="orbit orbit-a" aria-hidden="true" /><div className="orbit orbit-b" aria-hidden="true" /><div className="lucent-logo" aria-hidden="true"><span>L</span></div></button>{chatOpen && <div className="chat-dialog-backdrop" role="presentation" onMouseDown={() => setChatOpen(false)}><section className="chat-dialog" role="dialog" aria-modal="true" aria-labelledby="chat-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close Lucent chat" onClick={() => setChatOpen(false)}><X /></button><p className="eyebrow">Lucent assistant</p><h3 id="chat-dialog-title">How can I help?</h3><div className="chat-messages" aria-live="polite">{chatMessages.map((message, index) => <div className={`chat-message ${message.role}`} key={`${message.role}-${index}`}>{message.text}</div>)}{chatGuide.length > 0 && <div className="chat-guide"><p className="eyebrow">Suggested next steps</p><ol>{chatGuide.map((step) => <li key={step}>{step}</li>)}</ol></div>}</div><form className="chat-form" onSubmit={sendChatQuery}><input value={chatQuery} onChange={(event) => setChatQuery(event.target.value)} placeholder="Type your query..." aria-label="Your query" /><button className="demo-submit" type="submit" disabled={!chatQuery.trim()}>Send</button></form></section></div>}
           </section>
 
           <div className="stats-grid"><StatCard label="Open tickets" value="128" delta="12.5%" icon={Inbox} /><StatCard label="Avg. response time" value="14m" delta="8.2%" icon={Clock3} positive /><StatCard label="Resolution rate" value="86.4%" delta="4.8%" icon={Sparkles} positive /></div>
