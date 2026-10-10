@@ -212,7 +212,6 @@ export default function Page() {
           </section>
           </>}
         </div>
-        <footer className="content-footer"><span>Lucent AI is learning from your team’s resolutions.</span><button className="help-button"><CircleHelp /> Need help?</button></footer>
       </section>
     </main>
   )
