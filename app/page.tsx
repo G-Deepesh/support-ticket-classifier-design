@@ -61,12 +61,21 @@ export default function Page() {
   const [textStyle, setTextStyle] = useState('Modern')
   const [analyticsTickets, setAnalyticsTickets] = useState<AnalyticsTicket[]>(initialAnalyticsTickets)
   const [demoMode, setDemoMode] = useState(false)
+  const [demoDialogOpen, setDemoDialogOpen] = useState(false)
+  const [demoQuery, setDemoQuery] = useState('')
 
-  const addDemoTicket = () => setAnalyticsTickets((current) => [{ id: `#QX-${1050 + current.length}`, message: 'Demo ticket: delivery update needed', category: 'Order status', department: 'Operations', priority: 'Normal', reasoning: 'Demo classification added', status: 'Open' }, ...current])
+  const addDemoTicket = (message: string) => {
+    const cleanMessage = message.trim()
+    if (!cleanMessage) return
+    setAnalyticsTickets((current) => [{ id: `#QX-${1050 + current.length}`, message: cleanMessage, category: 'General inquiry', department: 'Support', priority: 'Normal', reasoning: 'Demo query classified in real time', status: 'Open' }, ...current])
+    setActive('Analytics')
+    setDemoQuery('')
+    setDemoDialogOpen(false)
+  }
   const toggleDemoMode = () => {
     setDemoMode((enabled) => {
       const nextEnabled = !enabled
-      if (nextEnabled) addDemoTicket()
+      setDemoDialogOpen(nextEnabled)
       return nextEnabled
     })
   }
@@ -132,6 +141,7 @@ export default function Page() {
                 <div><strong>14m</strong><span>Average accuracy time</span></div>
                 <button className={`demo-ticket-button hero-demo-button demo-toggle ${demoMode ? 'is-on' : ''}`} type="button" role="switch" aria-checked={demoMode} onClick={toggleDemoMode}><span className="demo-toggle-track" aria-hidden="true"><span /></span><span>{demoMode ? 'Demo mode on' : 'Demo mode off'}</span></button>
               </div>
+              {demoDialogOpen && <div className="demo-dialog-backdrop" role="presentation" onMouseDown={() => setDemoDialogOpen(false)}><div className="demo-dialog glass-panel" role="dialog" aria-modal="true" aria-labelledby="demo-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close demo query" onClick={() => setDemoDialogOpen(false)}><X /></button><p className="eyebrow">Live demo mode</p><h3 id="demo-dialog-title">Add a customer query</h3><p>Enter a message and watch it appear at the top of Analytics.</p><form onSubmit={(event) => { event.preventDefault(); addDemoTicket(demoQuery) }}><label htmlFor="demo-query">Customer message</label><textarea id="demo-query" value={demoQuery} onChange={(event) => setDemoQuery(event.target.value)} placeholder="e.g. Where is my latest order?" autoFocus /><div className="demo-dialog-actions"><button className="text-button" type="button" onClick={() => setDemoDialogOpen(false)}>Cancel</button><button className="demo-submit" type="submit" disabled={!demoQuery.trim()}>Classify query</button></div></form></div></div>}
             </div>
             <div className="hero-visual" aria-hidden="true"><div className="orbit orbit-a" /><div className="orbit orbit-b" /><div className="lucent-logo"><span>L</span></div></div>
           </section>
