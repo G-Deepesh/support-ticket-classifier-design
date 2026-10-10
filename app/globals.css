@@ -54,10 +54,18 @@ button { font: inherit; }
 .analytics-heading h2 { margin: 4px 0 7px; color: #26334c; font-size: clamp(28px, 3vw, 40px); letter-spacing: -.055em; }
 .analytics-heading p:not(.eyebrow) { margin: 0; color: #8190a3; font-size: 13px; }
 .analytics-count { flex: 0 0 auto; padding: 8px 12px; border: 1px solid rgba(255,255,255,.8); border-radius: 999px; background: rgba(255,255,255,.46); color: #68768d; font-size: 11px; font-weight: 700; }
-.analytics-table-wrap { overflow-x: auto; border: 1px solid rgba(255,255,255,.72); border-radius: 18px; background: rgba(255,255,255,.28); }
-.analytics-table { width: 100%; min-width: 900px; border-collapse: collapse; text-align: left; }
-.analytics-table th { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.72); color: #8995a7; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
-.analytics-table td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,.52); color: #68768a; font-size: 12px; white-space: nowrap; }
+.analytics-table-wrap { overflow: visible; background: transparent; }
+.analytics-table { width: 100%; min-width: 0; table-layout: fixed; border-collapse: collapse; text-align: left; }
+.analytics-table th { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,.88); border-right: 1px solid rgba(255,255,255,.88); color: #8995a7; font-size: 8px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.analytics-table td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,.78); border-right: 1px solid rgba(255,255,255,.78); color: #68768a; font-size: 11px; white-space: normal; overflow-wrap: anywhere; }
+.analytics-table th:last-child, .analytics-table td:last-child { border-right: 0; }
+.analytics-table th:nth-child(1), .analytics-table td:nth-child(1) { width: 10%; }
+.analytics-table th:nth-child(2), .analytics-table td:nth-child(2) { width: 18%; }
+.analytics-table th:nth-child(3), .analytics-table td:nth-child(3) { width: 14%; }
+.analytics-table th:nth-child(4), .analytics-table td:nth-child(4) { width: 14%; }
+.analytics-table th:nth-child(5), .analytics-table td:nth-child(5) { width: 12%; }
+.analytics-table th:nth-child(6), .analytics-table td:nth-child(6) { width: 18%; }
+.analytics-table th:nth-child(7), .analytics-table td:nth-child(7) { width: 14%; }
 .analytics-table tbody tr:last-child td { border-bottom: 0; }
 .analytics-table tbody tr { transition: background .2s ease; }
 .analytics-table tbody tr:hover { background: rgba(255,255,255,.34); }
