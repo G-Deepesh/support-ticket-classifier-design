@@ -78,15 +78,6 @@ button { font: inherit; }
 @keyframes fluid-shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 @keyframes fluid-float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-7px) rotate(.8deg); } }
 
-/* Tilted trajectories now cut through Lucent instead of sitting around it. */
-.hero-visual { isolation: isolate; overflow: visible; }
-.hero-visual .lucent-logo { position: relative; z-index: 2; }
-.hero-visual .orbit { position: absolute; z-index: 3; top: 50%; left: 50%; width: 196px; height: 74px; margin: -37px 0 0 -98px; border: 2px solid rgba(92, 102, 236, .62); border-radius: 50%; pointer-events: none; transform-origin: center; }
-.hero-visual .orbit-a { transform: rotate(-28deg); animation: lucent-intersect-a 7s ease-in-out infinite; box-shadow: 0 0 18px rgba(113, 112, 239, .3); }
-.hero-visual .orbit-b { width: 178px; height: 60px; margin: -30px 0 0 -89px; border-color: rgba(244, 127, 174, .58); transform: rotate(25deg); animation: lucent-intersect-b 9s ease-in-out infinite reverse; box-shadow: 0 0 16px rgba(244, 127, 174, .22); }
-@keyframes lucent-intersect-a { 0%, 100% { transform: rotate(-28deg) scale(1) translate3d(-3px, 0, 0); } 50% { transform: rotate(-28deg) scale(1.08) translate3d(4px, -2px, 0); } }
-@keyframes lucent-intersect-b { 0%, 100% { transform: rotate(25deg) scale(1) translate3d(2px, 0, 0); } 50% { transform: rotate(25deg) scale(.93) translate3d(-5px, 3px, 0); } }
-@media (prefers-reduced-motion: reduce) { .hero-visual .orbit { animation: none; } }
 
 /* Give every primary section title a consistent, confident hierarchy. */
 .hero-copy h2,
