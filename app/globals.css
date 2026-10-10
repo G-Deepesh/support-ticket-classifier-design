@@ -83,3 +83,25 @@ button { font: inherit; }
 .table-status.resolved { color: #5c9274; background: rgba(132,205,157,.2); }
 .table-status.review { color: #9b75b8; background: rgba(194,157,220,.2); }
 @media (max-width: 600px) { .analytics-view { padding: 20px 16px; }.analytics-heading { flex-direction: column; gap: 12px; } }
+
+/* Overview polish */
+.dashboard-content:not(:has(.analytics-view)) { max-width: 1240px; margin: 0 auto; }
+.dashboard-content:not(:has(.analytics-view)) .hero-card { position: relative; overflow: hidden; min-height: 292px; padding: 38px 42px; border-radius: 30px; background: linear-gradient(135deg, rgba(255,255,255,.78), rgba(255,248,214,.47)); border-color: rgba(255,255,255,.96); box-shadow: 0 24px 55px rgba(112,91,47,.12), inset 0 1px 0 rgba(255,255,255,.96); }
+.dashboard-content:not(:has(.analytics-view)) .hero-card::before { content: ''; position: absolute; width: 280px; height: 280px; right: 24%; top: -175px; border-radius: 50%; background: rgba(255,255,255,.48); filter: blur(8px); pointer-events: none; }
+.dashboard-content:not(:has(.analytics-view)) .hero-copy { position: relative; z-index: 1; max-width: 475px; }
+.dashboard-content:not(:has(.analytics-view)) .hero-card h2 { margin: 20px 0 14px; font-size: clamp(42px, 5vw, 66px); line-height: .96; letter-spacing: -.07em; color: #3c3425; }
+.dashboard-content:not(:has(.analytics-view)) .hero-card p { max-width: 390px; color: #806f4e; line-height: 1.65; }
+.dashboard-content:not(:has(.analytics-view)) .status-pill { border-color: rgba(0,0,0,.08); background: rgba(255,255,255,.58); box-shadow: 0 5px 16px rgba(120,95,48,.08); }
+.dashboard-content:not(:has(.analytics-view)) .primary-button { border: 1px solid rgba(255,255,255,.9); background: #2f2b24; box-shadow: 0 12px 22px rgba(55,45,25,.18); }
+.dashboard-content:not(:has(.analytics-view)) .stats-grid { gap: 14px; margin: 18px 0; }
+.dashboard-content:not(:has(.analytics-view)) .stat-card { min-height: 94px; padding: 18px 20px; border-radius: 22px; background: rgba(255,255,255,.48); border-color: rgba(255,255,255,.84); transition: transform .2s ease, box-shadow .2s ease; }
+.dashboard-content:not(:has(.analytics-view)) .stat-card:hover { transform: translateY(-3px); box-shadow: 0 18px 30px rgba(112,91,47,.13); }
+.dashboard-content:not(:has(.analytics-view)) .stat-icon { background: rgba(255,255,255,.72); color: #806225; box-shadow: inset 0 1px 0 rgba(255,255,255,.95); }
+.dashboard-content:not(:has(.analytics-view)) .lower-grid { gap: 18px; }
+.dashboard-content:not(:has(.analytics-view)) .tickets-card,
+.dashboard-content:not(:has(.analytics-view)) .channels-card { border-radius: 25px; border-color: rgba(255,255,255,.9); background: rgba(255,255,255,.43); box-shadow: 0 18px 38px rgba(112,91,47,.09), inset 0 1px 0 rgba(255,255,255,.95); }
+.dashboard-content:not(:has(.analytics-view)) .section-heading h3 { color: #4b3b22; }
+.dashboard-content:not(:has(.analytics-view)) .ticket-row { border-color: rgba(255,255,255,.62); background: rgba(255,255,255,.26); }
+.dashboard-content:not(:has(.analytics-view)) .ticket-row:hover { background: rgba(255,255,255,.58); transform: translateX(3px); }
+@media (max-width: 900px) { .dashboard-content:not(:has(.analytics-view)) { max-width: none; } }
+@media (max-width: 600px) { .dashboard-content:not(:has(.analytics-view)) .hero-card { padding: 30px 24px; } .dashboard-content:not(:has(.analytics-view)) .hero-card h2 { font-size: 43px; } }
