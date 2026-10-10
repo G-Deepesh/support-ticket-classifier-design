@@ -160,6 +160,7 @@ export default function Page() {
         <nav className="sidebar-nav" aria-label="Primary navigation">
           <NavGroup title="Main" items={mainItems.map((item) => item.label === 'Inbox' ? { ...item, badge: String(analyticsTickets.filter((ticket) => Number.parseInt(ticket.confidence, 10) < 90).length) } : item)} active={active} onSelect={selectItem} />
           <NavGroup title="Workspace &amp; Website chats" items={workspaceItems} active={active} onSelect={selectItem} />
+          <p className="nav-subsection-label">AI Workspace</p>
           <NavGroup title="Channels" items={channelItems} active={active} onSelect={selectItem} />
         </nav>
         <div className="sidebar-bottom">
