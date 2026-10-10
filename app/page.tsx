@@ -208,8 +208,18 @@ export default function Page() {
 }
 
 function WebsiteChatsView() {
-  const [query, setQuery] = useState('')
-  return <section className="website-chat-view lucent-welcome glass-panel" aria-labelledby="website-chat-title"><div className="lucent-welcome-copy"><p className="eyebrow">Website chats</p><h2 id="website-chat-title">Hi, my name is Lucent.</h2><p>How can I help you today?</p></div><form className="lucent-query-form" onSubmit={(event) => event.preventDefault()}><textarea value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Type your query here..." aria-label="Type your query" rows={6} /><button type="submit" disabled={!query.trim()}>Ask Lucent</button></form></section>
+ const [query, setQuery] = useState('')
+ const [submittedQuery, setSubmittedQuery] = useState('')
+ const [isResponding, setIsResponding] = useState(false)
+ const submitQuery = (event: FormEvent<HTMLFormElement>) => {
+   event.preventDefault()
+   const trimmedQuery = query.trim()
+   if (!trimmedQuery || isResponding) return
+   setSubmittedQuery(trimmedQuery)
+   setIsResponding(true)
+   window.setTimeout(() => setIsResponding(false), 700)
+ }
+ return <section className="website-chat-view lucent-welcome glass-panel" aria-labelledby="website-chat-title"><div className="lucent-welcome-copy"><p className="eyebrow">Website chats</p><h2 id="website-chat-title">Hi, my name is Lucent.</h2><p>How can I help you today?</p></div><form className="lucent-query-form" onSubmit={submitQuery}><textarea value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Type your query here..." aria-label="Type your query" rows={6} /><div className="lucent-query-actions"><span>{isResponding ? 'Lucent is thinking...' : submittedQuery ? `Received: “${submittedQuery}”` : 'Ask anything about your workspace.'}</span><button type="submit" disabled={!query.trim() || isResponding}>{isResponding ? 'Working...' : 'Ask Lucent'}</button></div></form></section>
 }
 
 function AIWorkflowView({ tickets }: { tickets: AnalyticsTicket[] }) {
