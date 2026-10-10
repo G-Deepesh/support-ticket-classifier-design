@@ -22,7 +22,7 @@ button { font: inherit; }
 .hero-metrics strong { color: #26334c; font-size: 18px; letter-spacing: -.04em; }
 .hero-metrics span { color: #7b8798; font-size: 9px; line-height: 1.25; }
 @media (max-width: 600px) { .hero-metrics { grid-template-columns: 1fr; max-width: 220px; } }
-.demo-dialog-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(53, 47, 30, .18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.demo-dialog-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(53, 47, 30, .22); backdrop-filter: blur(18px) saturate(.82); -webkit-backdrop-filter: blur(18px) saturate(.82); }
 .demo-dialog { position: relative; width: min(100%, 430px); padding: 26px; border-radius: 24px; background: rgba(255, 253, 239, .88); border-color: rgba(255,255,255,.96); box-shadow: 0 28px 70px rgba(82, 66, 30, .22), inset 0 1px 0 rgba(255,255,255,.95); }
 .demo-dialog h3 { margin: 7px 0 6px; color: #3c3425; font-size: 25px; letter-spacing: -.045em; }
 .demo-dialog > p:not(.eyebrow) { margin: 0 0 20px; color: #806f4e; font-size: 12px; line-height: 1.5; }
