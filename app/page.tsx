@@ -1,0 +1,122 @@
+'use client'
+
+import { useState } from 'react'
+import {
+  BarChart3,
+  Bell,
+  BookOpen,
+  ChevronDown,
+  ChevronRight,
+  CircleHelp,
+  Clock3,
+  Inbox,
+  LayoutDashboard,
+  Menu,
+  MessageCircle,
+  MoreHorizontal,
+  Search,
+  Settings2,
+  Sparkles,
+  Users,
+  WandSparkles,
+  X,
+} from 'lucide-react'
+
+const mainItems = [
+  { label: 'Overview', icon: LayoutDashboard },
+  { label: 'Inbox', icon: Inbox, badge: '12' },
+  { label: 'Customers', icon: Users },
+]
+const workspaceItems = [
+  { label: 'Analytics', icon: BarChart3 },
+  { label: 'Integrations', icon: Settings2 },
+]
+const channelItems = [
+  { label: 'Website chats', icon: MessageCircle },
+  { label: 'E-mail', icon: CircleHelp },
+  { label: 'WhatsApp', icon: MessageCircle },
+]
+
+const tickets = [
+  { initials: 'SL', name: 'Sofia Lawrence', subject: 'Can’t access my account', time: '2m ago', tag: 'Login issue', tone: 'coral', priority: 'High' },
+  { initials: 'MR', name: 'Marcus Reed', subject: 'Question about my invoice', time: '18m ago', tag: 'Billing', tone: 'violet', priority: 'Normal' },
+  { initials: 'AV', name: 'Amelia Vance', subject: 'Feature request: dark mode', time: '34m ago', tag: 'Feedback', tone: 'blue', priority: 'Low' },
+  { initials: 'JP', name: 'James Park', subject: 'Order still says pending', time: '1h ago', tag: 'Order status', tone: 'amber', priority: 'Normal' },
+]
+
+export default function Page() {
+  const [active, setActive] = useState('Overview')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [catalogueBlur, setCatalogueBlur] = useState(false)
+
+  const selectItem = (label: string) => {
+    setActive(label)
+    setCatalogueBlur(true)
+    window.setTimeout(() => setCatalogueBlur(false), 340)
+    setSidebarOpen(false)
+  }
+
+  return (
+    <main className="app-shell">
+      <div className="aurora aurora-one" />
+      <div className="aurora aurora-two" />
+      <div className="mobile-topbar glass-panel">
+        <button className="icon-button" aria-label="Open navigation" onClick={() => setSidebarOpen(true)}><Menu /></button>
+        <div className="brand-mark small"><Sparkles /></div>
+        <span className="mobile-title">Main</span>
+        <button className="icon-button" aria-label="Notifications"><Bell /></button>
+      </div>
+
+      <aside className={`sidebar glass-panel ${sidebarOpen ? 'sidebar-open' : ''}`}>
+        <div className="sidebar-header">
+          <div className="brand-mark"><Sparkles /></div>
+          <div><p className="brand-name">lucent</p><p className="brand-caption">support intelligence</p></div>
+          <button className="icon-button close-sidebar" aria-label="Close navigation" onClick={() => setSidebarOpen(false)}><X /></button>
+        </div>
+        <div className="workspace-switcher glass-inset">
+          <div className="workspace-avatar">A</div><div className="workspace-copy"><strong>Acme Studio</strong><span>Business workspace</span></div><ChevronDown />
+        </div>
+        <nav className="sidebar-nav" aria-label="Primary navigation">
+          <NavGroup title="Main" items={mainItems} active={active} onSelect={selectItem} />
+          <NavGroup title="Workspace & Website chats" items={workspaceItems} active={active} onSelect={selectItem} />
+          <NavGroup title="Channels" items={channelItems} active={active} onSelect={selectItem} />
+        </nav>
+        <div className="sidebar-bottom">
+          <button className="nav-item" onClick={() => selectItem('Knowledge base')}><BookOpen /> <span>Knowledge base</span></button>
+          <div className="usage-card glass-inset"><div className="usage-top"><span>AI triage usage</span><span>78%</span></div><div className="usage-bar"><span /></div><p>1,560 of 2,000 tickets classified</p></div>
+          <div className="user-row"><div className="avatar user-avatar">JD</div><div className="workspace-copy"><strong>Jordan Davis</strong><span>Admin</span></div><MoreHorizontal /></div>
+        </div>
+      </aside>
+
+      {sidebarOpen && <button className="sidebar-overlay" aria-label="Close navigation" onClick={() => setSidebarOpen(false)} />}
+
+      <section className="content-area">
+        <header className="content-header">
+          <div><p className="eyebrow">Tuesday, October 10, 2026</p><h1>{active === 'Overview' ? 'Good morning, Jordan' : active}</h1><p className="subheading">Here’s what’s happening with your support today.</p></div>
+          <div className="header-actions"><button className="search-button glass-inset"><Search /><span>Search anything</span><kbd>⌘ K</kbd></button><button className="icon-button glass-inset" aria-label="Notifications"><Bell /></button><div className="avatar header-avatar">JD</div></div>
+        </header>
+
+        <div className={`dashboard-content ${catalogueBlur ? 'catalogue-blur' : ''}`}>
+          <section className="hero-card glass-panel">
+            <div className="hero-copy"><div className="status-pill"><span className="status-dot" /> AI classifier is active</div><h2>Every conversation,<br /><em>understood.</em></h2><p>Lucent sorts, prioritizes, and routes every incoming ticket so your team can focus on what matters.</p><button className="primary-button" onClick={() => selectItem('Inbox')}>Review inbox <ChevronRight /></button></div>
+            <div className="hero-visual" aria-hidden="true"><div className="orbit orbit-a" /><div className="orbit orbit-b" /><div className="orbital-core"><WandSparkles /></div><div className="float-card float-card-top"><span className="mini-icon peach"><Inbox /></span><span><b>142</b><small>tickets sorted</small></span><span className="trend">+18%</span></div><div className="float-card float-card-bottom"><span className="mini-icon lavender"><Sparkles /></span><span><b>94.6%</b><small>AI confidence</small></span></div></div>
+          </section>
+
+          <div className="stats-grid"><StatCard label="Open tickets" value="128" delta="12.5%" icon={Inbox} /><StatCard label="Avg. response time" value="14m" delta="8.2%" icon={Clock3} positive /><StatCard label="Resolution rate" value="86.4%" delta="4.8%" icon={Sparkles} positive /></div>
+
+          <section className="lower-grid">
+            <div className="tickets-card glass-panel"><div className="section-heading"><div><p className="eyebrow">Needs your attention</p><h3>Recent tickets</h3></div><button className="text-button" onClick={() => selectItem('Inbox')}>View all <ChevronRight /></button></div><div className="ticket-list">{tickets.map((ticket) => <button className="ticket-row" key={ticket.name} onClick={() => selectItem('Inbox')}><div className={`avatar ticket-avatar ${ticket.tone}`}>{ticket.initials}</div><div className="ticket-main"><strong>{ticket.subject}</strong><span>{ticket.name} · {ticket.time}</span></div><span className={`ticket-tag ${ticket.tone}`}>{ticket.tag}</span><span className={`priority ${ticket.priority.toLowerCase()}`}><i />{ticket.priority}</span><ChevronRight className="row-arrow" /></button>)}</div></div>
+            <div className="channels-card glass-panel"><div className="section-heading"><div><p className="eyebrow">Live overview</p><h3>By channel</h3></div><button className="icon-button"><MoreHorizontal /></button></div><div className="donut-wrap"><div className="donut"><div className="donut-center"><strong>642</strong><span>this week</span></div></div><div className="channel-legend"><Legend label="Website chats" value="48%" color="pink" /><Legend label="E-mail" value="32%" color="purple" /><Legend label="WhatsApp" value="20%" color="blue" /></div></div><div className="mini-insight"><Sparkles /><span>Website chats are up <b>24%</b> this week</span></div></div>
+          </section>
+        </div>
+        <footer className="content-footer"><span>Lucent AI is learning from your team’s resolutions.</span><button className="help-button"><CircleHelp /> Need help?</button></footer>
+      </section>
+    </main>
+  )
+}
+
+function NavGroup({ title, items, active, onSelect }: { title: string; items: { label: string; icon: typeof Inbox; badge?: string }[]; active: string; onSelect: (label: string) => void }) {
+  return <div className="nav-group"><p className="nav-label">{title}</p>{items.map(({ label, icon: Icon, badge }) => <button className={`nav-item ${active === label ? 'active' : ''}`} key={label} onClick={() => onSelect(label)}><Icon /><span>{label}</span>{badge && <b className="nav-badge">{badge}</b>}</button>)}</div>
+}
+function StatCard({ label, value, delta, icon: Icon, positive }: { label: string; value: string; delta: string; icon: typeof Inbox; positive?: boolean }) { return <div className="stat-card glass-panel"><div className="stat-icon"><Icon /></div><div><span>{label}</span><div className="stat-value">{value} <small className={positive ? 'positive' : ''}>{positive ? '↑' : '↑'} {delta}</small></div></div></div> }
+function Legend({ label, value, color }: { label: string; value: string; color: string }) { return <div className="legend-row"><span><i className={color} />{label}</span><b>{value}</b></div> }
