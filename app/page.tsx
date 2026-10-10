@@ -27,7 +27,6 @@ const mainItems = [
   { label: 'Customers', icon: Users },
 ]
 const workspaceItems = [
-  { label: 'Workspace', icon: BriefcaseBusiness },
   { label: 'Analytics', icon: BarChart3 },
   { label: 'Integrations', icon: Settings2 },
 ]
@@ -65,6 +64,7 @@ export default function Page() {
   const [demoMode, setDemoMode] = useState(false)
   const [demoDialogOpen, setDemoDialogOpen] = useState(false)
   const [demoQuery, setDemoQuery] = useState('')
+  const [analyticsOpen, setAnalyticsOpen] = useState(false)
 
   const addDemoTicket = (message: string) => {
     const cleanMessage = message.trim()
@@ -116,7 +116,7 @@ export default function Page() {
         </div>}
         <nav className="sidebar-nav" aria-label="Primary navigation">
           <NavGroup title="Main" items={mainItems} active={active} onSelect={selectItem} />
-          <NavGroup title="Workspace & Website chats" items={workspaceItems} active={active} onSelect={selectItem} />
+          <div className="nav-group"><p className="nav-label">Workspace &amp; Website chats</p><button className={`nav-item ${active === 'Analytics' ? 'active' : ''}`} onClick={() => setAnalyticsOpen((open) => !open)} aria-expanded={analyticsOpen}><BarChart3 /><span>Analytics</span><ChevronDown className={`nav-chevron ${analyticsOpen ? 'nav-chevron-open' : ''}`} /></button>{analyticsOpen && <div className="nav-submenu"><button className={`nav-subitem ${active === 'Workspace' ? 'active' : ''}`} onClick={() => selectItem('Workspace')}><BriefcaseBusiness /><span>Workspace</span></button></div>}<NavGroup title="" items={workspaceItems.filter((item) => item.label !== 'Analytics')} active={active} onSelect={selectItem} /></div>
           <NavGroup title="Channels" items={channelItems} active={active} onSelect={selectItem} />
         </nav>
         <div className="sidebar-bottom">
@@ -170,7 +170,7 @@ function AnalyticsView({ tickets, onUpdate }: { tickets: AnalyticsTicket[]; onUp
 }
 
 function NavGroup({ title, items, active, onSelect }: { title: string; items: { label: string; icon: typeof Inbox; badge?: string }[]; active: string; onSelect: (label: string) => void }) {
-  return <div className="nav-group"><p className="nav-label">{title}</p>{items.map(({ label, icon: Icon, badge }) => <button className={`nav-item ${active === label ? 'active' : ''}`} key={label} onClick={() => onSelect(label)}><Icon /><span>{label}</span>{badge && <b className="nav-badge">{badge}</b>}</button>)}</div>
+  return <div className="nav-group">{title && <p className="nav-label">{title}</p>}{items.map(({ label, icon: Icon, badge }) => <button className={`nav-item ${active === label ? 'active' : ''}`} key={label} onClick={() => onSelect(label)}><Icon /><span>{label}</span>{badge && <b className="nav-badge">{badge}</b>}</button>)}</div>
 }
 function StatCard({ label, value, delta, icon: Icon, positive }: { label: string; value: string; delta: string; icon: typeof Inbox; positive?: boolean }) { return <div className="stat-card glass-panel"><div className="stat-icon"><Icon /></div><div><span>{label}</span><div className="stat-value">{value} <small className={positive ? 'positive' : ''}>{positive ? '↑' : '↑'} {delta}</small></div></div></div> }
 function Legend({ label, value, color }: { label: string; value: string; color: string }) { return <div className="legend-row"><span><i className={color} />{label}</span><b>{value}</b></div> }
