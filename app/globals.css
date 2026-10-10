@@ -257,8 +257,8 @@ button { font: inherit; }
 /* Shape both rings as elliptical planetary orbits around the upright mark. */
 .hero-visual { isolation: isolate; }
 .hero-visual .orbit { border-radius: 50%; border-color: rgba(111,126,224,.42); box-shadow: 0 0 18px rgba(111,126,224,.12), inset 0 0 12px rgba(255,255,255,.22); }
-.hero-visual .orbit.orbit-a { top: 50%; left: 50%; width: 308px; height: 118px; transform: translate(-50%, -50%) rotate(-18deg); }
-.hero-visual .orbit.orbit-b { top: 50%; left: 50%; width: 270px; height: 270px; transform: translate(-50%, -50%) rotate(25deg) scaleY(.72); }
+.hero-visual .orbit.orbit-a { top: 50%; left: 50%; width: 286px; height: 112px; transform: translate(-50%, -50%) rotate(-20deg); transform-origin: center; }
+  .hero-visual .orbit.orbit-b { top: 50%; left: 50%; width: 252px; height: 252px; transform: translate(-50%, -50%) rotate(24deg) scaleY(.76); transform-origin: center; }
 .hero-visual .lucent-logo span { transform: rotate(0deg); }
 .hero-visual .lucent-logo { position: absolute; top: 50%; left: 50%; z-index: 2; width: 82px; height: 82px; transform: translate(-50%, -50%) rotate(0deg); }
 .hero-visual .orbit::after { content: ''; position: absolute; width: 7px; height: 7px; border-radius: 50%; background: #8190ff; box-shadow: 0 0 12px #8190ff; }
