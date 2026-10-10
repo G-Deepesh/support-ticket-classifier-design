@@ -14,7 +14,6 @@ import {
   Menu,
   MessageCircle,
   MoreHorizontal,
-  Search,
   Settings2,
   Sparkles,
   Users,
@@ -94,11 +93,6 @@ export default function Page() {
         <div className="qunexa-topbar" aria-label="Qunexa workspace header">
           <div className="qunexa-cylinder"><span>QUNEXA</span></div>
         </div>
-        <header className="content-header">
-          <div><p className="eyebrow">Tuesday, October 10, 2026</p><h1>{active === 'Overview' ? 'Good morning, Jordan' : active}</h1><p className="subheading">Here’s what’s happening with your support today.</p></div>
-          <div className="header-actions"><button className="search-button glass-inset"><Search /><span>Search anything</span><kbd>⌘ K</kbd></button><button className="icon-button glass-inset" aria-label="Notifications"><Bell /></button><div className="avatar header-avatar">JD</div></div>
-        </header>
-
         <div className={`dashboard-content ${catalogueBlur ? 'catalogue-blur' : ''}`}>
           <section className="hero-card glass-panel">
             <div className="hero-copy"><div className="status-pill"><span className="status-dot" /> AI classifier is active</div><h2>Every conversation,<br /><em>understood.</em></h2><p>Lucent sorts, prioritizes, and routes every incoming ticket so your team can focus on what matters.</p><button className="primary-button" onClick={() => selectItem('Inbox')}>Review inbox <ChevronRight /></button></div>
