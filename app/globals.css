@@ -78,6 +78,59 @@ button { font: inherit; }
 @keyframes fluid-shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 @keyframes fluid-float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-7px) rotate(.8deg); } }
 
+/* Keep ticket priority pills contained and evenly sized inside the table. */
+.analytics-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 28px;
+}
+.workflow-table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+.workflow-table th,
+.workflow-table td {
+  min-width: 0;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.workflow-table th:last-child,
+.workflow-table td:last-child {
+  width: 22%;
+}
+.workflow-table td:last-child {
+  padding-inline: 10px;
+}
+.table-priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  min-width: 0;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 999px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  line-height: 1;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+}
+.table-priority i {
+  flex: 0 0 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.table-priority.high { color: #c55d5d; background: rgba(255,224,224,.72); }
+.table-priority.normal { color: #8b6b31; background: rgba(255,242,204,.76); }
+.table-priority.low { color: #5573b5; background: rgba(221,233,255,.78); }
+
 
 /* Give every primary section title a consistent, confident hierarchy. */
 .hero-copy h2,
