@@ -43,11 +43,11 @@ const tickets = [
 ]
 
 const initialAnalyticsTickets = [
-  { id: '#QX-1048', message: 'Can’t access my account', category: 'Authentication', department: 'Support', priority: 'High', reasoning: 'Login failure detected', status: 'Open' },
-  { id: '#QX-1047', message: 'Question about my invoice', category: 'Billing', department: 'Finance', priority: 'Normal', reasoning: 'Invoice clarification', status: 'In progress' },
-  { id: '#QX-1046', message: 'Feature request: dark mode', category: 'Feedback', department: 'Product', priority: 'Low', reasoning: 'Product suggestion', status: 'Review' },
-  { id: '#QX-1045', message: 'Order still says pending', category: 'Order status', department: 'Operations', priority: 'Normal', reasoning: 'Fulfillment delay', status: 'Resolved' },
-  { id: '#QX-1044', message: 'Refund has not arrived yet', category: 'Refunds', department: 'Finance', priority: 'High', reasoning: 'Payment follow-up', status: 'Open' },
+  { id: '#QX-1048', message: 'Can’t access my account', category: 'Authentication', department: 'Support', priority: 'High', confidence: '98%', reasoning: 'Login failure detected', status: 'Open', action: 'Assign to support' },
+  { id: '#QX-1047', message: 'Question about my invoice', category: 'Billing', department: 'Finance', priority: 'Normal', confidence: '94%', reasoning: 'Invoice clarification', status: 'In progress', action: 'Review reply' },
+  { id: '#QX-1046', message: 'Feature request: dark mode', category: 'Feedback', department: 'Product', priority: 'Low', confidence: '89%', reasoning: 'Product suggestion', status: 'Review', action: 'Send to product' },
+  { id: '#QX-1045', message: 'Order still says pending', category: 'Order status', department: 'Operations', priority: 'Normal', confidence: '96%', reasoning: 'Fulfillment delay', status: 'Resolved', action: 'No action needed' },
+  { id: '#QX-1044', message: 'Refund has not arrived yet', category: 'Refunds', department: 'Finance', priority: 'High', confidence: '92%', reasoning: 'Payment follow-up', status: 'Open', action: 'Escalate to finance' },
 ]
 type AnalyticsTicket = (typeof initialAnalyticsTickets)[number]
 
@@ -67,7 +67,7 @@ export default function Page() {
   const addDemoTicket = (message: string) => {
     const cleanMessage = message.trim()
     if (!cleanMessage) return
-    setAnalyticsTickets((current) => [{ id: `#QX-${1050 + current.length}`, message: cleanMessage, category: 'General inquiry', department: 'Support', priority: 'Normal', reasoning: 'Demo query classified in real time', status: 'Open' }, ...current])
+    setAnalyticsTickets((current) => [{ id: `#QX-${1050 + current.length}`, message: cleanMessage, category: 'General inquiry', department: 'Support', priority: 'Normal', confidence: '91%', reasoning: 'Demo query classified in real time', status: 'Open', action: 'Assign to support' }, ...current])
     setActive('Analytics')
     setDemoQuery('')
     setDemoDialogOpen(false)
@@ -163,7 +163,7 @@ export default function Page() {
 function AnalyticsView({ tickets, onUpdate }: { tickets: AnalyticsTicket[]; onUpdate: (id: string, status: string) => void }) {
   return <section className="analytics-view glass-panel" aria-labelledby="analytics-title">
     <div className="analytics-heading"><div><p className="eyebrow">Workspace insights</p><h2 id="analytics-title">Ticket analytics</h2><p>Review every classified conversation and update its status in place.</p></div><div className="analytics-actions"><span className="analytics-count">{tickets.length} tickets</span></div></div>
-    <div className="analytics-table-wrap"><table className="analytics-table"><thead><tr><th>ID</th><th>Customer message</th><th>Category</th><th>Department</th><th>Priority</th><th>Reasoning</th><th>Status</th></tr></thead><tbody>{tickets.map((ticket) => <tr key={ticket.id}><td className="ticket-id">{ticket.id}</td><td className="message-cell">{ticket.message}</td><td>{ticket.category}</td><td>{ticket.department}</td><td><span className={`table-priority ${ticket.priority.toLowerCase()}`}><i />{ticket.priority}</span></td><td className="reasoning-cell">{ticket.reasoning}</td><td><select className={`table-status-select ${ticket.status.toLowerCase().replace(' ', '-')}`} value={ticket.status} onChange={(event) => onUpdate(ticket.id, event.target.value)} aria-label={`Update status for ${ticket.id}`}><option>Open</option><option>In progress</option><option>Review</option><option>Resolved</option></select></td></tr>)}</tbody></table></div>
+    <div className="analytics-table-wrap"><table className="analytics-table"><thead><tr><th>ID</th><th>Customer message</th><th>Category</th><th>Department</th><th>Priority</th><th>AI confidence</th><th>Reasoning</th><th>Status</th><th>Human action</th></tr></thead><tbody>{tickets.map((ticket) => <tr key={ticket.id}><td className="ticket-id">{ticket.id}</td><td className="message-cell">{ticket.message}</td><td>{ticket.category}</td><td>{ticket.department}</td><td><span className={`table-priority ${ticket.priority.toLowerCase()}`}><i />{ticket.priority}</span></td><td className="confidence-cell">{ticket.confidence}</td><td className="reasoning-cell">{ticket.reasoning}</td><td><select className={`table-status-select ${ticket.status.toLowerCase().replace(' ', '-')}`} value={ticket.status} onChange={(event) => onUpdate(ticket.id, event.target.value)} aria-label={`Update status for ${ticket.id}`}><option>Open</option><option>In progress</option><option>Review</option><option>Resolved</option></select></td><td className="human-action-cell">{ticket.action}</td></tr>)}</tbody></table></div>
   </section>
 }
 
