@@ -236,15 +236,25 @@ function WebsiteChatsView() {
  const [query, setQuery] = useState('')
  const [submittedQuery, setSubmittedQuery] = useState('')
  const [isResponding, setIsResponding] = useState(false)
+ const [guide, setGuide] = useState<string[]>([])
  const submitQuery = (event: FormEvent<HTMLFormElement>) => {
    event.preventDefault()
    const trimmedQuery = query.trim()
    if (!trimmedQuery || isResponding) return
+   const normalizedQuery = trimmedQuery.toLowerCase()
+   const nextGuide = normalizedQuery.includes('ticket') || normalizedQuery.includes('urgent')
+     ? ['Open All Tickets from the sidebar.', 'Filter by Urgent priority and review the highlighted keywords.', 'Open the matching ticket and confirm the department.', 'Escalate it from Inbox if a human response is needed.']
+     : normalizedQuery.includes('account') || normalizedQuery.includes('login')
+       ? ['Open Customers and locate the customer record.', 'Confirm the account details and recent activity.', 'Review the related tickets for the reported issue.', 'Reply through Website chats or route it to Inbox.']
+       : normalizedQuery.includes('billing') || normalizedQuery.includes('invoice')
+         ? ['Open All Tickets and search for billing or invoice.', 'Review the customer and payment context.', 'Check the Knowledge base for the billing playbook.', 'Escalate to a human when account details need verification.']
+         : ['Open AI Workflow to review the keywords detected in your query.', 'Use the highlighted keywords to find the relevant tickets.', 'Open the matching resource in Knowledge base.', 'Contact the team by E-mail or WhatsApp if you need more help.']
    setSubmittedQuery(trimmedQuery)
+   setGuide(nextGuide)
    setIsResponding(true)
    window.setTimeout(() => setIsResponding(false), 700)
  }
- return <section className="website-chat-view lucent-welcome glass-panel" aria-labelledby="website-chat-title"><div className="lucent-welcome-copy"><p className="eyebrow">Website chats</p><h2 id="website-chat-title">Hi, my name is Lucent.</h2><p>How can I help you today?</p></div><form className="lucent-query-form" onSubmit={submitQuery}><textarea value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Type your query here..." aria-label="Type your query" rows={6} /><div className="lucent-query-actions"><span>{isResponding ? 'Lucent is thinking...' : submittedQuery ? `Received: “${submittedQuery}”` : 'Ask anything about your workspace.'}</span><button type="submit" disabled={!query.trim() || isResponding}>{isResponding ? 'Working...' : 'Ask Lucent'}</button></div></form></section>
+ return <section className="website-chat-view lucent-welcome glass-panel" aria-labelledby="website-chat-title"><div className="lucent-welcome-copy"><p className="eyebrow">Website chats</p><h2 id="website-chat-title">Hi, my name is Lucent.</h2><p>How can I help you today?</p></div><form className="lucent-query-form" onSubmit={submitQuery}><textarea value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Type your query here..." aria-label="Type your query" rows={6} /><div className="lucent-query-actions"><span>{isResponding ? 'Lucent is thinking...' : submittedQuery ? `Received: “${submittedQuery}”` : 'Ask anything about your workspace.'}</span><button type="submit" disabled={!query.trim() || isResponding}>{isResponding ? 'Working...' : 'Ask Lucent'}</button></div></form>{guide.length > 0 && <div className="lucent-guide" aria-live="polite"><p className="eyebrow">Lucent&apos;s suggested path</p><h3>Here&apos;s how to handle it</h3><ol>{guide.map((step) => <li key={step}>{step}</li>)}</ol></div>}</section>
 }
 
 function AIWorkflowView({ tickets }: { tickets: AnalyticsTicket[] }) {
