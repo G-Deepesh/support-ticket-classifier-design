@@ -208,10 +208,12 @@ export default function Page() {
 }
 
 function AIWorkflowView({ tickets }: { tickets: AnalyticsTicket[] }) {
-  const stopWords = new Set(['the', 'my', 'has', 'not', 'yet', 'still', 'about', 'can’t', 'cant'])
-  const keywordCounts = tickets.flatMap((ticket) => `${ticket.message} ${ticket.category}`.toLowerCase().replace(/[^a-z0-9 ]/g, '').split(/\s+/)).filter((word) => word.length > 2 && !stopWords.has(word)).reduce<Record<string, number>>((counts, word) => { counts[word] = (counts[word] ?? 0) + 1; return counts }, {})
-  const keywords = Object.entries(keywordCounts).sort(([, first], [, second]) => second - first).slice(0, 12)
-  return <section className="workflow-view analytics-view glass-panel" aria-labelledby="workflow-title"><div className="analytics-heading"><div><p className="eyebrow">Query intelligence</p><h2 id="workflow-title">AI Workflow</h2><p>Highlighted keywords detected across every query in the workspace.</p></div><span className="analytics-count">{tickets.length} queries</span></div><div className="analytics-table-wrap"><table className="analytics-table workflow-table"><thead><tr><th>Keyword</th><th>Queries</th><th>Share of queries</th><th>Signal strength</th></tr></thead><tbody>{keywords.map(([keyword, count], index) => { const share = Math.round((count / tickets.length) * 100); return <tr key={keyword}><td><span className={`workflow-keyword keyword-${index % 4}`}><strong>{keyword}</strong></span></td><td><strong className="workflow-count">{count}</strong></td><td><span className="customer-share">{share}%</span></td><td><span className="customer-distribution workflow-distribution"><i style={{ width: `${Math.min(share, 100)}%` }} /></span></td></tr>})}</tbody></table></div></section>
+  const stopWords = new Set(['the', 'my', 'has', 'not', 'yet', 'still', 'about', 'can’t', 'cant', 'with', 'from', 'this', 'that'])
+  const highlightQuery = (message: string, category: string) => {
+    const keywords = new Set(`${message} ${category}`.toLowerCase().replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter((word) => word.length > 3 && !stopWords.has(word)))
+    return message.split(/(\s+)/).map((part, index) => keywords.has(part.toLowerCase().replace(/[^a-z0-9]/g, '')) ? <strong key={`${part}-${index}`} className="query-keyword">{part}</strong> : part)
+  }
+  return <section className="workflow-view analytics-view glass-panel" aria-labelledby="workflow-title"><div className="analytics-heading"><div><p className="eyebrow">Query intelligence</p><h2 id="workflow-title">AI Workflow</h2><p>Every query is separated below with its important keywords highlighted.</p></div><span className="analytics-count">{tickets.length} queries</span></div><div className="analytics-table-wrap"><table className="analytics-table workflow-table"><thead><tr><th>Query</th><th>Category</th><th>Department</th><th>Priority</th><th>AI confidence</th></tr></thead><tbody>{tickets.map((ticket) => <tr key={ticket.id}><td className="workflow-query"><span className="ticket-id">{ticket.id}</span><span>{highlightQuery(ticket.message, ticket.category)}</span></td><td>{ticket.category}</td><td>{ticket.department}</td><td><span className={`table-priority ${ticket.priority.toLowerCase()}`}><i />{ticket.priority}</span></td><td className="confidence-cell">{ticket.confidence}</td></tr>)}</tbody></table></div></section>
 }
 
 function CustomersView() {
