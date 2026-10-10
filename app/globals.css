@@ -180,7 +180,7 @@ button { font: inherit; }
 /* Give the hero mark more presence while keeping it contained inside the card. */
 .hero-card { overflow: hidden; }
 .hero-visual { min-width: 250px; min-height: 250px; margin-right: 4px; transform: translate(4px, 14px) rotate(16deg) scale(.82); transform-origin: center right; animation: lucent-float 4.8s ease-in-out infinite; }
-.hero-visual .lucent-logo { width: 104px; height: 104px; transform: rotate(0deg); }
+.hero-visual .lucent-logo { position: absolute; top: 50%; left: 50%; z-index: 2; width: 82px; height: 82px; transform: translate(-50%, -50%) rotate(0deg); }
 .hero-visual .lucent-logo span { font-size: 54px; }
 .hero-visual .orbit.orbit-a { width: 308px; height: 118px; transform: rotate(-18deg); }
 .hero-visual .orbit.orbit-b { width: 270px; height: 270px; }
@@ -189,8 +189,8 @@ button { font: inherit; }
 /* Shape both rings as elliptical planetary orbits around the upright mark. */
 .hero-visual { isolation: isolate; }
 .hero-visual .orbit { border-radius: 50%; border-color: rgba(111,126,224,.42); box-shadow: 0 0 18px rgba(111,126,224,.12), inset 0 0 12px rgba(255,255,255,.22); }
-.hero-visual .orbit.orbit-a { width: 308px; height: 118px; transform: translate(-50%, -50%) rotate(-18deg); }
-.hero-visual .orbit.orbit-b { width: 270px; height: 270px; transform: translate(-50%, -50%) rotate(25deg) scaleY(.72); }
+.hero-visual .orbit.orbit-a { top: 50%; left: 50%; width: 308px; height: 118px; transform: translate(-50%, -50%) rotate(-18deg); }
+.hero-visual .orbit.orbit-b { top: 50%; left: 50%; width: 270px; height: 270px; transform: translate(-50%, -50%) rotate(25deg) scaleY(.72); }
 .hero-visual .lucent-logo { position: relative; z-index: 2; }
 .hero-visual .orbit::after { content: ''; position: absolute; width: 7px; height: 7px; border-radius: 50%; background: #8190ff; box-shadow: 0 0 12px #8190ff; }
 .hero-visual .orbit-a::after { top: 8px; right: 18%; }
