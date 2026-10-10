@@ -209,12 +209,16 @@ export default function Page() {
 }
 
 function KnowledgeBaseView() {
-  const resources = [
+  const [resources, setResources] = useState([
     { title: 'Getting started with Lucent', type: 'Guide', detail: '6 articles · Updated today' },
     { title: 'Ticket routing playbook', type: 'Playbook', detail: '12 articles · Updated yesterday' },
     { title: 'Common customer questions', type: 'FAQ', detail: '28 articles · Updated 3 days ago' },
-  ]
-  return <section className="knowledge-view glass-panel" aria-labelledby="knowledge-title"><div className="knowledge-heading"><div><p className="eyebrow">Knowledge base</p><h2 id="knowledge-title">Give Lucent the right answers.</h2><p>Browse the resources Lucent uses to understand and respond to incoming queries.</p></div><button className="knowledge-add" type="button"><span>+</span> Add resource</button></div><label className="knowledge-search"><BookOpen /><input placeholder="Search your knowledge base..." aria-label="Search your knowledge base" /></label><div className="knowledge-grid">{resources.map((resource) => <article className="knowledge-card" key={resource.title}><div className="knowledge-card-icon"><BookOpen /></div><div><span>{resource.type}</span><h3>{resource.title}</h3><p>{resource.detail}</p></div><ChevronRight /></article>)}</div></section>
+  ])
+  const [search, setSearch] = useState('')
+  const [selected, setSelected] = useState('')
+  const filteredResources = resources.filter((resource) => `${resource.title} ${resource.type} ${resource.detail}`.toLowerCase().includes(search.toLowerCase()))
+  const addResource = () => setResources((current) => [...current, { title: 'New Lucent resource', type: 'Guide', detail: 'Draft resource · Ready to edit' }])
+  return <section className="knowledge-view glass-panel" aria-labelledby="knowledge-title"><div className="knowledge-heading"><div><p className="eyebrow">Knowledge base</p><h2 id="knowledge-title">Give Lucent the right answers.</h2><p>Browse the resources Lucent uses to understand and respond to incoming queries.</p></div><button className="knowledge-add" type="button" onClick={addResource}><span>+</span> Add resource</button></div><label className="knowledge-search"><BookOpen /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search your knowledge base..." aria-label="Search your knowledge base" /></label><div className="knowledge-grid">{filteredResources.map((resource) => <button className={`knowledge-card ${selected === resource.title ? 'selected' : ''}`} type="button" key={resource.title} onClick={() => setSelected(resource.title)}><span className="knowledge-card-icon"><BookOpen /></span><span className="knowledge-card-copy"><span>{resource.type}</span><strong>{resource.title}</strong><small>{resource.detail}</small></span><ChevronRight /></button>)}</div>{selected && <p className="knowledge-feedback">Selected resource: <strong>{selected}</strong></p>}{filteredResources.length === 0 && <p className="knowledge-feedback">No resources match “{search}”.</p>}</section>
 }
 
 function EmailView() {
