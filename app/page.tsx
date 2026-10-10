@@ -5,6 +5,7 @@ import {
   BarChart3,
   Bell,
   BookOpen,
+  BriefcaseBusiness,
   ChevronDown,
   ChevronRight,
   CircleHelp,
@@ -26,6 +27,7 @@ const mainItems = [
   { label: 'Customers', icon: Users },
 ]
 const workspaceItems = [
+  { label: 'Workspace', icon: BriefcaseBusiness },
   { label: 'Analytics', icon: BarChart3 },
   { label: 'Integrations', icon: Settings2 },
 ]
