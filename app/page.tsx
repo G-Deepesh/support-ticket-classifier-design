@@ -61,6 +61,8 @@ export default function Page() {
   const [textStyle, setTextStyle] = useState('Modern')
   const [analyticsTickets, setAnalyticsTickets] = useState<AnalyticsTicket[]>(initialAnalyticsTickets)
 
+  const addDemoTicket = () => setAnalyticsTickets((current) => [{ id: `#QX-${1050 + current.length}`, message: 'Demo ticket: delivery update needed', category: 'Order status', department: 'Operations', priority: 'Normal', reasoning: 'Demo classification added', status: 'Open' }, ...current])
+
   const selectItem = (label: string) => {
     setActive(label)
     setCatalogueBlur(true)
@@ -111,9 +113,18 @@ export default function Page() {
           <div className="qunexa-cylinder"><span>QUNEXA</span></div>
         </div>
         <div className={`dashboard-content ${catalogueBlur ? 'catalogue-blur' : ''}`}>
-          {active === 'Analytics' ? <AnalyticsView tickets={analyticsTickets} onAdd={(ticket) => setAnalyticsTickets((current) => [ticket, ...current])} onUpdate={(id, status) => setAnalyticsTickets((current) => current.map((ticket) => ticket.id === id ? { ...ticket, status } : ticket))} /> : <>
+          {active === 'Analytics' ? <AnalyticsView tickets={analyticsTickets} onUpdate={(id, status) => setAnalyticsTickets((current) => current.map((ticket) => ticket.id === id ? { ...ticket, status } : ticket))} /> : <>
           <section className="hero-card glass-panel">
-            <div className="hero-copy"><h2>Every conversation,<br /><em>understood.</em></h2><p>Lucent sorts, prioritizes, and routes every incoming ticket so your team can focus on what matters.</p><div className="hero-metrics" aria-label="Overview metrics"><div><strong>142</strong><span>Tickets sorted</span></div><div><strong>94.6%</strong><span>Lucent accuracy</span></div><div><strong>14m</strong><span>Average accuracy time</span></div></div></div>
+            <div className="hero-copy">
+              <h2>Every conversation,<br /><em>understood.</em></h2>
+              <p>Lucent sorts, prioritizes, and routes every incoming ticket so your team can focus on what matters.</p>
+              <div className="hero-metrics" aria-label="Overview metrics">
+                <div><strong>142</strong><span>Tickets sorted</span></div>
+                <div><strong>94.6%</strong><span>Lucent accuracy</span></div>
+                <div><strong>14m</strong><span>Average accuracy time</span></div>
+                <button className="demo-ticket-button hero-demo-button" onClick={addDemoTicket}>{'+ Add demo ticket'}</button>
+              </div>
+            </div>
             <div className="hero-visual" aria-hidden="true"><div className="orbit orbit-a" /><div className="orbit orbit-b" /><div className="lucent-logo"><span>L</span></div></div>
           </section>
 
@@ -131,11 +142,9 @@ export default function Page() {
   )
 }
 
-function AnalyticsView({ tickets, onAdd, onUpdate }: { tickets: AnalyticsTicket[]; onAdd: (ticket: AnalyticsTicket) => void; onUpdate: (id: string, status: string) => void }) {
-  const addDemoTicket = () => onAdd({ id: `#QX-${1050 + tickets.length}`, message: 'Demo ticket: delivery update needed', category: 'Order status', department: 'Operations', priority: 'Normal', reasoning: 'Demo classification added', status: 'Open' })
-
+function AnalyticsView({ tickets, onUpdate }: { tickets: AnalyticsTicket[]; onUpdate: (id: string, status: string) => void }) {
   return <section className="analytics-view glass-panel" aria-labelledby="analytics-title">
-    <div className="analytics-heading"><div><p className="eyebrow">Workspace insights</p><h2 id="analytics-title">Ticket analytics</h2><p>Review every classified conversation and update its status in place.</p></div><div className="analytics-actions"><span className="analytics-count">{tickets.length} tickets</span><button className="demo-ticket-button" onClick={addDemoTicket}>+ Add demo ticket</button></div></div>
+    <div className="analytics-heading"><div><p className="eyebrow">Workspace insights</p><h2 id="analytics-title">Ticket analytics</h2><p>Review every classified conversation and update its status in place.</p></div><div className="analytics-actions"><span className="analytics-count">{tickets.length} tickets</span></div></div>
     <div className="analytics-table-wrap"><table className="analytics-table"><thead><tr><th>ID</th><th>Customer message</th><th>Category</th><th>Department</th><th>Priority</th><th>Reasoning</th><th>Status</th></tr></thead><tbody>{tickets.map((ticket) => <tr key={ticket.id}><td className="ticket-id">{ticket.id}</td><td className="message-cell">{ticket.message}</td><td>{ticket.category}</td><td>{ticket.department}</td><td><span className={`table-priority ${ticket.priority.toLowerCase()}`}><i />{ticket.priority}</span></td><td className="reasoning-cell">{ticket.reasoning}</td><td><select className={`table-status-select ${ticket.status.toLowerCase().replace(' ', '-')}`} value={ticket.status} onChange={(event) => onUpdate(ticket.id, event.target.value)} aria-label={`Update status for ${ticket.id}`}><option>Open</option><option>In progress</option><option>Review</option><option>Resolved</option></select></td></tr>)}</tbody></table></div>
   </section>
 }
