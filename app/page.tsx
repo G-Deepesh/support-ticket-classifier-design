@@ -17,7 +17,6 @@ import {
   Menu,
   MessageCircle,
   MoreHorizontal,
-  Settings2,
   Sparkles,
   Users,
   X,
@@ -31,7 +30,6 @@ const mainItems = [
 const workspaceItems = [
   { label: 'Analytics', icon: BarChart3 },
   { label: 'All Tickets', icon: ListTodo },
-  { label: 'Integrations', icon: Settings2 },
 ]
 const channelItems = [
   { label: 'Website chats', icon: MessageCircle },
