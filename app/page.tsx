@@ -7,6 +7,7 @@ import {
   BookOpen,
   ChevronDown,
   ChevronRight,
+  Check,
   CircleHelp,
   Clock3,
   Inbox,
@@ -64,6 +65,13 @@ export default function Page() {
   const [demoDialogOpen, setDemoDialogOpen] = useState(false)
   const [demoQuery, setDemoQuery] = useState('')
   const [actionTicket, setActionTicket] = useState<AnalyticsTicket | null>(null)
+  const [humanOverrideNotice, setHumanOverrideNotice] = useState(false)
+
+  const confirmHumanOverride = () => {
+    setHumanOverrideNotice(true)
+    setActionTicket(null)
+    window.setTimeout(() => setHumanOverrideNotice(false), 3200)
+  }
 
   const addDemoTicket = (message: string) => {
     const cleanMessage = message.trim()
@@ -131,7 +139,7 @@ export default function Page() {
           <div className="qunexa-cylinder"><span>QUNEXA</span></div>
         </div>
         <div className={`dashboard-content ${catalogueBlur ? 'catalogue-blur' : ''}`}>
-          {active === 'Analytics' ? <><AnalyticsView tickets={analyticsTickets} onUpdate={(id, status) => setAnalyticsTickets((current) => current.map((ticket) => ticket.id === id ? { ...ticket, status } : ticket))} onActionClick={setActionTicket} />{actionTicket && <div className="action-dialog-backdrop" role="presentation" onMouseDown={() => setActionTicket(null)}><div className="action-dialog" role="dialog" aria-modal="true" aria-labelledby="action-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close action details" onClick={() => setActionTicket(null)}><X /></button><p className="eyebrow">Human action</p><h3 id="action-dialog-title">{Number.parseInt(actionTicket.confidence, 10) < 90 ? 'Action required' : 'Action not required'}</h3><p className="action-dialog-message">{actionTicket.message}</p><dl className="action-dialog-details"><div><dt>Ticket</dt><dd>{actionTicket.id}</dd></div><div><dt>AI confidence</dt><dd>{actionTicket.confidence}</dd></div><div><dt>Reasoning</dt><dd>{actionTicket.reasoning}</dd></div><div><dt>Suggested next step</dt><dd>{actionTicket.action}</dd></div></dl><button className="demo-submit" type="button" onClick={() => setActionTicket(null)}>Close</button></div></div>}</> : <>
+          {active === 'Analytics' ? <><AnalyticsView tickets={analyticsTickets} onUpdate={(id, status) => setAnalyticsTickets((current) => current.map((ticket) => ticket.id === id ? { ...ticket, status } : ticket))} onActionClick={setActionTicket} />{humanOverrideNotice && <div className="override-notice" role="status"><span className="override-notice-icon"><Check /></span><span><strong>Fixed with human override</strong><small>The ticket has been updated and routed for human review.</small></span><button type="button" aria-label="Dismiss notification" onClick={() => setHumanOverrideNotice(false)}><X /></button></div>}{actionTicket && <div className="action-dialog-backdrop" role="presentation" onMouseDown={() => setActionTicket(null)}><div className="action-dialog" role="dialog" aria-modal="true" aria-labelledby="action-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close action details" onClick={() => setActionTicket(null)}><X /></button><p className="eyebrow">Human action</p><h3 id="action-dialog-title">{Number.parseInt(actionTicket.confidence, 10) < 90 ? 'Action required' : 'Action not required'}</h3><p className="action-dialog-message">{actionTicket.message}</p><dl className="action-dialog-details"><div><dt>Ticket</dt><dd>{actionTicket.id}</dd></div><div><dt>AI confidence</dt><dd>{actionTicket.confidence}</dd></div><div><dt>Reasoning</dt><dd>{actionTicket.reasoning}</dd></div><div><dt>Human override</dt><dd>Fix with human override</dd></div></dl><div className="action-dialog-actions"><button className="text-button" type="button" onClick={() => setActionTicket(null)}>No, keep automated</button><button className="demo-submit override-confirm" type="button" onClick={confirmHumanOverride}>Yes, fix it</button></div></div></div>}</> : <>
           <section className="hero-card glass-panel">
             <div className="hero-copy">
               <h2>Every conversation,<br /><em>understood.</em></h2>
