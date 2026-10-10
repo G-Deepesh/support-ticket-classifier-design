@@ -91,6 +91,9 @@ export default function Page() {
       {sidebarOpen && <button className="sidebar-overlay" aria-label="Close navigation" onClick={() => setSidebarOpen(false)} />}
 
       <section className="content-area">
+        <div className="qunexa-topbar" aria-label="Qunexa workspace header">
+          <div className="qunexa-cylinder"><span>QUNEXA</span></div>
+        </div>
         <header className="content-header">
           <div><p className="eyebrow">Tuesday, October 10, 2026</p><h1>{active === 'Overview' ? 'Good morning, Jordan' : active}</h1><p className="subheading">Here’s what’s happening with your support today.</p></div>
           <div className="header-actions"><button className="search-button glass-inset"><Search /><span>Search anything</span><kbd>⌘ K</kbd></button><button className="icon-button glass-inset" aria-label="Notifications"><Bell /></button><div className="avatar header-avatar">JD</div></div>
