@@ -5,7 +5,6 @@ import {
   BarChart3,
   Bell,
   BookOpen,
-  BriefcaseBusiness,
   ChevronDown,
   ChevronRight,
   CircleHelp,
@@ -64,7 +63,6 @@ export default function Page() {
   const [demoMode, setDemoMode] = useState(false)
   const [demoDialogOpen, setDemoDialogOpen] = useState(false)
   const [demoQuery, setDemoQuery] = useState('')
-  const [analyticsOpen, setAnalyticsOpen] = useState(false)
 
   const addDemoTicket = (message: string) => {
     const cleanMessage = message.trim()
@@ -116,7 +114,7 @@ export default function Page() {
         </div>}
         <nav className="sidebar-nav" aria-label="Primary navigation">
           <NavGroup title="Main" items={mainItems} active={active} onSelect={selectItem} />
-          <div className="nav-group"><p className="nav-label">Workspace &amp; Website chats</p><button className={`nav-item ${active === 'Analytics' ? 'active' : ''}`} onClick={() => setAnalyticsOpen((open) => !open)} aria-expanded={analyticsOpen}><BarChart3 /><span>Analytics</span><ChevronDown className={`nav-chevron ${analyticsOpen ? 'nav-chevron-open' : ''}`} /></button>{analyticsOpen && <div className="nav-submenu"><button className={`nav-subitem ${active === 'Workspace' ? 'active' : ''}`} onClick={() => selectItem('Workspace')}><BriefcaseBusiness /><span>Workspace</span></button></div>}<NavGroup title="" items={workspaceItems.filter((item) => item.label !== 'Analytics')} active={active} onSelect={selectItem} /></div>
+          <NavGroup title="Workspace &amp; Website chats" items={workspaceItems} active={active} onSelect={selectItem} />
           <NavGroup title="Channels" items={channelItems} active={active} onSelect={selectItem} />
         </nav>
         <div className="sidebar-bottom">
