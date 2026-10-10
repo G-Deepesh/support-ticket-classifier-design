@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, Cell, Legend as RechartsLegend, Line, LineChart as RechartsLineChart, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
   BarChart3,
@@ -67,6 +67,17 @@ export default function Page() {
   const [demoQuery, setDemoQuery] = useState('')
   const [actionTicket, setActionTicket] = useState<AnalyticsTicket | null>(null)
   const [humanOverrideNotice, setHumanOverrideNotice] = useState(false)
+  const [chatOpen, setChatOpen] = useState(false)
+  const [chatQuery, setChatQuery] = useState('')
+  const [chatMessages, setChatMessages] = useState([{ role: 'assistant', text: 'Hi, I’m Lucent. How can I help with your workspace today?' }])
+
+  const sendChatQuery = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const message = chatQuery.trim()
+    if (!message) return
+    setChatMessages((current) => [...current, { role: 'user', text: message }, { role: 'assistant', text: 'Thanks for your question. I’ve noted it and can help route it to the right place.' }])
+    setChatQuery('')
+  }
 
   const confirmHumanOverride = () => {
     if (actionTicket) setAnalyticsTickets((current) => current.filter((ticket) => ticket.id !== actionTicket.id))
@@ -154,7 +165,7 @@ export default function Page() {
               </div>
               {demoDialogOpen && <div className="demo-dialog-backdrop" role="presentation" onMouseDown={() => setDemoDialogOpen(false)}><div className="demo-dialog glass-panel" role="dialog" aria-modal="true" aria-labelledby="demo-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close demo query" onClick={() => setDemoDialogOpen(false)}><X /></button><p className="eyebrow">Live demo mode</p><h3 id="demo-dialog-title">Add a customer query</h3><p>Enter a message and watch it appear at the top of Analytics.</p><form onSubmit={(event) => { event.preventDefault(); addDemoTicket(demoQuery) }}><label htmlFor="demo-query">Customer message</label><textarea id="demo-query" value={demoQuery} onChange={(event) => setDemoQuery(event.target.value)} placeholder="e.g. Where is my latest order?" autoFocus /><div className="demo-dialog-actions"><button className="text-button" type="button" onClick={() => setDemoDialogOpen(false)}>Cancel</button><button className="demo-submit" type="submit" disabled={!demoQuery.trim()}>Classify query</button></div></form></div></div>}
             </div>
-            <div className="hero-visual" aria-hidden="true"><div className="orbit orbit-a" /><div className="orbit orbit-b" /><div className="lucent-logo"><span>L</span></div></div>
+            <button className="hero-visual" type="button" aria-label="Open Lucent chat assistant" onClick={() => setChatOpen(true)}><div className="orbit orbit-a" aria-hidden="true" /><div className="orbit orbit-b" aria-hidden="true" /><div className="lucent-logo" aria-hidden="true"><span>L</span></div></button>{chatOpen && <div className="chat-dialog-backdrop" role="presentation" onMouseDown={() => setChatOpen(false)}><section className="chat-dialog" role="dialog" aria-modal="true" aria-labelledby="chat-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close Lucent chat" onClick={() => setChatOpen(false)}><X /></button><p className="eyebrow">Lucent assistant</p><h3 id="chat-dialog-title">How can I help?</h3><div className="chat-messages" aria-live="polite">{chatMessages.map((message, index) => <div className={`chat-message ${message.role}`} key={`${message.role}-${index}`}>{message.text}</div>)}</div><form className="chat-form" onSubmit={sendChatQuery}><input value={chatQuery} onChange={(event) => setChatQuery(event.target.value)} placeholder="Type your query..." aria-label="Your query" /><button className="demo-submit" type="submit" disabled={!chatQuery.trim()}>Send</button></form></section></div>}
           </section>
 
           <div className="stats-grid"><StatCard label="Open tickets" value="128" delta="12.5%" icon={Inbox} /><StatCard label="Avg. response time" value="14m" delta="8.2%" icon={Clock3} positive /><StatCard label="Resolution rate" value="86.4%" delta="4.8%" icon={Sparkles} positive /></div>
