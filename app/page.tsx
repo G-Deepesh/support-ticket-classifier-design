@@ -75,8 +75,31 @@ export default function Page() {
     event.preventDefault()
     const message = chatQuery.trim()
     if (!message) return
-    setChatMessages((current) => [...current, { role: 'user', text: message }, { role: 'assistant', text: 'Thanks for your question. I’ve noted it and can help route it to the right place.' }])
+
+    const query = message.toLowerCase()
+    const route = query.includes('customer') || query.includes('continent') || query.includes('user')
+      ? 'Customers'
+      : query.includes('analytics') || query.includes('chart') || query.includes('trend')
+        ? 'Analytics'
+        : query.includes('ticket') || query.includes('query') || query.includes('case')
+          ? 'All Tickets'
+          : query.includes('human') || query.includes('attention') || query.includes('urgent')
+            ? 'Inbox'
+            : 'Overview'
+    const routeMessage = route === 'Customers'
+      ? 'I’m taking you to Customers so you can review the continent breakdown.'
+      : route === 'Analytics'
+        ? 'I’m taking you to Analytics so you can review the charts.'
+        : route === 'All Tickets'
+          ? 'I’m taking you to All Tickets so you can review every query.'
+          : route === 'Inbox'
+            ? 'I’m taking you to Inbox so you can handle the tickets needing human action.'
+            : 'I’m taking you to Overview for a workspace summary.'
+
+    setChatMessages((current) => [...current, { role: 'user', text: message }, { role: 'assistant', text: routeMessage }])
+    setActive(route)
     setChatQuery('')
+    window.setTimeout(() => setChatOpen(false), 650)
   }
 
   const confirmHumanOverride = () => {
