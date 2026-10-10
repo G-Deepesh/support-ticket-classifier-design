@@ -88,7 +88,7 @@ export default function Page() {
   }
 
   return (
-    <main className={`app-shell text-style-${textStyle.toLowerCase()}`}>
+    <main className={`app-shell text-style-${textStyle.toLowerCase()} ${demoDialogOpen ? 'demo-open' : ''}`}>
       <div className="aurora aurora-one" />
       <div className="aurora aurora-two" />
       <div className="mobile-topbar glass-panel">
