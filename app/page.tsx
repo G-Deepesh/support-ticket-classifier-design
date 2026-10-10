@@ -113,8 +113,7 @@ export default function Page() {
         <div className={`dashboard-content ${catalogueBlur ? 'catalogue-blur' : ''}`}>
           {active === 'Analytics' ? <AnalyticsView tickets={analyticsTickets} onAdd={(ticket) => setAnalyticsTickets((current) => [ticket, ...current])} onUpdate={(id, status) => setAnalyticsTickets((current) => current.map((ticket) => ticket.id === id ? { ...ticket, status } : ticket))} /> : <>
           <section className="hero-card glass-panel">
-            <div className="hero-copy"><h2>Every conversation,<br /><em>understood.</em></h2><p>Lucent sorts, prioritizes, and routes every incoming ticket so your team can focus on what matters.</p><div className="hero-metrics" aria-label="Overview metrics"><div><strong>142</strong><span>Tickets sorted</span></div><div><strong>94.6%</strong><span>Lucent accuracy</span></div><div><strong>14m</strong><span>Average accuracy time</span></div></div></div>
-            <div className="hero-visual" aria-hidden="true"><div className="orbit orbit-a" /><div className="orbit orbit-b" /><div className="lucent-logo"><span>L</span></div></div>
+            <div className="hero-copy"><h2>Every conversation,<br /><em>understood.</em></h2><div className="lucent-logo hero-lucent-logo" aria-label="Lucent logo"><span>L</span></div><p>Lucent sorts, prioritizes, and routes every incoming ticket so your team can focus on what matters.</p><div className="hero-metrics" aria-label="Overview metrics"><div><strong>142</strong><span>Tickets sorted</span></div><div><strong>94.6%</strong><span>Lucent accuracy</span></div><div><strong>14m</strong><span>Average accuracy time</span></div></div></div>
           </section>
 
           <div className="stats-grid"><StatCard label="Open tickets" value="128" delta="12.5%" icon={Inbox} /><StatCard label="Avg. response time" value="14m" delta="8.2%" icon={Clock3} positive /><StatCard label="Resolution rate" value="86.4%" delta="4.8%" icon={Sparkles} positive /></div>
