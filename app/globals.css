@@ -78,6 +78,11 @@ button { font: inherit; }
 @keyframes fluid-shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 @keyframes fluid-float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-7px) rotate(.8deg); } }
 .glass-panel { background-size: 180% 180%; animation: fluid-shimmer 18s ease-in-out infinite; }
+
+/* Keep the full workspace inside the viewport without clipping on the right. */
+.content-area { min-width: 0; flex: 1 1 auto; overflow-x: hidden; }
+.dashboard-content { width: 100%; max-width: none; margin-left: 0; margin-right: 0; }
+@media (min-width: 761px) { .content-area { padding-left: 0; } }
 .hero-visual { animation: fluid-float 6s ease-in-out infinite; will-change: transform; }
 @media (prefers-reduced-motion: reduce) { .aurora-one, .aurora-two, .glass-panel, .hero-visual { animation: none; } }
 @media (max-width: 600px) { .demo-dialog { padding: 22px; } }
