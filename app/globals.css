@@ -210,3 +210,29 @@ button { font: inherit; }
 .hero-metrics > .demo-toggle.is-on .demo-toggle-track span { transform: translateX(12px); }
 .hero-metrics > .demo-toggle > span:last-child { color: inherit; font-size: 9px; }
 @media (max-width: 600px) { .hero-metrics > .demo-toggle { justify-content: flex-start; } }
+
+/* Fluid dynamics-inspired motion keeps the glass UI feeling active without distracting from support work. */
+@keyframes fluid-drift-one { 0%, 100% { transform: translate3d(-3%, -2%, 0) scale(1); } 50% { transform: translate3d(5%, 4%, 0) scale(1.12); } }
+@keyframes fluid-drift-two { 0%, 100% { transform: translate3d(4%, 3%, 0) scale(1.06); } 50% { transform: translate3d(-6%, -5%, 0) scale(.9); } }
+@keyframes fluid-shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes fluid-breathe { 0%, 100% { box-shadow: 0 18px 45px rgba(74,91,115,.09), inset 0 1px 0 rgba(255,255,255,.9); } 50% { box-shadow: 0 22px 52px rgba(74,91,115,.14), inset 0 1px 0 rgba(255,255,255,.95); } }
+@keyframes fluid-orbit { from { transform: translate(-50%, -50%) rotate(0deg) scaleY(.72); } to { transform: translate(-50%, -50%) rotate(360deg) scaleY(.72); } }
+@keyframes fluid-orbit-tilted { from { transform: translate(-50%, -50%) rotate(-18deg); } to { transform: translate(-50%, -50%) rotate(342deg); } }
+@keyframes fluid-pulse { 0%, 100% { transform: scale(1); opacity: .82; } 50% { transform: scale(1.18); opacity: 1; } }
+
+.app-shell::before,
+.app-shell::after { content: ''; position: fixed; z-index: 0; width: 42vw; height: 42vw; max-width: 620px; max-height: 620px; border-radius: 44% 56% 62% 38% / 48% 38% 62% 52%; pointer-events: none; filter: blur(42px); opacity: .2; mix-blend-mode: screen; }
+.app-shell::before { left: -15vw; top: 18vh; background: radial-gradient(circle at 35% 35%, rgba(255,188,116,.85), rgba(242,107,56,.08) 70%); animation: fluid-drift-one 16s ease-in-out infinite; }
+.app-shell::after { right: -14vw; bottom: -18vh; background: radial-gradient(circle at 65% 45%, rgba(118,149,255,.9), rgba(82,103,217,.08) 70%); animation: fluid-drift-two 19s ease-in-out infinite; }
+.app-shell > * { position: relative; z-index: 1; }
+.aurora-one { animation: fluid-drift-two 14s ease-in-out infinite; }
+.aurora-two { animation: fluid-drift-one 17s ease-in-out infinite reverse; }
+.glass-panel { animation: fluid-breathe 8s ease-in-out infinite; }
+.hero-card { background: linear-gradient(120deg, rgba(255,255,255,.66), rgba(255,255,255,.46), rgba(229,234,255,.54)); background-size: 220% 220%; animation: fluid-shimmer 14s ease-in-out infinite, fluid-breathe 8s ease-in-out infinite; }
+.nav-item, .profile-panel, .workspace-switcher, .stat-card, .ticket-row, .legend-row, .mini-insight, .analytics-table tbody tr, .workflow-keyword, .query-bubble { transition: transform .35s cubic-bezier(.2,.8,.2,1), background-color .35s ease, box-shadow .35s ease; }
+.nav-item:hover, .profile-panel:hover, .workspace-switcher:hover, .stat-card:hover, .ticket-row:hover, .legend-row:hover, .mini-insight:hover, .analytics-table tbody tr:hover, .workflow-keyword:hover, .query-bubble:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(74,91,115,.12), inset 0 1px 0 rgba(255,255,255,.86); }
+.hero-visual .orbit.orbit-a { animation: fluid-orbit-tilted 16s linear infinite; }
+.hero-visual .orbit.orbit-b { animation: fluid-orbit 22s linear infinite reverse; }
+.hero-visual .orbit::after { animation: fluid-pulse 2.8s ease-in-out infinite; }
+.channels-card .pie-chart { background: conic-gradient(from -90deg, #f47fae 0 48%, #a68ce8 48% 80%, #6286ea 80% 100%); background-size: 180% 180%; animation: fluid-shimmer 10s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
