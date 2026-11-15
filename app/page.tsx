@@ -115,7 +115,7 @@ export default function Page() {
   const [featureSwitchBlur, setFeatureSwitchBlur] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
-  const [selectedProfile, setSelectedProfile] = useState<DashboardProfileId>('bloodBank')
+  const [selectedProfile, setSelectedProfile] = useState<DashboardProfileId>('hospital')
   const [dashboardProfiles, setDashboardProfiles] = useState(initialDashboardProfiles)
   const activeProfile = dashboardProfiles[selectedProfile]
   const selectedDashboardSection = dashboardSections[selectedProfile]
