@@ -31,6 +31,7 @@ export default function NearbyRequestsView({ profileName }: { profileName: strin
   const [location, setLocation] = useState('All locations')
   const [acceptedIds, setAcceptedIds] = useState<string[]>([])
   const [availability, setAvailability] = useState<Availability>('unavailable')
+  const [availabilityMessage, setAvailabilityMessage] = useState('Availability is set to Unavailable in this preview.')
 
   const visibleRequests = useMemo(() => sampleRequests.filter((request) => {
     const matchesBloodGroup = bloodGroup === 'All blood groups' || request.bloodGroup === bloodGroup
@@ -43,6 +44,11 @@ export default function NearbyRequestsView({ profileName }: { profileName: strin
 
   const acceptRequest = (requestId: string) => {
     setAcceptedIds((current) => current.includes(requestId) ? current : [...current, requestId])
+  }
+
+  const updateAvailability = (nextAvailability: Availability) => {
+    setAvailability(nextAvailability)
+    setAvailabilityMessage(`Availability set to ${nextAvailability === 'available' ? 'Available' : 'Unavailable'} in this preview.`)
   }
 
   return (
@@ -120,10 +126,11 @@ export default function NearbyRequestsView({ profileName }: { profileName: strin
         <fieldset className="nearby-availability-fieldset">
           <legend>Available/Unavailable status</legend>
           <div className="nearby-availability-options">
-            <button type="button" aria-pressed={availability === 'available'} className={availability === 'available' ? 'selected' : ''} onClick={() => setAvailability('available')}>Available</button>
-            <button type="button" aria-pressed={availability === 'unavailable'} className={availability === 'unavailable' ? 'selected' : ''} onClick={() => setAvailability('unavailable')}>Unavailable</button>
+            <button type="button" aria-pressed={availability === 'available'} className={availability === 'available' ? 'selected' : ''} onClick={() => updateAvailability('available')}>Available</button>
+            <button type="button" aria-pressed={availability === 'unavailable'} className={availability === 'unavailable' ? 'selected' : ''} onClick={() => updateAvailability('unavailable')}>Unavailable</button>
           </div>
         </fieldset>
+        <p className="nearby-availability-feedback" role="status" aria-live="polite">{availabilityMessage}</p>
         <div className="pulse-match-callout"><BellRing aria-hidden="true" /><span><strong>Demo status only</strong><small>Your selection stays in this preview and is not sent to a donation center or saved to an account.</small></span></div>
       </section>
 
