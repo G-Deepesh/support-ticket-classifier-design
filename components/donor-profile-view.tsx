@@ -125,7 +125,7 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
               <div className="donor-profile-field-grid">
                 <label className="donor-profile-field donor-profile-field-wide" htmlFor="donor-name">Full name<input id="donor-name" autoComplete="name" required value={form.name} onChange={(event) => updateField('name', event.target.value)} placeholder="Enter your full name" /></label>
                 <label className="donor-profile-field" htmlFor="donor-dob">Date of birth<span className="donor-profile-input-wrap"><CalendarDays aria-hidden="true" /><input id="donor-dob" type="date" autoComplete="bday" max={new Date().toISOString().slice(0, 10)} value={form.dateOfBirth} onChange={(event) => updateField('dateOfBirth', event.target.value)} /></span></label>
-                <label className="donor-profile-field" htmlFor="donor-age">Age <span className="donor-profile-field-hint">calculated from date of birth</span><input id="donor-age" value={getAge(form.dateOfBirth)} readOnly aria-readonly="true" /></label>
+                <label className="donor-profile-field" htmlFor="donor-age"><span className="donor-profile-field-label">Age <span className="donor-profile-field-hint">calculated from date of birth</span></span><input id="donor-age" value={getAge(form.dateOfBirth)} readOnly aria-readonly="true" /></label>
                 <label className="donor-profile-field" htmlFor="donor-blood-group">Blood group<select id="donor-blood-group" value={form.bloodGroup} onChange={(event) => updateField('bloodGroup', event.target.value)}><option value="">Select blood group</option>{bloodGroups.map((group) => <option key={group} value={group}>{group}</option>)}</select></label>
               </div>
             </section>
