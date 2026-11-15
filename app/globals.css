@@ -476,10 +476,17 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .donor-verification-card { display: flex; align-items: flex-start; gap: 11px; padding: 15px; border: 1px solid rgba(164, 109, 32, .17); border-radius: 18px; background: rgba(255, 248, 235, .82); }
 .donor-verification-icon { display: grid; flex: 0 0 34px; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: #f6ead3; color: #976622; }
 .donor-verification-icon svg { width: 17px; height: 17px; }
-.donor-verification-card > div { flex: 1; min-width: 0; }
-.donor-verification-card .pulse-kicker { margin: 0 0 5px; color: #9b763a; font-size: 8px; }
-.donor-verification-card h2 { font-size: 13px; }
-.donor-verification-card > div > p:last-child { max-width: 570px; color: #85765e; }
+.donor-verification-copy { flex: 1; min-width: 0; }
+.donor-verification-copy .pulse-kicker { margin: 0 0 5px; color: #9b763a; font-size: 8px; }
+.donor-verification-copy h2 { font-size: 13px; }
+.donor-verification-copy > p:not(.pulse-kicker):not(.donor-verification-notice) { max-width: 760px; margin: 5px 0 12px; color: #85765e; font-size: 10px; line-height: 1.5; }
+.donor-verification-entry { display: flex; align-items: flex-end; gap: 9px; max-width: 640px; }
+.donor-verification-entry .donor-profile-field { flex: 1; }
+.donor-verification-entry input { min-height: 38px; border-color: rgba(164, 109, 32, .22); background: rgba(255, 255, 255, .72); }
+.donor-verification-button { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 0 15px; border: 1px solid #193448; border-radius: 999px; background: #193448; color: #fff; font-size: 10px; font-weight: 750; cursor: pointer; }
+.donor-verification-button:hover { background: #26485d; }
+.donor-verification-button:focus-visible { outline: 2px solid #193448; outline-offset: 3px; }
+.donor-verification-notice { min-height: 14px; margin: 7px 0 0; color: #845d21; font-size: 9px; line-height: 1.5; }
 .donor-verification-status { flex: 0 0 auto; padding: 5px 8px; border: 1px solid rgba(164, 109, 32, .14); border-radius: 999px; background: rgba(255, 255, 255, .56); color: #976622; font-size: 9px; font-weight: 750; white-space: nowrap; }
 .donor-profile-save-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .donor-profile-save-row > p { flex: 1; margin: 0; color: #347d68; font-size: 10px; line-height: 1.5; }

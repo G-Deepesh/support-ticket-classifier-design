@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { BadgeCheck, Camera, CalendarDays, Mail, MapPin, Phone, Save, ShieldCheck, UserRound } from 'lucide-react'
 
 type DonorProfileForm = {
@@ -44,6 +44,8 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
   const [photoPreview, setPhotoPreview] = useState('')
   const [photoError, setPhotoError] = useState('')
   const [saveNotice, setSaveNotice] = useState('')
+  const [aadhaarNotice, setAadhaarNotice] = useState('')
+  const aadhaarInputRef = useRef<HTMLInputElement>(null)
   const initials = form.name.trim().split(/\s+/).filter(Boolean).map((part) => part[0]).join('').slice(0, 2).toUpperCase()
 
   useEffect(() => () => {
@@ -77,6 +79,17 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setSaveNotice('Profile updated.')
+  }
+
+  const handleAadhaarContinue = () => {
+    const input = aadhaarInputRef.current
+    const aadhaarNumber = input?.value ?? ''
+    if (!/^\d{12}$/.test(aadhaarNumber)) {
+      setAadhaarNotice('Enter a valid 12-digit Aadhaar number.')
+      return
+    }
+    if (input) input.value = ''
+    setAadhaarNotice('No authorized provider is connected. Your number was not sent.')
   }
 
   return (
@@ -134,7 +147,7 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
 
             <section className="donor-verification-card" aria-labelledby="donor-verification-title">
               <span className="donor-verification-icon"><ShieldCheck aria-hidden="true" /></span>
-              <div><p className="pulse-kicker">IDENTITY CHECK</p><h2 id="donor-verification-title">Aadhaar verification</h2><p>Aadhaar numbers are not collected, stored, or transmitted here. Connect an authorized verification service before enabling identity checks.</p></div>
+              <div className="donor-verification-copy"><p className="pulse-kicker">IDENTITY CHECK</p><h2 id="donor-verification-title">Aadhaar verification</h2><p>Enter your 12-digit Aadhaar number to continue. Verification requires an authorized provider, and the number will not be sent until one is connected.</p><div className="donor-verification-entry"><label className="donor-profile-field" htmlFor="donor-aadhaar-number">Aadhaar number<input id="donor-aadhaar-number" ref={aadhaarInputRef} type="password" inputMode="numeric" autoComplete="off" maxLength={12} pattern="[0-9]{12}" onChange={(event) => { event.currentTarget.value = event.currentTarget.value.replace(/\D/g, '').slice(0, 12); setAadhaarNotice('') }} placeholder="12-digit number" aria-describedby="donor-aadhaar-status" /></label><button className="donor-verification-button" type="button" onClick={handleAadhaarContinue}>Continue</button></div><p className="donor-verification-notice" id="donor-aadhaar-status" role="status" aria-live="polite">{aadhaarNotice}</p></div>
               <span className="donor-verification-status">Not connected</span>
             </section>
 
