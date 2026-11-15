@@ -431,10 +431,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .pulse-kicker-dot { width: 7px; height: 7px; border-radius: 50%; background: #3a907b; box-shadow: 0 0 0 4px rgba(58, 144, 123, .12); }
 .pulse-overview-heading h1 { margin: 0; color: #173043; font-size: clamp(27px, 3vw, 37px); line-height: 1.1; letter-spacing: -.055em; }
 .pulse-overview-heading h1 span { color: #a7434b; }
-.donor-profile-mode { display: inline-flex; align-items: center; gap: 6px; padding: 8px 11px; border: 1px solid rgba(36, 113, 95, .16); border-radius: 999px; background: rgba(231, 244, 237, .72); color: #24715f; font-size: 10px; font-weight: 750; white-space: nowrap; }
-.donor-profile-mode svg { width: 13px; height: 13px; }
-.donor-profile-demo-note { display: flex; align-items: center; gap: 9px; padding: 11px 13px; border: 1px solid rgba(164, 109, 32, .17); border-radius: 13px; background: rgba(255, 247, 231, .84); color: #77623e; font-size: 10px; line-height: 1.5; }
-.donor-profile-demo-note svg { flex: 0 0 17px; width: 17px; height: 17px; color: #a46d20; }
 .donor-profile-form { display: flex; flex-direction: column; gap: 14px; }
 .donor-profile-layout { display: grid; grid-template-columns: minmax(220px, .72fr) minmax(0, 1.8fr); align-items: start; gap: 14px; }
 .donor-profile-photo-card { display: flex; flex-direction: column; align-items: center; text-align: center; }

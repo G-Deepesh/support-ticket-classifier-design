@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
-import { BadgeCheck, Camera, CalendarDays, Check, Mail, MapPin, Phone, Save, ShieldCheck, UserRound } from 'lucide-react'
+import { BadgeCheck, Camera, CalendarDays, Mail, MapPin, Phone, Save, ShieldCheck, UserRound } from 'lucide-react'
 
 type DonorProfileForm = {
   name: string
@@ -76,7 +76,7 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setSaveNotice('Profile updated in this demo session. Changes will not be saved after you leave or reload.')
+    setSaveNotice('Profile updated.')
   }
 
   return (
@@ -87,12 +87,7 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
           <h1 id="donor-profile-title">Your donor <span>profile.</span></h1>
           <p className="pulse-intro">Keep your contact details and donation information up to date.</p>
         </div>
-        <span className="donor-profile-mode"><Check aria-hidden="true" /> Interactive demo</span>
       </header>
-
-      <div className="donor-profile-demo-note" role="note">
-        <ShieldCheck aria-hidden="true" /> Demo profile only. Changes stay in this page session and are not sent to a server.
-      </div>
 
       <form className="donor-profile-form" onSubmit={handleSubmit}>
         <div className="donor-profile-layout">
@@ -139,7 +134,7 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
 
             <section className="donor-verification-card" aria-labelledby="donor-verification-title">
               <span className="donor-verification-icon"><ShieldCheck aria-hidden="true" /></span>
-              <div><p className="pulse-kicker">IDENTITY CHECK</p><h2 id="donor-verification-title">Aadhaar verification</h2><p>This interactive demo does not collect, store, or transmit Aadhaar numbers. Connect an authorized verification service before enabling identity checks.</p></div>
+              <div><p className="pulse-kicker">IDENTITY CHECK</p><h2 id="donor-verification-title">Aadhaar verification</h2><p>Aadhaar numbers are not collected, stored, or transmitted here. Connect an authorized verification service before enabling identity checks.</p></div>
               <span className="donor-verification-status">Not connected</span>
             </section>
 
