@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { BellRing, CalendarDays, CheckCircle2, Clock3, History, Mail, Smartphone } from 'lucide-react'
+import { BellRing, CalendarDays, CheckCircle2, Clock3, History, Mail, MessageCircle, Smartphone } from 'lucide-react'
 
-type PreferenceKey = 'email' | 'inApp' | 'emergency' | 'appointmentReminder' | 'donationReminder'
+type PreferenceKey = 'email' | 'whatsapp' | 'inApp' | 'emergency' | 'appointmentReminder' | 'donationReminder'
 type Preferences = Record<PreferenceKey, boolean>
 
 const initialPreferences: Preferences = {
   email: true,
+  whatsapp: false,
   inApp: true,
   emergency: true,
   appointmentReminder: true,
@@ -41,11 +42,12 @@ export default function NotificationsView({ profileName }: { profileName: string
       <div className="notifications-grid">
         <section className="pulse-panel notification-panel" aria-labelledby="notification-preferences-title">
           <div className="pulse-section-heading">
-            <div><p className="pulse-kicker">DELIVERY CHANNELS</p><h2 id="notification-preferences-title">Donation Notification Preferences</h2><p>Manage the sample channels used for donor updates.</p></div>
+            <div><p className="pulse-kicker">HELP &amp; SUPPORT</p><h2 id="notification-preferences-title">Donation Notification Preferences</h2><p>Choose how Pulse Share sends donor updates and reminders.</p></div>
           </div>
           <div className="notification-toggle-list">
-            <PreferenceToggle icon={Mail} label="Email notifications" description="Updates sent to your sample email preference." enabled={preferences.email} onToggle={() => togglePreference('email')} />
-            <PreferenceToggle icon={Smartphone} label="In-app notifications" description="Updates shown in your notification center." enabled={preferences.inApp} onToggle={() => togglePreference('inApp')} />
+            <PreferenceToggle icon={Mail} label="Email notifications" description="Pulse Share updates about blood requests, donation reminders, and appointments by email." enabled={preferences.email} onToggle={() => togglePreference('email')} />
+            <PreferenceToggle icon={MessageCircle} label="WhatsApp notifications" description="Pulse Share updates about blood requests, donation reminders, and appointments via WhatsApp." enabled={preferences.whatsapp} onToggle={() => togglePreference('whatsapp')} />
+            <PreferenceToggle icon={Smartphone} label="In-app notifications" description="Updates shown in your Pulse Share notification center." enabled={preferences.inApp} onToggle={() => togglePreference('inApp')} />
           </div>
         </section>
 
