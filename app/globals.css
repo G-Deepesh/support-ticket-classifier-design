@@ -452,7 +452,9 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .donor-profile-photo-status span { display: flex; flex-direction: column; gap: 3px; }
 .donor-profile-photo-status strong { color: #425b69; font-size: 10px; }
 .donor-profile-photo-status small { color: #87939a; font-size: 9px; line-height: 1.45; }
-.donor-profile-form-content { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.donor-profile-form-content { display: contents; }
+.donor-profile-section[aria-labelledby="donor-contact-title"], .donor-profile-section[aria-labelledby="donor-location-title"], .donor-verification-card, .donor-profile-save-row { grid-column: 1 / -1; }
+.donor-profile-section[aria-labelledby="donor-location-title"] .donor-profile-field-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .donor-profile-section { padding: 17px; }
 .donor-profile-section-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
 .donor-profile-section-heading .pulse-kicker { margin-bottom: 6px; }
