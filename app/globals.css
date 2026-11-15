@@ -390,3 +390,21 @@ button { font: inherit; }
   .sidebar { position: relative; inset: auto; margin: 0; order: 0; align-self: stretch; }
   .content-area { order: 1; margin: 0; }
 }
+
+/* Living-flow treatment: slow ambient currents plus subtle response across every surface. */
+@keyframes current-sweep { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes current-drift-a { 0%, 100% { transform: translate3d(-4vw, -2vh, 0) scale(.92); border-radius: 42% 58% 66% 34% / 48% 44% 56% 52%; } 50% { transform: translate3d(5vw, 5vh, 0) scale(1.12); border-radius: 61% 39% 42% 58% / 38% 58% 42% 62%; } }
+@keyframes current-drift-b { 0%, 100% { transform: translate3d(3vw, 3vh, 0) scale(1.05); border-radius: 55% 45% 38% 62% / 58% 40% 60% 42%; } 50% { transform: translate3d(-6vw, -4vh, 0) scale(.88); border-radius: 38% 62% 58% 42% / 44% 62% 38% 56%; } }
+@keyframes surface-flow { 0%, 100% { background-position: 0% 40%; } 50% { background-position: 100% 60%; } }
+.app-shell { isolation: isolate; }
+.app-shell::before, .app-shell::after { content: ''; position: fixed; z-index: -1; display: block; width: min(46vw, 620px); aspect-ratio: 1; border-radius: 48% 52% 62% 38% / 42% 44% 56% 58%; pointer-events: none; filter: blur(46px); opacity: .23; will-change: transform, border-radius; }
+.app-shell::before { top: 8vh; left: 24vw; background: radial-gradient(circle at 35% 40%, rgba(255,177,113,.92), rgba(244,112,89,.32) 45%, transparent 72%); animation: current-drift-a 24s ease-in-out infinite; }
+.app-shell::after { right: -8vw; bottom: -18vh; background: radial-gradient(circle at 62% 42%, rgba(139,164,255,.95), rgba(112,113,222,.35) 48%, transparent 72%); animation: current-drift-b 29s ease-in-out infinite; }
+.glass-panel, .glass-inset, .profile-settings, .chat-dialog, .action-dialog, .demo-dialog { background-size: 220% 220%; animation: surface-flow 24s ease-in-out infinite; }
+button, a, input, textarea, select { transition: color .3s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease, transform .35s cubic-bezier(.2,.8,.2,1); }
+button:not(:disabled):hover, a:hover { transform: translateY(-2px); }
+input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid rgba(82,103,217,.7); outline-offset: 3px; }
+.nav-item, .ticket-row, .legend-row, .stat-card, .workflow-keyword, .query-bubble { position: relative; overflow: hidden; }
+.nav-item::after, .ticket-row::after, .legend-row::after, .stat-card::after, .workflow-keyword::after, .query-bubble::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,.35) 48%, transparent 72%); background-size: 220% 100%; transition: opacity .3s ease; }
+.nav-item:hover::after, .ticket-row:hover::after, .legend-row:hover::after, .stat-card:hover::after, .workflow-keyword:hover::after, .query-bubble:hover::after { opacity: 1; animation: current-sweep 1.5s ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .app-shell::before, .app-shell::after, .glass-panel, .glass-inset, .profile-settings, .chat-dialog, .action-dialog, .demo-dialog { animation: none !important; } button, a, input, textarea, select { transition: none !important; } }
