@@ -421,6 +421,63 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .pulse-kicker-dot { width: 7px; height: 7px; border-radius: 50%; background: #3a907b; box-shadow: 0 0 0 4px rgba(58, 144, 123, .12); }
 .pulse-overview-heading h1 { margin: 0; color: #173043; font-size: clamp(27px, 3vw, 37px); line-height: 1.1; letter-spacing: -.055em; }
 .pulse-overview-heading h1 span { color: #a7434b; }
+.donor-profile-mode { display: inline-flex; align-items: center; gap: 6px; padding: 8px 11px; border: 1px solid rgba(36, 113, 95, .16); border-radius: 999px; background: rgba(231, 244, 237, .72); color: #24715f; font-size: 10px; font-weight: 750; white-space: nowrap; }
+.donor-profile-mode svg { width: 13px; height: 13px; }
+.donor-profile-demo-note { display: flex; align-items: center; gap: 9px; padding: 11px 13px; border: 1px solid rgba(164, 109, 32, .17); border-radius: 13px; background: rgba(255, 247, 231, .84); color: #77623e; font-size: 10px; line-height: 1.5; }
+.donor-profile-demo-note svg { flex: 0 0 17px; width: 17px; height: 17px; color: #a46d20; }
+.donor-profile-form { display: flex; flex-direction: column; gap: 14px; }
+.donor-profile-layout { display: grid; grid-template-columns: minmax(220px, .72fr) minmax(0, 1.8fr); align-items: start; gap: 14px; }
+.donor-profile-photo-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.donor-profile-avatar { display: grid; place-items: center; width: 94px; height: 94px; overflow: hidden; border: 4px solid rgba(255, 255, 255, .94); border-radius: 50%; background: linear-gradient(145deg, #e5eee9, #f5e8e3); box-shadow: 0 8px 20px rgba(24, 48, 67, .1); color: #24715f; }
+.donor-profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.donor-profile-avatar span { font-size: 24px; font-weight: 750; letter-spacing: -.04em; }
+.donor-profile-avatar svg { width: 34px; height: 34px; }
+.donor-profile-photo-card h2 { margin: 13px 0 3px; color: #1a3447; font-size: 16px; letter-spacing: -.025em; }
+.donor-profile-photo-card > p { margin: 0 0 13px; color: #819098; font-size: 10px; }
+.donor-photo-upload { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 36px; padding: 0 13px; border: 1px solid rgba(36, 113, 95, .18); border-radius: 999px; background: rgba(231, 244, 237, .76); color: #24715f; font-size: 10px; font-weight: 750; cursor: pointer; transition: background .2s ease, box-shadow .2s ease; }
+.donor-photo-upload:hover { background: #e0efe7; }
+.donor-photo-upload:focus-within { outline: 2px solid #24715f; outline-offset: 3px; }
+.donor-photo-upload svg { width: 14px; height: 14px; }
+.donor-photo-input { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.donor-photo-help { margin-top: 8px; color: #87939a; font-size: 9px; }
+.donor-photo-error { min-height: 15px; margin-top: 3px; color: #a33f49; font-size: 9px; }
+.donor-profile-photo-status { display: flex; align-items: flex-start; gap: 9px; width: 100%; margin-top: 11px; padding-top: 13px; border-top: 1px solid rgba(29, 51, 65, .08); color: #347d68; text-align: left; }
+.donor-profile-photo-status svg { flex: 0 0 16px; width: 16px; height: 16px; }
+.donor-profile-photo-status span { display: flex; flex-direction: column; gap: 3px; }
+.donor-profile-photo-status strong { color: #425b69; font-size: 10px; }
+.donor-profile-photo-status small { color: #87939a; font-size: 9px; line-height: 1.45; }
+.donor-profile-form-content { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.donor-profile-section { padding: 17px; }
+.donor-profile-section-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.donor-profile-section-heading .pulse-kicker { margin-bottom: 6px; }
+.donor-profile-section-heading h2, .donor-verification-card h2 { margin: 0; color: #1a3447; font-size: 15px; line-height: 1.25; letter-spacing: -.025em; }
+.donor-profile-section-heading p:not(.pulse-kicker), .donor-verification-card > div > p:last-child { margin: 5px 0 0; color: #819098; font-size: 10px; line-height: 1.5; }
+.donor-profile-section-heading > svg { width: 17px; height: 17px; color: #7d9399; }
+.donor-profile-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px 12px; }
+.donor-profile-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; color: #536873; font-size: 10px; font-weight: 700; }
+.donor-profile-field-wide { grid-column: 1 / -1; }
+.donor-profile-field-hint { margin-left: 4px; color: #9aa3a7; font-size: 9px; font-weight: 500; }
+.donor-profile-field input, .donor-profile-field select, .donor-profile-field textarea { width: 100%; min-width: 0; min-height: 39px; padding: 9px 11px; border: 1px solid rgba(62, 86, 98, .15); border-radius: 10px; outline: none; background: rgba(250, 251, 250, .88); color: #294655; font: inherit; font-size: 11px; font-weight: 500; }
+.donor-profile-field textarea { min-height: 62px; resize: vertical; }
+.donor-profile-field input::placeholder, .donor-profile-field textarea::placeholder { color: #a3adb0; }
+.donor-profile-field input:focus, .donor-profile-field select:focus, .donor-profile-field textarea:focus { border-color: rgba(36, 113, 95, .54); box-shadow: 0 0 0 3px rgba(36, 113, 95, .1); }
+.donor-profile-field input[readonly] { background: rgba(236, 240, 237, .68); color: #87939a; }
+.donor-profile-input-wrap { position: relative; display: flex; align-items: center; }
+.donor-profile-input-wrap > svg { position: absolute; left: 11px; width: 14px; height: 14px; color: #8a999b; pointer-events: none; }
+.donor-profile-input-wrap input { padding-left: 33px; }
+.donor-verification-card { display: flex; align-items: flex-start; gap: 11px; padding: 15px; border: 1px solid rgba(164, 109, 32, .17); border-radius: 18px; background: rgba(255, 248, 235, .82); }
+.donor-verification-icon { display: grid; flex: 0 0 34px; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: #f6ead3; color: #976622; }
+.donor-verification-icon svg { width: 17px; height: 17px; }
+.donor-verification-card > div { flex: 1; min-width: 0; }
+.donor-verification-card .pulse-kicker { margin: 0 0 5px; color: #9b763a; font-size: 8px; }
+.donor-verification-card h2 { font-size: 13px; }
+.donor-verification-card > div > p:last-child { max-width: 570px; color: #85765e; }
+.donor-verification-status { flex: 0 0 auto; padding: 5px 8px; border: 1px solid rgba(164, 109, 32, .14); border-radius: 999px; background: rgba(255, 255, 255, .56); color: #976622; font-size: 9px; font-weight: 750; white-space: nowrap; }
+.donor-profile-save-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.donor-profile-save-row > p { flex: 1; margin: 0; color: #347d68; font-size: 10px; line-height: 1.5; }
+.donor-profile-save-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 0 16px; border: 1px solid #193448; border-radius: 999px; background: #193448; color: #fff; font-size: 10px; font-weight: 750; cursor: pointer; box-shadow: 0 8px 18px rgba(24, 48, 67, .13); }
+.donor-profile-save-button:hover { background: #26485d; }
+.donor-profile-save-button svg { width: 14px; height: 14px; }
 .pulse-intro { max-width: 590px; margin: 10px 0 0; color: #687984; font-size: 12px; line-height: 1.6; }
 .pulse-primary-link, .pulse-secondary-link { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 42px; padding: 0 16px; border: 1px solid #193448; border-radius: 999px; background: #193448; color: #fff; font-size: 11px; font-weight: 700; text-decoration: none; white-space: nowrap; box-shadow: 0 8px 18px rgba(24, 48, 67, .13); }
 .pulse-primary-link svg, .pulse-secondary-link svg { width: 14px; height: 14px; }
@@ -509,6 +566,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .pulse-data-date { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; white-space: nowrap; }
 .pulse-data-date svg { width: 11px; height: 11px; }
 @media (max-width: 1100px) { .pulse-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 800px) { .donor-profile-layout { grid-template-columns: minmax(170px, .6fr) minmax(0, 1.4fr); gap: 10px; } .donor-profile-section { padding: 14px; } }
 @media (max-width: 900px) { .app-shell.pulse-shell { flex-direction: column; } .app-shell.pulse-shell > .aurora { position: fixed; } .app-shell.pulse-shell .sidebar { position: fixed; } .app-shell.pulse-shell .content-area { width: auto; flex: 1 1 auto; } .pulse-insight-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) {
   .pulse-overview { gap: 14px; }
@@ -527,4 +585,14 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .pulse-inventory-updated { font-size: 8px; }
   .pulse-data-footnote { align-items: flex-start; flex-wrap: wrap; }
   .pulse-data-date { width: 100%; margin-left: 20px; }
+  .donor-profile-layout { grid-template-columns: 1fr; }
+  .donor-profile-photo-card { padding: 16px; }
+  .donor-profile-form-content { gap: 10px; }
+  .donor-profile-section { padding: 14px; }
+  .donor-profile-field-grid { grid-template-columns: 1fr; gap: 11px; }
+  .donor-profile-field-wide { grid-column: auto; }
+  .donor-verification-card { flex-wrap: wrap; }
+  .donor-verification-status { margin-left: 45px; }
+  .donor-profile-save-row { align-items: flex-end; flex-direction: column-reverse; }
+  .donor-profile-save-button { width: 100%; }
 }
