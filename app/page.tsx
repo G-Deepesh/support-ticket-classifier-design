@@ -4,6 +4,7 @@ import { useMemo, useState, type FormEvent } from 'react'
 import PulseOverview from '@/components/pulse-overview'
 import DonorProfileView from '@/components/donor-profile-view'
 import DonationHistoryView from '@/components/donation-history-view'
+import EligibilityStatusView from '@/components/eligibility-status-view'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, Cell, Legend as RechartsLegend, Line, LineChart as RechartsLineChart, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
   BarChart3,
@@ -374,6 +375,7 @@ type DashboardFeature = { label: string; icon: typeof Inbox; badge?: string; des
 function DashboardFeatureView({ profileId, profileTitle, profileName, feature, onDonorNameChange }: { profileId: DashboardProfileId; profileTitle: string; profileName: string; feature: DashboardFeature; onDonorNameChange: (name: string) => void }) {
   if (profileId === 'donor' && feature.label === 'Donor Profile') return <DonorProfileView initialName={profileName} onNameChange={onDonorNameChange} />
   if (profileId === 'donor' && feature.label === 'Donation history') return <DonationHistoryView profileName={profileName} />
+  if (profileId === 'donor' && feature.label === 'Eligibility Status') return <EligibilityStatusView profileName={profileName} />
   const FeatureIcon = feature.icon
   return (
     <section className="pulse-overview" aria-labelledby="dashboard-feature-title">
