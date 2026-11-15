@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Lucent — Support intelligence',
-  description: 'A calmer, smarter workspace for customer support teams.',
+  title: 'Pulse Share — Blood network intelligence',
+  description: 'AI-assisted blood inventory monitoring, demand forecasting, and donor matching.',
   generator: 'v0.app',
   icons: {
     icon: [
