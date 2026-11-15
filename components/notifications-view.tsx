@@ -38,8 +38,6 @@ export default function NotificationsView({ profileName }: { profileName: string
         <span className="pulse-ai-chip"><BellRing aria-hidden="true" /> {profileName}</span>
       </header>
 
-      <div className="pulse-demo-note" role="note"><span className="pulse-demo-badge">Sample data</span> Preferences are preview-only, reset when you leave, and do not send real notifications.</div>
-
       <div className="notifications-grid">
         <section className="pulse-panel notification-panel" aria-labelledby="notification-preferences-title">
           <div className="pulse-section-heading">
@@ -86,6 +84,8 @@ export default function NotificationsView({ profileName }: { profileName: string
           </ul>
         </section>
       </div>
+
+      <div className="pulse-demo-note" role="note"><span className="pulse-demo-badge">Sample data</span> Preferences are preview-only, reset when you leave, and do not send real notifications.</div>
     </section>
   )
 }

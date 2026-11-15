@@ -56,8 +56,6 @@ export default function NearbyRequestsView({ profileName }: { profileName: strin
         <span className="pulse-ai-chip"><ShieldCheck aria-hidden="true" /> {profileName}</span>
       </header>
 
-      <div className="pulse-demo-note" role="note"><span className="pulse-demo-badge">Sample data</span> Requests and responses are illustrative. This demo does not contact centers or save availability.</div>
-
       <section className="nearby-request-filter-panel" aria-label="Filter nearby requests">
         <div className="nearby-request-controls">
           <label className="nearby-request-control">
@@ -128,6 +126,8 @@ export default function NearbyRequestsView({ profileName }: { profileName: strin
         </fieldset>
         <div className="pulse-match-callout"><BellRing aria-hidden="true" /><span><strong>Demo status only</strong><small>Your selection stays in this preview and is not sent to a donation center or saved to an account.</small></span></div>
       </section>
+
+      <div className="pulse-demo-note" role="note"><span className="pulse-demo-badge">Sample data</span> Requests and responses are illustrative. This demo does not contact centers or save availability.</div>
     </section>
   )
 }
