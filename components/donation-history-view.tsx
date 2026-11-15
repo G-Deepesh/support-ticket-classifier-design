@@ -122,7 +122,7 @@ export default function DonationHistoryView({ profileName }: { profileName: stri
         <span className="pulse-ai-chip"><UserRound aria-hidden="true" /> {profileName}</span>
       </header>
 
-      <div className="pulse-demo-note" role="note"><span className="pulse-demo-badge">Sample data</span> Illustrative donation records and appointments. Confirm official details with your donation center.</div>
+      <div className="pulse-demo-note" role="note"><span className="pulse-demo-badge">Sample data</span> Verify records with your donation center.</div>
 
       <section className="pulse-metric-grid donation-history-metrics" aria-label="Donation summary">
         {summaryMetrics.map(({ label, value, note, icon: Icon, tone }) => (
