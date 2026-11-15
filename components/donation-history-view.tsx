@@ -40,30 +40,64 @@ function downloadCertificate(record: DonationRecord, donorName: string) {
   <title>Sample donation certificate</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 36px; color: #183043; background: #f2f6f4; font: 16px/1.5 Arial, sans-serif; }
-    main { max-width: 760px; margin: 24px auto; padding: 56px; border: 2px solid #347d68; background: #fff; text-align: center; }
-    .sample { display: inline-block; padding: 6px 12px; border: 1px solid #a9414b; color: #a9414b; font-size: 12px; font-weight: 700; letter-spacing: .12em; }
-    h1 { margin: 28px 0 8px; font-family: Georgia, serif; font-size: 36px; }
-    .name { margin: 24px 0; font-family: Georgia, serif; font-size: 28px; }
-    .details { margin: 28px auto; text-align: left; }
-    .details p { padding: 10px 0; border-bottom: 1px solid #e6ece8; }
-    .notice { margin-top: 34px; color: #a9414b; font-size: 13px; font-weight: 700; }
-    @media print { body { padding: 0; background: #fff; } main { margin: 0 auto; } }
+    body { margin: 0; padding: 32px; color: #183b33; background: #edf2ee; font: 15px/1.55 Arial, Helvetica, sans-serif; }
+    main { position: relative; width: min(100%, 850px); min-height: 650px; margin: 18px auto; padding: 48px 56px; overflow: hidden; border: 1px solid #c7d5ca; background: #fffdf7; box-shadow: 0 24px 70px rgba(31, 58, 48, .12); }
+    main::before { position: absolute; inset: 11px; border: 1px solid rgba(104, 129, 100, .24); content: ''; pointer-events: none; }
+    .certificate-heading, .brand-lockup, .brand-name { display: flex; }
+    .certificate-heading { align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 22px; border-bottom: 1px solid #dce5dd; }
+    .brand-lockup { align-items: center; gap: 11px; }
+    .brand-mark { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid #345a4c; border-radius: 12px; background: #1b473a; color: #f8f2e4; font: 700 13px Georgia, serif; letter-spacing: .04em; }
+    .brand-name { flex-direction: column; gap: 2px; color: #183b33; font-size: 13px; font-weight: 700; letter-spacing: -.02em; }
+    .brand-name small, .certificate-kind { color: #8a7953; font-size: 8px; font-weight: 700; letter-spacing: .16em; }
+    .certificate-kind { white-space: nowrap; }
+    .certificate-body { max-width: 660px; margin: 38px auto 0; text-align: center; }
+    .preview-label { display: inline-flex; padding: 6px 11px; border: 1px solid #e5d9b8; border-radius: 999px; background: #f8f2e4; color: #76633b; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    h1 { margin: 17px 0 7px; color: #173d32; font: 400 clamp(34px, 6vw, 50px)/1.08 Georgia, 'Times New Roman', serif; letter-spacing: -.035em; }
+    .lead { margin: 0; color: #728178; font-size: 12px; }
+    .recipient { margin: 30px auto 26px; }
+    .recipient-label { color: #8a7953; font-size: 8px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+    .name { margin: 7px 0 5px; color: #244d3e; font: 400 clamp(25px, 5vw, 35px)/1.2 Georgia, 'Times New Roman', serif; }
+    .message { margin: 0; color: #7a8880; font-size: 11px; }
+    .details { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 auto; text-align: left; }
+    .detail-card { min-width: 0; padding: 13px 14px; border: 1px solid #e1e8e0; border-radius: 12px; background: #f8faf6; }
+    .detail-label { display: block; margin-bottom: 5px; color: #8a938c; font-size: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .detail-value { display: block; color: #27483b; font-size: 11px; font-weight: 700; overflow-wrap: anywhere; }
+    .record-reference { margin: 15px 0 0; color: #818c83; font-size: 9px; }
+    .record-reference strong { color: #536e5e; font-weight: 700; letter-spacing: .04em; }
+    .notice { margin: 27px auto 0; padding: 12px 15px; border: 1px solid #eadfc4; border-radius: 10px; background: #fbf6e9; color: #715c34; font-size: 10px; line-height: 1.5; }
+    .notice strong { display: block; margin-bottom: 2px; color: #69552e; font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
+    .certificate-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 34px; padding-top: 12px; border-top: 1px solid #e4e9e2; color: #929b93; font-size: 8px; letter-spacing: .04em; }
+    @media (max-width: 600px) { body { padding: 12px; } main { min-height: 0; padding: 34px 24px; } .certificate-heading { align-items: flex-start; } .certificate-kind { max-width: 100px; text-align: right; } .certificate-body { margin-top: 28px; } .details { grid-template-columns: 1fr; } .detail-card { padding: 11px 12px; } .certificate-footer { flex-direction: column; gap: 4px; } }
+    @media print { body { padding: 0; background: #fff; print-color-adjust: exact; -webkit-print-color-adjust: exact; } main { width: 100%; min-height: 0; margin: 0; box-shadow: none; break-inside: avoid; } }
   </style>
 </head>
 <body>
   <main>
-    <span class="sample">CERTIFICATE PREVIEW</span>
-    <h1>Donation Certificate</h1>
-    <p>This sample document records an illustrative donation entry.</p>
-    <p class="name">${escapeHtml(donorName || 'Sample donor')}</p>
-    <div class="details">
-      <p><strong>Donation date:</strong> ${escapeHtml(record.date)}</p>
-      <p><strong>Donation type:</strong> ${escapeHtml(record.donationType)}</p>
-      <p><strong>Donation center:</strong> ${escapeHtml(record.center)}</p>
-      <p><strong>Record reference:</strong> SAMPLE-${escapeHtml(record.id)}</p>
-    </div>
-    <p class="notice">Illustrative preview only. Official donation records are issued by your donation center.</p>
+    <header class="certificate-heading">
+      <div class="brand-lockup">
+        <span class="brand-mark" aria-hidden="true">PS</span>
+        <span class="brand-name">Pulse Share<small>DONOR SERVICES</small></span>
+      </div>
+      <span class="certificate-kind">DONOR RECOGNITION</span>
+    </header>
+    <section class="certificate-body" aria-labelledby="certificate-title">
+      <span class="preview-label">Certificate preview · Sample data</span>
+      <h1 id="certificate-title">Donation Certificate</h1>
+      <p class="lead">Preview of an illustrative donation record</p>
+      <div class="recipient">
+        <span class="recipient-label">Prepared for</span>
+        <p class="name">${escapeHtml(donorName || 'Sample donor')}</p>
+        <p class="message">Thank you for being part of a caring community.</p>
+      </div>
+      <div class="details">
+        <div class="detail-card"><span class="detail-label">Donation date</span><strong class="detail-value">${escapeHtml(record.date)}</strong></div>
+        <div class="detail-card"><span class="detail-label">Donation type</span><strong class="detail-value">${escapeHtml(record.donationType)}</strong></div>
+        <div class="detail-card"><span class="detail-label">Collection center</span><strong class="detail-value">${escapeHtml(record.center)}</strong></div>
+      </div>
+      <p class="record-reference">Record reference <strong>SAMPLE-${escapeHtml(record.id)}</strong></p>
+      <div class="notice" role="note"><strong>Illustrative preview</strong><span>Official donation records are issued by your donation center. This document is not an official certificate or proof of donation.</span></div>
+    </section>
+    <footer class="certificate-footer"><span>Pulse Share · Donor services</span><span>Illustrative record only</span></footer>
   </main>
 </body>
 </html>`
