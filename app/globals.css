@@ -194,6 +194,16 @@ body { margin: 0; background: linear-gradient(132deg, #bd8052 0%, #d2b397 27%, #
 .profile-chevron-open { transform: rotate(180deg); }
 .profile-settings { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; padding: 14px; border-radius: 18px; }
 .profile-settings-title { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #6c7890; }
+.dashboard-profile-list { display: flex; flex-direction: column; gap: 6px; }
+.dashboard-profile-option { display: flex; align-items: center; gap: 9px; width: 100%; padding: 9px; border: 1px solid rgba(255,255,255,.68); border-radius: 12px; background: rgba(255,255,255,.28); color: #4b3b22; text-align: left; cursor: pointer; }
+.dashboard-profile-option > span:nth-child(2) { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.dashboard-profile-option strong { font-size: 10px; }
+.dashboard-profile-option small { color: #81704f; font-size: 9px; }
+.dashboard-profile-avatar { display: grid; place-items: center; width: 27px; height: 27px; flex: 0 0 27px; border-radius: 9px; background: rgba(255,255,255,.7); color: #765838; }
+.dashboard-profile-avatar svg { width: 16px; height: 16px; stroke-width: 2.2; }
+.dashboard-profile-option > svg { width: 14px; height: 14px; color: #765838; }
+.dashboard-profile-option.selected { border-color: rgba(122,85,49,.55); background: rgba(255,255,255,.72); box-shadow: 0 3px 9px rgba(74,58,33,.08); }
+.dashboard-profile-option:focus-visible { outline: 2px solid #765838; outline-offset: 2px; }
 .profile-settings label, .profile-settings legend { color: #7c8798; font-size: 10px; }
 .profile-settings label { display: flex; flex-direction: column; gap: 5px; }
 .profile-settings input { width: 100%; border: 1px solid rgba(255,255,255,.7); border-radius: 10px; padding: 8px 9px; outline: none; background: rgba(255,255,255,.48); color: #46536b; font-size: 11px; }
