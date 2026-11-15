@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
@@ -206,7 +206,7 @@ body { margin: 0; background: linear-gradient(132deg, #bd8052 0%, #d2b397 27%, #
 .brand-pill { position: relative; display: grid; place-items: center; width: min(74%, 720px); height: 64px; transform: translateY(-8px); border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(215,225,239,.5)); border: 1px solid rgba(255,255,255,.95); box-shadow: 0 14px 32px rgba(75,91,120,.16), inset 0 2px 5px rgba(255,255,255,.95), inset 0 -8px 16px rgba(139,155,181,.12); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
 .brand-pill::before { content: ''; position: absolute; left: 9%; right: 9%; bottom: -10px; height: 1px; background: #000; box-shadow: 0 1px 4px rgba(0,0,0,.18); pointer-events: none; }
 .brand-pill::after { content: ''; position: absolute; inset: 8px 9%; border-radius: inherit; border: 1px solid rgba(255,255,255,.56); pointer-events: none; }
-.brand-pill span { position: relative; z-index: 1; color: #34415a; font-family: 'Orbitron', ui-sans-serif, system-ui, sans-serif; font-size: clamp(19px, 1.9vw, 28px); font-weight: 700; letter-spacing: .08em; text-indent: .08em; text-shadow: 0 1px 0 rgba(255,255,255,.9); }
+.brand-pill span { position: relative; z-index: 1; color: #34415a; font-family: 'Zilla Slab', Georgia, serif; font-size: clamp(19px, 1.9vw, 28px); font-weight: 700; letter-spacing: .1em; text-indent: .1em; text-shadow: 0 1px 0 rgba(255,255,255,.9); }
 @media (max-width: 600px) { .brand-topbar { min-height: 82px; padding: 14px 0; }.brand-pill { width: 88%; height: 52px; }.brand-pill span { font-size: 18px; } }
 .analytics-view { padding: 22px 20px; border-radius: 26px; min-width: 0; }
 .analytics-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 10px; }
