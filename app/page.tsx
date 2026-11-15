@@ -237,7 +237,7 @@ export default function Page() {
         <nav className="sidebar-nav" aria-label="Primary navigation">
           <NavGroup title="Main" items={mainItems.map((item) => item.label === 'Inbox' ? { ...item, badge: String(analyticsTickets.filter((ticket) => Number.parseInt(ticket.confidence, 10) < 90).length) } : item)} active={active} onSelect={selectItem} />
           <NavGroup title={selectedDashboardSection.title} items={selectedDashboardSection.items} active={active} onSelect={selectItem} />
-          <NavGroup title="Channels" items={channelItems} active={active} onSelect={selectItem} />
+          <NavGroup title="HELP & SUPPORT" items={channelItems} active={active} onSelect={selectItem} />
         </nav>
 
       </aside>
@@ -295,11 +295,11 @@ function KnowledgeBaseView() {
 }
 
 function EmailView() {
-  return <section className="email-view glass-panel" aria-labelledby="email-title"><p className="eyebrow">E-mail</p><h2 id="email-title">Reach out to us</h2><p className="email-intro">For any queries, send us an email and our team will get back to you.</p><a className="email-contact-card" href="https://mail.google.com/mail/?view=cm&fs=1&to=dg612007@gmail.com&su=Query%20for%20Lucent&body=Hi%20Lucent%20team%2C%0A%0AI%20have%20a%20query%20about%20your%20workspace." target="_blank" rel="noreferrer"><span className="email-icon"><Mail /></span><span><strong>dg612007@gmail.com</strong><small>Contact us for any queries</small></span><ChevronRight /></a></section>
+  return <section className="email-view glass-panel" aria-labelledby="email-title"><p className="eyebrow">E-mail</p><h2 id="email-title">Reach out to us</h2><p className="email-intro">For any queries, send us an email and our team will get back to you.</p><a className="email-contact-card" href="https://mail.google.com/mail/?view=cm&fs=1&to=dg612007@gmail.com&su=Query%20for%20Pulse%20Share&body=Hi%20Pulse%20Share%20team%2C%0A%0AI%20have%20a%20query%20about%20the%20Pulse%20Share%20app." target="_blank" rel="noreferrer"><span className="email-icon"><Mail /></span><span><strong>dg612007@gmail.com</strong><small>Contact us for any queries</small></span><ChevronRight /></a></section>
 }
 
 function WhatsAppView() {
-  return <section className="email-view glass-panel" aria-labelledby="whatsapp-title"><p className="eyebrow">WhatsApp</p><h2 id="whatsapp-title">Reach out to us</h2><p className="email-intro">For any queries, message us on WhatsApp and our team will get back to you.</p><a className="email-contact-card whatsapp-contact-card" href="https://wa.me/917353205575?text=Hi%20Lucent%20team%2C%0A%0AI%20have%20a%20query%20about%20your%20workspace." target="_blank" rel="noreferrer"><span className="email-icon"><MessageCircle /></span><span><strong>Message us on WhatsApp</strong><small>Start a conversation for any queries</small></span><ChevronRight /></a></section>
+  return <section className="email-view glass-panel" aria-labelledby="whatsapp-title"><p className="eyebrow">WhatsApp</p><h2 id="whatsapp-title">Reach out to us</h2><p className="email-intro">For any queries, message us on WhatsApp and our team will get back to you.</p><a className="email-contact-card whatsapp-contact-card" href="https://wa.me/917353205575?text=Hi%20Pulse%20Share%20team%2C%0A%0AI%20have%20a%20query%20about%20the%20Pulse%20Share%20app." target="_blank" rel="noreferrer"><span className="email-icon"><MessageCircle /></span><span><strong>Message us on WhatsApp</strong><small>Start a conversation for any queries</small></span><ChevronRight /></a></section>
 }
 
 function WebsiteChatsView() {
