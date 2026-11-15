@@ -53,7 +53,7 @@ function downloadCertificate(record: DonationRecord, donorName: string) {
 </head>
 <body>
   <main>
-    <span class="sample">SAMPLE · NOT AN OFFICIAL CERTIFICATE</span>
+    <span class="sample">CERTIFICATE PREVIEW</span>
     <h1>Donation Certificate</h1>
     <p>This sample document records an illustrative donation entry.</p>
     <p class="name">${escapeHtml(donorName || 'Sample donor')}</p>
@@ -63,7 +63,7 @@ function downloadCertificate(record: DonationRecord, donorName: string) {
       <p><strong>Donation center:</strong> ${escapeHtml(record.center)}</p>
       <p><strong>Record reference:</strong> SAMPLE-${escapeHtml(record.id)}</p>
     </div>
-    <p class="notice">SAMPLE ONLY — this is not a medical record or proof of donation.</p>
+    <p class="notice">Illustrative preview only. Official donation records are issued by your donation center.</p>
   </main>
 </body>
 </html>`
