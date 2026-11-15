@@ -604,6 +604,51 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .donation-record-status { padding: 5px 8px; border-radius: 999px; background: #e8f3ed; color: #347d68; font-size: 8px; font-weight: 750; white-space: nowrap; }
 .donation-download-button { gap: 6px; margin-top: 0; white-space: nowrap; }
 .donation-download-button svg { width: 13px; height: 13px; }
+.nearby-request-filter-panel { padding: 15px; border: 1px solid rgba(255,255,255,.82); border-radius: 20px; background: rgba(255,255,255,.68); box-shadow: 0 12px 30px rgba(48,62,70,.06); }
+.nearby-request-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.nearby-request-control { display: flex; flex-direction: column; gap: 7px; color: #536875; font-size: 10px; font-weight: 750; }
+.nearby-request-control select { width: 100%; min-height: 40px; padding: 0 11px; border: 1px solid rgba(29,51,65,.12); border-radius: 11px; background: rgba(255,255,255,.9); color: #294252; font: inherit; font-weight: 600; }
+.nearby-request-control select:focus-visible, .nearby-request-tabs button:focus-visible, .nearby-availability-options button:focus-visible, .nearby-respond-button:focus-visible { outline: 3px solid rgba(63,132,110,.35); outline-offset: 2px; }
+.nearby-request-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.nearby-request-tabs button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 35px; padding: 0 12px; border: 1px solid rgba(29,51,65,.1); border-radius: 999px; background: rgba(255,255,255,.65); color: #6d7d85; font: inherit; font-size: 9px; font-weight: 750; cursor: pointer; }
+.nearby-request-tabs button.active { border-color: #294e60; background: #294e60; color: #fff; }
+.nearby-request-tabs button svg { width: 12px; height: 12px; }
+.nearby-request-tabs button span { display: grid; place-items: center; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 999px; background: rgba(255,255,255,.2); font-size: 8px; }
+.nearby-request-results { display: grid; gap: 12px; }
+.nearby-request-results-heading { align-items: center; }
+.nearby-request-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.nearby-request-card { min-width: 0; padding: 15px; border: 1px solid rgba(255,255,255,.86); border-radius: 18px; background: rgba(255,255,255,.75); box-shadow: 0 11px 26px rgba(48,62,70,.06); }
+.nearby-request-card-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.nearby-request-id { color: #8a989e; font-size: 8px; font-weight: 800; letter-spacing: .08em; }
+.nearby-urgency-badge { display: inline-flex; align-items: center; gap: 4px; padding: 5px 8px; border-radius: 999px; background: #e8f1ed; color: #477765; font-size: 8px; font-weight: 800; }
+.nearby-urgency-badge.emergency { background: #fae7e5; color: #a3414a; }
+.nearby-urgency-badge.urgent { background: #fff0d9; color: #956623; }
+.nearby-urgency-badge svg { width: 10px; height: 10px; }
+.nearby-request-blood { display: flex; align-items: center; gap: 8px; margin-top: 12px; color: #839198; font-size: 9px; }
+.nearby-request-blood strong { color: #1c3b4d; font-size: 22px; letter-spacing: -.04em; }
+.nearby-request-blood-icon { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 9px; background: #f9e8e5; color: #a3434d; }
+.nearby-request-blood-icon svg { width: 15px; height: 15px; }
+.nearby-request-meta { display: flex; flex-wrap: wrap; gap: 7px 12px; margin-top: 10px; color: #7e8d93; font-size: 8px; }
+.nearby-request-meta span { display: inline-flex; align-items: center; gap: 4px; }
+.nearby-request-meta svg { width: 11px; height: 11px; color: #698578; }
+.nearby-request-status { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(29,51,65,.08); color: #849197; font-size: 8px; }
+.nearby-request-status strong { color: #687e73; font-size: 8px; text-align: right; }
+.nearby-request-status strong.responded { color: #347d68; }
+.nearby-respond-button { min-height: 34px; margin-top: 11px; padding: 0 13px; font-size: 9px; }
+.nearby-respond-button:disabled { border-color: #dce9e1; background: #e8f2ec; color: #347d68; box-shadow: none; cursor: default; }
+.nearby-respond-button:disabled:hover { background: #e8f2ec; }
+.nearby-respond-button svg { width: 13px; height: 13px; }
+.nearby-request-empty { padding: 22px; border: 1px dashed rgba(29,51,65,.16); border-radius: 16px; color: #76868c; background: rgba(255,255,255,.45); font-size: 10px; text-align: center; }
+.nearby-request-status-panel { display: grid; gap: 13px; }
+.nearby-availability-badge { display: inline-flex; align-items: center; gap: 6px; padding: 7px 9px; border: 1px solid rgba(29,51,65,.1); border-radius: 999px; color: #687780; font-size: 8px; font-weight: 800; white-space: nowrap; }
+.nearby-availability-badge > span { width: 6px; height: 6px; border-radius: 50%; background: #89969a; }
+.nearby-availability-badge.available { border-color: rgba(52,125,104,.18); background: #edf5ef; color: #347d68; }
+.nearby-availability-badge.available > span { background: #347d68; }
+.nearby-availability-fieldset { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin: 0; padding: 12px; border: 1px solid rgba(29,51,65,.08); border-radius: 14px; }
+.nearby-availability-fieldset legend { padding: 0 5px; color: #536875; font-size: 9px; font-weight: 750; }
+.nearby-availability-options { display: flex; gap: 7px; }
+.nearby-availability-options button { min-height: 32px; padding: 0 12px; border: 1px solid rgba(29,51,65,.1); border-radius: 999px; background: rgba(255,255,255,.8); color: #6f7f86; font: inherit; font-size: 8px; font-weight: 750; cursor: pointer; }
+.nearby-availability-options button.selected { border-color: #347d68; background: #e8f2ec; color: #347d68; }
 @media (max-width: 1100px) { .pulse-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pulse-metric-grid.donation-history-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 800px) { .donor-profile-layout { grid-template-columns: minmax(170px, .6fr) minmax(0, 1.4fr); gap: 10px; } .donor-profile-section { padding: 14px; } }
 @media (max-width: 900px) { .app-shell.pulse-shell { flex-direction: column; } .app-shell.pulse-shell > .aurora { position: fixed; } .app-shell.pulse-shell .sidebar { position: fixed; } .app-shell.pulse-shell .content-area { width: auto; flex: 1 1 auto; } .pulse-insight-grid { grid-template-columns: 1fr; } }
@@ -641,4 +686,9 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .donor-verification-status { margin-left: 45px; }
   .donor-profile-save-row { align-items: flex-end; flex-direction: column-reverse; }
   .donor-profile-save-button { width: 100%; }
+  .nearby-request-controls, .nearby-request-list { grid-template-columns: 1fr; }
+  .nearby-request-filter-panel { padding: 12px; }
+  .nearby-request-tabs button { flex: 1 1 auto; }
+  .nearby-request-card { padding: 13px; }
+  .nearby-availability-fieldset { align-items: flex-start; flex-direction: column; }
 }
