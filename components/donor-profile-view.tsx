@@ -45,6 +45,7 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
   const [photoError, setPhotoError] = useState('')
   const [saveNotice, setSaveNotice] = useState('')
   const [aadhaarNotice, setAadhaarNotice] = useState('')
+  const [aadhaarFormatStatus, setAadhaarFormatStatus] = useState('Not verified')
   const aadhaarInputRef = useRef<HTMLInputElement>(null)
   const initials = form.name.trim().split(/\s+/).filter(Boolean).map((part) => part[0]).join('').slice(0, 2).toUpperCase()
 
@@ -85,11 +86,13 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
     const input = aadhaarInputRef.current
     const aadhaarNumber = input?.value ?? ''
     if (!/^\d{12}$/.test(aadhaarNumber)) {
-      setAadhaarNotice('Enter a valid 12-digit Aadhaar number.')
+      setAadhaarFormatStatus('Not verified')
+      setAadhaarNotice('Not verified. Enter exactly 12 digits; letters are not accepted.')
       return
     }
     if (input) input.value = ''
-    setAadhaarNotice('Verification is unavailable. No result was returned.')
+    setAadhaarFormatStatus('Format valid')
+    setAadhaarNotice('Format valid. Identity has not been verified.')
   }
 
   return (
@@ -147,8 +150,8 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
 
             <section className="donor-verification-card" aria-labelledby="donor-verification-title">
               <span className="donor-verification-icon"><ShieldCheck aria-hidden="true" /></span>
-              <div className="donor-verification-copy"><p className="pulse-kicker">IDENTITY CHECK</p><h2 id="donor-verification-title">Aadhaar verification</h2><div className="donor-verification-entry"><label className="donor-profile-field" htmlFor="donor-aadhaar-number">Aadhaar number<input id="donor-aadhaar-number" ref={aadhaarInputRef} type="password" inputMode="numeric" autoComplete="off" maxLength={12} pattern="[0-9]{12}" onChange={(event) => { event.currentTarget.value = event.currentTarget.value.replace(/\D/g, '').slice(0, 12); setAadhaarNotice('') }} placeholder="12-digit number" aria-describedby="donor-aadhaar-status" /></label><button className="donor-verification-button" type="button" onClick={handleAadhaarContinue}>Continue</button></div><p className="donor-verification-notice" id="donor-aadhaar-status" role="status" aria-live="polite">{aadhaarNotice}</p></div>
-              <span className="donor-verification-status">Unavailable</span>
+              <div className="donor-verification-copy"><p className="pulse-kicker">IDENTITY CHECK</p><h2 id="donor-verification-title">Aadhaar verification</h2><div className="donor-verification-entry"><label className="donor-profile-field" htmlFor="donor-aadhaar-number">Aadhaar number<input id="donor-aadhaar-number" ref={aadhaarInputRef} type="password" inputMode="numeric" autoComplete="off" maxLength={32} onChange={() => { setAadhaarFormatStatus('Not verified'); setAadhaarNotice('') }} placeholder="12-digit number" aria-describedby="donor-aadhaar-status" /></label><button className="donor-verification-button" type="button" onClick={handleAadhaarContinue}>Continue</button></div><p className="donor-verification-notice" id="donor-aadhaar-status" role="status" aria-live="polite">{aadhaarNotice}</p></div>
+              <span className="donor-verification-status">{aadhaarFormatStatus}</span>
             </section>
 
             <div className="donor-profile-save-row">
