@@ -91,8 +91,8 @@ export default function DonorProfileView({ initialName, onNameChange }: { initia
       return
     }
     if (input) input.value = ''
-    setAadhaarFormatStatus('Format valid')
-    setAadhaarNotice('Format valid. Identity has not been verified.')
+    setAadhaarFormatStatus('Format accepted')
+    setAadhaarNotice('Format accepted. Identity has not been verified.')
   }
 
   return (
