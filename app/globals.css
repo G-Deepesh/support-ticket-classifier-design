@@ -580,7 +580,31 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .pulse-data-footnote > svg { flex: 0 0 13px; width: 13px; height: 13px; color: #4b8d79; }
 .pulse-data-date { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; white-space: nowrap; }
 .pulse-data-date svg { width: 11px; height: 11px; }
-@media (max-width: 1100px) { .pulse-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pulse-metric-grid.donation-history-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.donation-appointment-card { display: flex; align-items: center; gap: 14px; margin-top: 16px; padding: 14px; border: 1px solid rgba(29, 51, 65, .08); border-radius: 16px; background: rgba(250, 251, 250, .78); }
+.donation-appointment-date { display: flex; flex: 0 0 58px; flex-direction: column; align-items: center; justify-content: center; min-height: 76px; border: 1px solid rgba(36, 113, 95, .12); border-radius: 14px; background: #eaf3ed; color: #347d68; }
+.donation-appointment-date span { font-size: 9px; font-weight: 800; letter-spacing: .1em; }
+.donation-appointment-date strong { color: #183043; font-size: 25px; line-height: 1.1; }
+.donation-appointment-date small { font-size: 8px; }
+.donation-appointment-details { display: flex; flex: 1; flex-direction: column; gap: 6px; min-width: 0; }
+.donation-appointment-details > strong { color: #294252; font-size: 12px; }
+.donation-appointment-details > span { display: flex; align-items: center; gap: 6px; color: #819098; font-size: 9px; }
+.donation-appointment-details svg { width: 12px; height: 12px; color: #668174; }
+.donation-appointment-status { display: inline-flex; align-items: center; gap: 6px; padding: 7px 9px; border: 1px solid rgba(36, 113, 95, .12); border-radius: 999px; background: #f1f7f3; color: #347d68; font-size: 9px; font-weight: 750; white-space: nowrap; }
+.donation-appointment-status svg { width: 12px; height: 12px; }
+.donation-record-list { display: flex; flex-direction: column; margin-top: 14px; }
+.donation-record-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid rgba(29, 51, 65, .08); }
+.donation-record-row:first-child { border-top: 0; }
+.donation-record-main { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.donation-record-icon { display: grid; flex: 0 0 34px; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: #f6e9e7; color: #a9414b; }
+.donation-record-icon svg { width: 16px; height: 16px; }
+.donation-record-copy { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.donation-record-copy strong { color: #294252; font-size: 10px; }
+.donation-record-copy small { overflow: hidden; color: #819098; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.donation-record-status { padding: 5px 8px; border-radius: 999px; background: #e8f3ed; color: #347d68; font-size: 8px; font-weight: 750; white-space: nowrap; }
+.donation-download-button { gap: 6px; margin-top: 0; white-space: nowrap; }
+.donation-download-button svg { width: 13px; height: 13px; }
+@media (max-width: 1100px) { .pulse-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pulse-metric-grid.donation-history-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 800px) { .donor-profile-layout { grid-template-columns: minmax(170px, .6fr) minmax(0, 1.4fr); gap: 10px; } .donor-profile-section { padding: 14px; } }
 @media (max-width: 900px) { .app-shell.pulse-shell { flex-direction: column; } .app-shell.pulse-shell > .aurora { position: fixed; } .app-shell.pulse-shell .sidebar { position: fixed; } .app-shell.pulse-shell .content-area { width: auto; flex: 1 1 auto; } .pulse-insight-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) {
@@ -592,6 +616,13 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .pulse-alert { align-items: flex-start; flex-wrap: wrap; }
   .pulse-alert > a { margin-left: 44px; }
   .pulse-metric-grid { gap: 8px; }
+  .pulse-metric-grid.donation-history-metrics { grid-template-columns: 1fr; }
+  .donation-appointment-card { align-items: flex-start; flex-wrap: wrap; gap: 10px; }
+  .donation-appointment-details { flex-basis: calc(100% - 72px); }
+  .donation-appointment-status { margin-left: 68px; }
+  .donation-record-row { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+  .donation-record-status { grid-column: 2; grid-row: 1; }
+  .donation-download-button { grid-column: 1 / -1; justify-self: start; margin-left: 44px; }
   .pulse-metric-card { padding: 12px; }
   .pulse-metric-top { align-items: flex-start; font-size: 9px; }
   .pulse-metric-foot { align-items: flex-start; flex-direction: column; }

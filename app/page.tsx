@@ -3,6 +3,7 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import PulseOverview from '@/components/pulse-overview'
 import DonorProfileView from '@/components/donor-profile-view'
+import DonationHistoryView from '@/components/donation-history-view'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, Cell, Legend as RechartsLegend, Line, LineChart as RechartsLineChart, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
   BarChart3,
@@ -82,7 +83,7 @@ const dashboardSections = {
     title: 'Donor services',
     items: [
       { label: 'Donor Profile', icon: UserRound, description: 'Manage your donor details and preferred donation center.', cards: [{ label: 'Donor status', value: 'Active', note: 'Profile ready for review' }, { label: 'Preferred center', value: 'Choose a center', note: 'Set your go-to donation location' }, { label: 'Contact details', value: 'Your information', note: 'Keep your details current' }] },
-      { label: 'Donation history', icon: History, description: 'Review your past donations and milestones.', cards: [{ label: 'Total donations', value: '4', note: 'Illustrative profile data' }, { label: 'Last donation', value: 'Jan 12, 2026', note: 'Update after a confirmed visit' }, { label: 'Lifetime impact', value: 'Up to 12 lives', note: 'Estimated community impact' }] },
+      { label: 'Donation history', icon: History, description: 'Review your past donations and milestones.', cards: [{ label: 'Total donations', value: '4', note: 'Sample lifetime total' }, { label: 'Completed donations', value: '4', note: 'Sample confirmed donations' }, { label: 'Upcoming donation appointments', value: '1', note: 'Next appointment Dec 4, 2026' }] },
       { label: 'Eligibility Status', icon: ShieldCheck, description: 'Check your latest screening status and when to contact your donation center.', cards: [{ label: 'Screening status', value: 'Check with your center', note: 'Eligibility is confirmed by staff' }, { label: 'Next step', value: 'Complete screening', note: 'Follow local clinical guidance' }, { label: 'Status updated', value: 'At your next visit', note: 'This dashboard is informational' }] },
       { label: 'Nearby Blood Requests & Availability', icon: MapPin, description: 'Explore sample blood requests and availability near your selected area.', cards: [{ label: 'Nearby requests', value: '3 open', note: 'Illustrative request data' }, { label: 'Closest center', value: '2.1 mi', note: 'Set a location to personalize' }, { label: 'Urgent group', value: 'O−', note: 'Contact a center before acting' }] },
       { label: 'Notifications', icon: BellRing, description: 'Stay up to date with donation reminders and request alerts.', cards: [{ label: 'Donation reminders', value: 'On', note: 'Manage your reminder preferences' }, { label: 'Nearby requests', value: 'On', note: 'Alerts for local needs' }, { label: 'Unread updates', value: '2', note: 'Review recent activity' }] },
@@ -372,6 +373,7 @@ type DashboardFeature = { label: string; icon: typeof Inbox; badge?: string; des
 
 function DashboardFeatureView({ profileId, profileTitle, profileName, feature, onDonorNameChange }: { profileId: DashboardProfileId; profileTitle: string; profileName: string; feature: DashboardFeature; onDonorNameChange: (name: string) => void }) {
   if (profileId === 'donor' && feature.label === 'Donor Profile') return <DonorProfileView initialName={profileName} onNameChange={onDonorNameChange} />
+  if (profileId === 'donor' && feature.label === 'Donation history') return <DonationHistoryView profileName={profileName} />
   const FeatureIcon = feature.icon
   return (
     <section className="pulse-overview" aria-labelledby="dashboard-feature-title">
