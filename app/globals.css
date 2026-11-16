@@ -844,3 +844,110 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .hospital-alert-switch, .hospital-alert-switch span { transition: none; }
   .hospital-matching-loading svg { animation: none; }
 }
+
+.hospital-inventory-view { gap: 16px; }
+.hospital-inventory-section { min-width: 0; padding: 20px; border: 1px solid rgba(255,255,255,.82); border-radius: 22px; background: rgba(255,255,255,.76); box-shadow: 0 13px 34px rgba(48,62,70,.07), inset 0 1px 0 rgba(255,255,255,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.hospital-inventory-section .pulse-section-heading { align-items: center; margin-bottom: 16px; }
+.hospital-inventory-section .pulse-section-heading h2 { font-size: 17px; }
+.hospital-inventory-icon, .hospital-inventory-bank-mark { display: grid; flex: 0 0 36px; place-items: center; width: 36px; height: 36px; border-radius: 12px; background: #e8eff1; color: #537585; }
+.hospital-inventory-icon svg, .hospital-inventory-bank-mark svg { width: 17px; height: 17px; }
+.hospital-inventory-filters { display: grid; grid-template-columns: minmax(130px,.7fr) minmax(170px,1fr) minmax(200px,1.2fr) auto; align-items: end; gap: 11px; }
+.hospital-inventory-field { display: flex; min-width: 0; flex-direction: column; gap: 6px; }
+.hospital-inventory-field > span:first-child { color: #425b69; font-size: 9px; font-weight: 750; }
+.hospital-inventory-field input, .hospital-inventory-field select { width: 100%; min-height: 42px; padding: 0 11px; border: 1px solid rgba(29,51,65,.14); border-radius: 11px; outline: none; background: rgba(255,255,255,.82); color: #183043; font-family: inherit; font-size: 10px; }
+.hospital-inventory-field input::placeholder { color: #9aa5aa; }
+.hospital-inventory-field input:focus-visible, .hospital-inventory-field select:focus-visible { border-color: #a9414b; box-shadow: 0 0 0 3px rgba(169,65,75,.13); }
+.hospital-inventory-location-input { position: relative; display: flex; align-items: center; }
+.hospital-inventory-location-input svg { position: absolute; left: 11px; width: 14px; height: 14px; color: #87959c; pointer-events: none; }
+.hospital-inventory-location-input input { padding-left: 32px; }
+.hospital-inventory-primary, .hospital-inventory-nearby-button, .hospital-inventory-refresh { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 0; border-radius: 11px; background: linear-gradient(135deg,#a9414b,#913941); box-shadow: 0 7px 16px rgba(151,55,66,.16); color: #fff; font-family: inherit; font-size: 9px; font-weight: 800; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease; }
+.hospital-inventory-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(151,55,66,.2); }
+.hospital-inventory-primary:focus-visible, .hospital-inventory-nearby-button:focus-visible, .hospital-inventory-refresh:focus-visible { outline: 3px solid rgba(169,65,75,.28); outline-offset: 3px; }
+.hospital-inventory-primary:disabled, .hospital-inventory-nearby-button:disabled, .hospital-inventory-refresh:disabled { opacity: .65; cursor: wait; }
+.hospital-inventory-primary svg, .hospital-inventory-nearby-button svg { width: 14px; height: 14px; }
+.hospital-inventory-nearby-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 13px; }
+.hospital-inventory-nearby-button { min-height: 34px; border: 1px solid rgba(29,51,65,.1); background: rgba(255,255,255,.64); box-shadow: none; color: #547383; }
+.hospital-inventory-nearby-button:hover:not(:disabled) { background: #fff; }
+.hospital-inventory-nearby-note { color: #89959c; font-size: 8px; }
+.hospital-inventory-feedback { margin: 8px 0 0; color: #547383; font-size: 9px; line-height: 1.5; }
+.hospital-inventory-results-meta { display: inline-flex; align-items: center; gap: 8px; }
+.hospital-inventory-count { display: inline-flex; padding: 6px 9px; border: 1px solid rgba(29,51,65,.1); border-radius: 999px; color: #688077; font-size: 8px; font-weight: 800; white-space: nowrap; }
+.hospital-inventory-refresh { width: 32px; min-height: 32px; padding: 0; border: 1px solid rgba(29,51,65,.1); background: rgba(255,255,255,.6); box-shadow: none; color: #688077; }
+.hospital-inventory-refresh svg { width: 13px; height: 13px; }
+.hospital-inventory-results { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.hospital-inventory-result { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(130px,.5fr) minmax(130px,.7fr); align-items: center; gap: 14px; padding: 13px; border: 1px solid rgba(29,51,65,.08); border-radius: 15px; background: rgba(255,255,255,.62); }
+.hospital-inventory-result-main { display: flex; min-width: 0; align-items: flex-start; gap: 10px; }
+.hospital-inventory-bank-mark { flex: 0 0 32px; width: 32px; height: 32px; border-radius: 10px; background: #f8e9e7; color: #a3424c; }
+.hospital-inventory-bank-mark svg { width: 15px; height: 15px; }
+.hospital-inventory-bank-copy { min-width: 0; }
+.hospital-inventory-bank-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.hospital-inventory-bank-heading h3 { margin: 0; color: #294252; font-size: 10px; line-height: 1.4; }
+.hospital-inventory-bank-copy > p { margin: 3px 0 7px; color: #819098; font-size: 8px; line-height: 1.45; overflow-wrap: anywhere; }
+.hospital-inventory-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.hospital-inventory-tags span { padding: 4px 7px; border: 1px solid rgba(29,51,65,.08); border-radius: 999px; background: rgba(255,255,255,.66); color: #57707c; font-size: 8px; font-weight: 700; }
+.hospital-inventory-status { display: inline-flex; padding: 4px 7px; border-radius: 999px; font-size: 7px; font-weight: 800; white-space: nowrap; }
+.hospital-inventory-status.is-available { background: #e7f2ec; color: #347864; }
+.hospital-inventory-status.is-low { background: #fff0d9; color: #976622; }
+.hospital-inventory-status.is-out { background: #f9e3e2; color: #a23f48; }
+.hospital-inventory-units { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 2px; padding-left: 12px; border-left: 1px solid rgba(29,51,65,.08); }
+.hospital-inventory-units strong { color: #253f50; font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; }
+.hospital-inventory-units > span { color: #71808a; font-size: 8px; }
+.hospital-inventory-units small { color: #9aa5aa; font-size: 7px; }
+.hospital-inventory-record-meta { display: flex; min-width: 0; flex-direction: column; gap: 6px; color: #819098; font-size: 8px; }
+.hospital-inventory-record-meta span { display: flex; align-items: flex-start; gap: 5px; overflow-wrap: anywhere; }
+.hospital-inventory-record-meta svg { flex: 0 0 12px; width: 12px; height: 12px; color: #82939a; }
+.hospital-inventory-loading { display: flex; align-items: center; gap: 8px; padding: 19px 4px; color: #71808a; font-size: 9px; }
+.hospital-inventory-spinner { animation: hospital-inventory-spin .8s linear infinite; }
+@keyframes hospital-inventory-spin { to { transform: rotate(360deg); } }
+.hospital-inventory-loading svg { width: 14px; height: 14px; }
+.hospital-inventory-error { display: flex; align-items: center; gap: 8px; padding: 11px 13px; border: 1px solid rgba(169,65,75,.18); border-radius: 11px; background: rgba(252,241,241,.85); color: #993e48; font-size: 9px; }
+.hospital-inventory-error svg { width: 14px; height: 14px; }
+.hospital-inventory-empty { display: flex; align-items: flex-start; gap: 10px; padding: 18px 4px 10px; color: #648779; }
+.hospital-inventory-empty > svg { flex: 0 0 17px; width: 17px; height: 17px; margin-top: 1px; }
+.hospital-inventory-empty strong { color: #365d4f; font-size: 9px; }
+.hospital-inventory-empty p { margin: 4px 0 0; color: #819098; font-size: 8px; line-height: 1.5; }
+.hospital-inventory-clinical-note { display: flex; align-items: flex-start; gap: 7px; margin: 14px 0 0; color: #7c898f; font-size: 8px; line-height: 1.5; }
+.hospital-inventory-clinical-note svg { flex: 0 0 13px; width: 13px; height: 13px; margin-top: 1px; color: #a16b27; }
+.hospital-inventory-manage { overflow: hidden; border: 1px solid rgba(255,255,255,.82); border-radius: 18px; background: rgba(255,255,255,.68); box-shadow: 0 10px 26px rgba(48,62,70,.05); }
+.hospital-inventory-manage > summary { display: flex; align-items: center; gap: 11px; padding: 15px 18px; color: #294252; cursor: pointer; list-style: none; }
+.hospital-inventory-manage > summary::-webkit-details-marker { display: none; }
+.hospital-inventory-manage > summary:focus-visible { outline: 3px solid rgba(169,65,75,.28); outline-offset: -3px; }
+.hospital-inventory-manage-icon { display: grid; flex: 0 0 32px; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: #f8e9e7; color: #a3424c; }
+.hospital-inventory-manage-icon svg { width: 15px; height: 15px; }
+.hospital-inventory-manage > summary strong, .hospital-inventory-manage > summary small { display: block; }
+.hospital-inventory-manage > summary strong { font-size: 9px; }
+.hospital-inventory-manage > summary small { margin-top: 3px; color: #819098; font-size: 8px; }
+.hospital-inventory-entry-form { display: flex; flex-direction: column; gap: 15px; padding: 0 18px 18px; }
+.hospital-inventory-entry-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.hospital-inventory-entry-wide { grid-column: 1 / -1; }
+.hospital-inventory-field > span small { color: #98a2a7; font-size: 8px; font-weight: 500; }
+.hospital-inventory-entry-footer { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding-top: 12px; border-top: 1px solid rgba(29,51,65,.08); }
+.hospital-inventory-entry-footer p { max-width: 620px; margin: 0; color: #819098; font-size: 8px; line-height: 1.5; }
+.hospital-inventory-save-message { margin: 0; color: #993e48; font-size: 9px; line-height: 1.5; }
+.hospital-inventory-save-message.is-success { color: #347864; }
+@media (max-width: 900px) {
+  .hospital-inventory-filters { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .hospital-inventory-location-field { grid-column: 1 / -1; }
+  .hospital-inventory-result { grid-template-columns: minmax(0,1fr) minmax(120px,.45fr); }
+  .hospital-inventory-record-meta { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; padding-left: 42px; }
+}
+@media (max-width: 600px) {
+  .hospital-inventory-section { padding: 15px; border-radius: 18px; }
+  .hospital-inventory-section .pulse-section-heading { align-items: flex-start; }
+  .hospital-inventory-filters { grid-template-columns: 1fr; }
+  .hospital-inventory-location-field { grid-column: auto; }
+  .hospital-inventory-primary { width: 100%; }
+  .hospital-inventory-section .pulse-section-heading h2 { font-size: 15px; }
+  .hospital-inventory-results-meta { align-self: flex-start; }
+  .hospital-inventory-result { grid-template-columns: 1fr; gap: 9px; }
+  .hospital-inventory-units { margin-left: 42px; padding-left: 0; border-left: 0; }
+  .hospital-inventory-record-meta { flex-direction: column; padding-left: 42px; }
+  .hospital-inventory-entry-grid { grid-template-columns: 1fr; gap: 10px; }
+  .hospital-inventory-entry-wide { grid-column: auto; }
+  .hospital-inventory-entry-footer { align-items: stretch; flex-direction: column; }
+  .hospital-inventory-manage > summary { padding: 13px 14px; }
+  .hospital-inventory-entry-form { padding: 0 14px 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hospital-inventory-primary, .hospital-inventory-spinner { transition: none; animation: none; }
+}
