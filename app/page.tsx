@@ -8,6 +8,7 @@ import EligibilityStatusView from '@/components/eligibility-status-view'
 import NearbyRequestsView from '@/components/nearby-requests-view'
 import NotificationsView from '@/components/notifications-view'
 import HospitalBloodRequestView from '@/components/hospital-blood-request-view'
+import HospitalDeliveryTrackingView from '@/components/hospital-delivery-tracking-view'
 import HospitalPatientMatchingView from '@/components/hospital-patient-matching-view'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, Cell, Legend as RechartsLegend, Line, LineChart as RechartsLineChart, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
@@ -100,7 +101,7 @@ const dashboardSections = {
       { label: 'Blood request', icon: ClipboardList, description: 'Create and track blood requests for your hospital teams.', cards: [{ label: 'Open requests', value: '12', note: 'Across active departments' }, { label: 'Urgent', value: '3', note: 'Review priority and timing' }, { label: 'Awaiting fulfillment', value: '5', note: 'Track with your blood bank' }] },
       { label: 'Patient matching', icon: Users, description: 'Coordinate compatibility review with your transfusion service.', cards: [{ label: 'Cases in review', value: '8', note: 'Illustrative workflow count' }, { label: 'Ready for review', value: '3', note: 'Confirm through clinical protocols' }, { label: 'Care teams', value: '4', note: 'Departments with active requests' }] },
       { label: 'Inventory availability', icon: Droplets, description: 'View reported inventory and reserve levels across connected centers.', cards: [{ label: 'Available units', value: '1,284', note: 'Sample network data' }, { label: 'Low-stock groups', value: '2', note: 'O− and AB− need attention' }, { label: 'Reporting centers', value: '28', note: 'Latest network snapshot' }] },
-      { label: 'Delivery tracking', icon: Truck, description: 'Follow the status of blood-product deliveries to your facility.', cards: [{ label: 'In transit', value: '4', note: 'Illustrative shipment data' }, { label: 'Expected today', value: '2', note: 'Confirm timing with your supplier' }, { label: 'Needs attention', value: '1', note: 'Review the associated request' }] },
+      { label: 'Delivery Request tracking', icon: Truck, description: 'Track each blood request through approval, allocation, dispatch, receipt, and completion.', cards: [] },
       { label: 'Donor & Blood bank search', icon: Search, description: 'Find nearby donors and blood banks to coordinate availability.', cards: [{ label: 'Nearby blood banks', value: '6', note: 'Illustrative search results' }, { label: 'Potential donor matches', value: '18', note: 'Confirm eligibility through your protocols' }, { label: 'Search radius', value: '25 mi', note: 'Adjust location filters to refine results' }] },
     ],
   },
@@ -378,6 +379,7 @@ type DashboardFeature = { label: string; icon: typeof Inbox; badge?: string; des
 
 function DashboardFeatureView({ profileId, profileTitle, profileName, feature, onDonorNameChange }: { profileId: DashboardProfileId; profileTitle: string; profileName: string; feature: DashboardFeature; onDonorNameChange: (name: string) => void }) {
   if (profileId === 'hospital' && feature.label === 'Blood request') return <HospitalBloodRequestView hospitalName={profileName} />
+  if (profileId === 'hospital' && feature.label === 'Delivery Request tracking') return <HospitalDeliveryTrackingView hospitalName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Patient matching') return <HospitalPatientMatchingView hospitalName={profileName} />
   if (profileId === 'donor' && feature.label === 'Donor Profile') return <DonorProfileView initialName={profileName} onNameChange={onDonorNameChange} />
   if (profileId === 'donor' && feature.label === 'Donation history') return <DonationHistoryView profileName={profileName} />
