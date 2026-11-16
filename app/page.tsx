@@ -10,6 +10,7 @@ import NotificationsView from '@/components/notifications-view'
 import HospitalBloodRequestView from '@/components/hospital-blood-request-view'
 import HospitalDeliveryTrackingView from '@/components/hospital-delivery-tracking-view'
 import HospitalPatientMatchingView from '@/components/hospital-patient-matching-view'
+import DonorBloodBankSearchView from '@/components/donor-blood-bank-search-view'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, Cell, Legend as RechartsLegend, Line, LineChart as RechartsLineChart, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
   BarChart3,
@@ -381,6 +382,7 @@ function DashboardFeatureView({ profileId, profileTitle, profileName, feature, o
   if (profileId === 'hospital' && feature.label === 'Blood request') return <HospitalBloodRequestView hospitalName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Delivery Request tracking') return <HospitalDeliveryTrackingView hospitalName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Patient matching') return <HospitalPatientMatchingView hospitalName={profileName} />
+  if (profileId === 'hospital' && feature.label === 'Donor & Blood bank search') return <DonorBloodBankSearchView profileName={profileName} />
   if (profileId === 'donor' && feature.label === 'Donor Profile') return <DonorProfileView initialName={profileName} onNameChange={onDonorNameChange} />
   if (profileId === 'donor' && feature.label === 'Donation history') return <DonationHistoryView profileName={profileName} />
   if (profileId === 'donor' && feature.label === 'Eligibility Status') return <EligibilityStatusView profileName={profileName} />
