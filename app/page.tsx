@@ -7,6 +7,7 @@ import DonationHistoryView from '@/components/donation-history-view'
 import EligibilityStatusView from '@/components/eligibility-status-view'
 import NearbyRequestsView from '@/components/nearby-requests-view'
 import NotificationsView from '@/components/notifications-view'
+import HospitalBloodRequestView from '@/components/hospital-blood-request-view'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, Cell, Legend as RechartsLegend, Line, LineChart as RechartsLineChart, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
   BarChart3,
@@ -375,6 +376,7 @@ function AnalyticsView({ title, tickets }: { title: string; tickets: AnalyticsTi
 type DashboardFeature = { label: string; icon: typeof Inbox; badge?: string; description: string; cards: { label: string; value: string; note: string }[] }
 
 function DashboardFeatureView({ profileId, profileTitle, profileName, feature, onDonorNameChange }: { profileId: DashboardProfileId; profileTitle: string; profileName: string; feature: DashboardFeature; onDonorNameChange: (name: string) => void }) {
+  if (profileId === 'hospital' && feature.label === 'Blood request') return <HospitalBloodRequestView hospitalName={profileName} />
   if (profileId === 'donor' && feature.label === 'Donor Profile') return <DonorProfileView initialName={profileName} onNameChange={onDonorNameChange} />
   if (profileId === 'donor' && feature.label === 'Donation history') return <DonationHistoryView profileName={profileName} />
   if (profileId === 'donor' && feature.label === 'Eligibility Status') return <EligibilityStatusView profileName={profileName} />
