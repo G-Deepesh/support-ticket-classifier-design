@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { CheckCircle2, ClipboardList, Clock3, Hospital, LoaderCircle, RotateCcw, Send } from 'lucide-react'
 import { createHospitalBloodRequest } from '@/app/actions/hospital-blood-request'
 import {
@@ -16,6 +16,8 @@ type Confirmation = {
   requiredUnits: number
   requiredAt: string
   priority: string
+  status: string
+  createdAt: string
 }
 
 function toLocalDateTimeValue(date: Date) {
@@ -27,7 +29,20 @@ export default function HospitalBloodRequestView({ hospitalName }: { hospitalNam
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null)
+  const confirmationHeadingRef = useRef<HTMLHeadingElement>(null)
+  const bloodGroupSelectRef = useRef<HTMLSelectElement>(null)
+  const hasShownConfirmation = useRef(false)
   const minRequiredAt = toLocalDateTimeValue(new Date())
+
+  useEffect(() => {
+    if (confirmation) {
+      confirmationHeadingRef.current?.focus()
+      hasShownConfirmation.current = true
+      return
+    }
+
+    if (hasShownConfirmation.current) bloodGroupSelectRef.current?.focus()
+  }, [confirmation])
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -44,14 +59,6 @@ export default function HospitalBloodRequestView({ hospitalName }: { hospitalNam
     }
 
     formData.set('requiredAt', requiredAt.toISOString())
-    const submittedDetails = {
-      bloodGroup: String(formData.get('bloodGroup') ?? ''),
-      bloodComponent: String(formData.get('bloodComponent') ?? ''),
-      requiredUnits: Number(formData.get('requiredUnits')),
-      requiredAt: requiredAt.toISOString(),
-      priority: String(formData.get('priority') ?? ''),
-    }
-
     setErrorMessage('')
     setIsSubmitting(true)
 
@@ -62,7 +69,7 @@ export default function HospitalBloodRequestView({ hospitalName }: { hospitalNam
         return
       }
 
-      setConfirmation({ ...submittedDetails, id: result.id })
+      setConfirmation(result.request)
       form.reset()
     } catch {
       setErrorMessage('We could not save your request. Please try again in a moment.')
@@ -103,7 +110,7 @@ export default function HospitalBloodRequestView({ hospitalName }: { hospitalNam
               <span className="hospital-request-confirmation-icon"><CheckCircle2 aria-hidden="true" /></span>
               <div>
                 <p className="pulse-kicker">REQUEST CONFIRMATION</p>
-                <h3 id="request-confirmation-title">Request submitted</h3>
+                <h3 id="request-confirmation-title" ref={confirmationHeadingRef} tabIndex={-1}>Request submitted</h3>
                 <p>Your request has been saved to the Hospital workspace.</p>
               </div>
             </div>
@@ -118,18 +125,19 @@ export default function HospitalBloodRequestView({ hospitalName }: { hospitalNam
               <div><dt>Required units</dt><dd>{confirmation.requiredUnits}</dd></div>
               <div><dt>Required date &amp; time</dt><dd>{new Date(confirmation.requiredAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</dd></div>
               <div><dt>Priority</dt><dd>{confirmation.priority}</dd></div>
-              <div><dt>Status</dt><dd><span className="hospital-request-status">Submitted</span></dd></div>
+              <div><dt>Status</dt><dd><span className="hospital-request-status">{confirmation.status}</span></dd></div>
+              <div><dt>Submitted</dt><dd>{new Date(confirmation.createdAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</dd></div>
             </dl>
             <button className="hospital-request-submit" type="button" onClick={createAnotherRequest}>
               <RotateCcw aria-hidden="true" /> Create another request
             </button>
           </section>
         ) : (
-          <form className="hospital-request-form" onSubmit={handleSubmit}>
+          <form className="hospital-request-form" onSubmit={handleSubmit} aria-busy={isSubmitting}>
             <div className="hospital-request-form-grid">
               <div className="hospital-request-field">
                 <label htmlFor="blood-group">Blood group <span aria-hidden="true">*</span></label>
-                <select id="blood-group" name="bloodGroup" defaultValue="" required>
+                <select id="blood-group" name="bloodGroup" defaultValue="" required ref={bloodGroupSelectRef}>
                   <option value="" disabled>Select blood group</option>
                   {BLOOD_GROUPS.map((group) => <option key={group} value={group}>{group}</option>)}
                 </select>

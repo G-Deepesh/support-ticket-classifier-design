@@ -10,8 +10,19 @@ import {
 
 const HOSPITAL_WORKSPACE_USER_ID = 'hospital-workspace'
 
+type SavedHospitalBloodRequest = {
+  id: string
+  bloodGroup: string
+  bloodComponent: string
+  requiredUnits: number
+  requiredAt: string
+  priority: string
+  status: string
+  createdAt: string
+}
+
 type ActionResult =
-  | { ok: true; id: string }
+  | { ok: true; request: SavedHospitalBloodRequest }
   | { ok: false; message: string }
 
 function getText(formData: FormData, name: string) {
@@ -63,13 +74,29 @@ export async function createHospitalBloodRequest(formData: FormData): Promise<Ac
         requiredAt,
         priority,
       })
-      .returning({ id: hospitalBloodRequests.id })
+      .returning({
+        id: hospitalBloodRequests.id,
+        bloodGroup: hospitalBloodRequests.bloodGroup,
+        bloodComponent: hospitalBloodRequests.bloodComponent,
+        requiredUnits: hospitalBloodRequests.requiredUnits,
+        requiredAt: hospitalBloodRequests.requiredAt,
+        priority: hospitalBloodRequests.priority,
+        status: hospitalBloodRequests.status,
+        createdAt: hospitalBloodRequests.createdAt,
+      })
 
     if (!createdRequest) {
       return { ok: false, message: 'We could not confirm the saved request. Please try again.' }
     }
 
-    return { ok: true, id: createdRequest.id }
+    return {
+      ok: true,
+      request: {
+        ...createdRequest,
+        requiredAt: createdRequest.requiredAt.toISOString(),
+        createdAt: createdRequest.createdAt.toISOString(),
+      },
+    }
   } catch {
     return { ok: false, message: 'We could not save your request. Please try again in a moment.' }
   }
