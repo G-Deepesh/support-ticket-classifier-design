@@ -845,21 +845,39 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .hospital-matching-loading svg { animation: none; }
 }
 
-.delivery-tracking-view { gap: 16px; }
-.delivery-tracking-panel { min-width: 0; padding: 18px; border-radius: 22px; }
-.delivery-tabs { display: flex; gap: 7px; overflow-x: auto; padding: 2px 2px 10px; scrollbar-width: thin; }
-.delivery-tab { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 8px; min-height: 34px; padding: 7px 10px; border: 1px solid rgba(29,51,65,.1); border-radius: 11px; background: rgba(255,255,255,.6); color: #637984; font-family: inherit; font-size: 9px; font-weight: 750; cursor: pointer; }
-.delivery-tab:hover { border-color: rgba(169,65,75,.26); color: #893b44; }
-.delivery-tab:focus-visible, .delivery-status-form select:focus-visible, .delivery-status-form button:focus-visible, .delivery-refresh:focus-visible { outline: 3px solid rgba(169,65,75,.28); outline-offset: 2px; }
-.delivery-tab.active { border-color: rgba(169,65,75,.2); background: #f8e9e8; color: #923a43; }
-.delivery-tab-count { display: inline-grid; min-width: 19px; height: 19px; place-items: center; padding: 0 4px; border-radius: 7px; background: rgba(29,51,65,.07); color: inherit; font-size: 8px; }
+.delivery-tracking-view { gap: 16px; width: 100%; max-width: none; margin: 0; }
+.delivery-tracking-panel { width: 100%; min-width: 0; padding: 20px; border-radius: 24px; }
+.delivery-heading-actions { display: flex; align-items: center; gap: 10px; }
+.delivery-create-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 39px; padding: 9px 14px; border: 0; border-radius: 12px; background: #923a43; color: #fff; font: inherit; font-size: 10px; font-weight: 800; cursor: pointer; box-shadow: 0 5px 12px rgba(146,58,67,.18); }
+.delivery-create-button svg { width: 15px; height: 15px; }
+.delivery-create-button:hover, .delivery-create-submit button:hover { background: #79313a; }
+.delivery-create-button:focus-visible, .delivery-create-submit button:focus-visible, .delivery-tabs button:focus-visible, .delivery-status-form select:focus-visible, .delivery-status-form button:focus-visible, .delivery-refresh:focus-visible { outline: 3px solid rgba(169,65,75,.28); outline-offset: 2px; }
+.delivery-create-form { margin-bottom: 20px; padding: 20px; border: 1px solid rgba(146,58,67,.14); border-radius: 19px; background: linear-gradient(135deg, rgba(255,255,255,.94), rgba(250,239,233,.72)); }
+.delivery-create-form-heading { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.delivery-create-form-heading h2 { margin: 3px 0 4px; color: #1a3447; font-size: 17px; letter-spacing: -.03em; }
+.delivery-create-form-heading p:not(.pulse-kicker) { margin: 0; color: #819098; font-size: 10px; }
+.delivery-create-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+.delivery-create-fields label { display: flex; flex-direction: column; gap: 6px; color: #526c79; font-size: 9px; font-weight: 750; }
+.delivery-create-fields input, .delivery-create-fields select { width: 100%; min-width: 0; min-height: 39px; padding: 9px 11px; border: 1px solid rgba(29,51,65,.13); border-radius: 10px; background: rgba(255,255,255,.84); color: #284456; font: inherit; font-size: 10px; }
+.delivery-create-fields input:focus-visible, .delivery-create-fields select:focus-visible { outline: 3px solid rgba(169,65,75,.2); border-color: #a9414b; }
+.delivery-create-submit { display: flex; align-items: flex-end; }
+.delivery-create-submit button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 39px; width: 100%; padding: 9px 12px; border: 0; border-radius: 10px; background: #923a43; color: #fff; font: inherit; font-size: 10px; font-weight: 800; cursor: pointer; }
+.delivery-create-submit button:disabled { opacity: .65; cursor: wait; }
+.delivery-create-submit svg { width: 14px; height: 14px; }
+.delivery-create-note { margin: 12px 0 0; color: #819098; font-size: 9px; }
+.delivery-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; padding: 2px 1px 12px; }
+.delivery-tab { display: flex; align-items: center; justify-content: space-between; gap: 7px; min-width: 0; min-height: 42px; padding: 7px 9px; border: 1px solid rgba(29,51,65,.1); border-radius: 11px; background: rgba(255,255,255,.62); color: #637984; text-align: left; font-family: inherit; font-size: 8px; font-weight: 750; cursor: pointer; transition: border-color .18s ease, background .18s ease, transform .18s ease, box-shadow .18s ease; } .delivery-tab-count { min-width: 21px; height: 21px; border-radius: 7px; font-size: 8px; }
+.delivery-tab:hover { border-color: rgba(169,65,75,.26); color: #893b44; transform: translateY(-1px); }
+.delivery-tab.active { border-color: rgba(169,65,75,.25); background: #fff4f2; color: #923a43; box-shadow: 0 5px 14px rgba(146,58,67,.08); }
+.delivery-tab-count { display: inline-grid; flex: 0 0 auto; min-width: 27px; height: 27px; place-items: center; padding: 0 6px; border-radius: 9px; background: rgba(29,51,65,.07); color: inherit; font-size: 10px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .delivery-list-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 16px 0 14px; }
 .delivery-list-heading h2 { margin: 0; color: #1a3447; font-size: 18px; line-height: 1.2; letter-spacing: -.035em; }
 .delivery-list-heading p:not(.pulse-kicker) { margin: 5px 0 0; color: #819098; font-size: 10px; }
 .delivery-total { display: inline-flex; align-items: center; gap: 6px; padding: 7px 9px; border: 1px solid var(--pulse-line); border-radius: 999px; color: #526c79; font-size: 9px; font-weight: 750; white-space: nowrap; }
 .delivery-total svg { width: 13px; height: 13px; }
-.delivery-request-list { display: grid; gap: 10px; }
-.delivery-request-card { min-width: 0; padding: 14px; border: 1px solid rgba(29,51,65,.09); border-radius: 15px; background: rgba(252,253,251,.72); }
+.delivery-request-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+.delivery-request-card { min-width: 0; padding: 16px; border: 1px solid rgba(29,51,65,.09); border-radius: 17px; background: linear-gradient(145deg, rgba(255,255,255,.88), rgba(248,250,247,.78)); box-shadow: 0 6px 18px rgba(48,70,71,.045); transition: transform .18s ease, box-shadow .18s ease; }
+.delivery-request-card:hover { transform: translateY(-2px); box-shadow: 0 11px 24px rgba(48,70,71,.09); }
 .delivery-request-main { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .delivery-request-ref { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .delivery-request-icon, .delivery-empty > span { display: grid; flex: 0 0 34px; width: 34px; height: 34px; place-items: center; border-radius: 11px; background: #e8eff1; color: #537585; }
@@ -900,8 +918,19 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .delivery-empty strong { color: #365d4f; font-size: 10px; }
 .delivery-empty p { max-width: 380px; margin: 5px 0 0; color: #819098; font-size: 9px; line-height: 1.5; }
 .delivery-spinner { animation: hospital-request-spin .8s linear infinite; }
+@media (max-width: 900px) {
+  .delivery-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .delivery-create-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 600px) {
   .delivery-tracking-panel { padding: 14px; border-radius: 18px; }
+  .delivery-heading-actions { align-items: flex-end; flex-direction: column; }
+  .delivery-create-button { width: 100%; }
+  .delivery-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+  .delivery-tab { min-height: 40px; padding: 6px 8px; font-size: 8px; }
+  .delivery-create-form { padding: 15px; }
+  .delivery-create-fields { grid-template-columns: 1fr; gap: 10px; }
+  .delivery-request-list { grid-template-columns: 1fr; }
   .delivery-list-heading { align-items: flex-start; }
   .delivery-request-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .delivery-status-form { align-items: stretch; flex-wrap: wrap; }

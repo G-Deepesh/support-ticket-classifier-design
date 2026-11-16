@@ -1,9 +1,11 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import useSWR from 'swr'
-import { AlertCircle, CheckCircle2, Clock3, LoaderCircle, PackageCheck, RefreshCw, Truck } from 'lucide-react'
+import { AlertCircle, CheckCircle2, Clock3, LoaderCircle, PackageCheck, Plus, RefreshCw, Truck, X } from 'lucide-react'
+import { createHospitalBloodRequest } from '@/app/actions/hospital-blood-request'
 import { getHospitalDeliveryRequests, updateHospitalDeliveryStatus } from '@/app/actions/hospital-delivery-tracking'
+import { BLOOD_COMPONENTS, BLOOD_GROUPS, REQUEST_PRIORITIES } from '@/lib/hospital-blood-request-options'
 import { DELIVERY_STATUSES, type DeliveryStatus } from '@/lib/hospital-delivery-statuses'
 
 type DeliveryRequest = Awaited<ReturnType<typeof getHospitalDeliveryRequests>>[number]
@@ -29,6 +31,8 @@ export default function HospitalDeliveryTrackingView({ hospitalName }: { hospita
   const [draftStatuses, setDraftStatuses] = useState<Record<string, DeliveryStatus>>({})
   const [savingRequestId, setSavingRequestId] = useState<string | null>(null)
   const [feedback, setFeedback] = useState('')
+  const [isCreating, setIsCreating] = useState(false)
+  const [isSubmittingRequest, setIsSubmittingRequest] = useState(false)
 
   const counts = useMemo(() => {
     const items = requests ?? []
@@ -44,6 +48,39 @@ export default function HospitalDeliveryTrackingView({ hospitalName }: { hospita
       ? items
       : items.filter((request) => request.deliveryStatus === activeFilter)
   }, [activeFilter, requests])
+
+  async function submitNewRequest(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const form = event.currentTarget
+    if (!form.reportValidity()) return
+
+    const formData = new FormData(form)
+    const requiredAt = new Date(String(formData.get('requiredAt') ?? ''))
+    if (Number.isNaN(requiredAt.getTime()) || requiredAt.getTime() <= Date.now()) {
+      setFeedback('Choose a required date and time in the future.')
+      return
+    }
+
+    formData.set('requiredAt', requiredAt.toISOString())
+    setIsSubmittingRequest(true)
+    setFeedback('')
+    try {
+      const result = await createHospitalBloodRequest(formData)
+      if (!result.ok) {
+        setFeedback(result.message)
+        return
+      }
+      form.reset()
+      setIsCreating(false)
+      setActiveFilter('All Requests')
+      setFeedback(`Request HR-${result.request.id.slice(0, 8).toUpperCase()} created successfully.`)
+      await mutate()
+    } catch {
+      setFeedback('We could not save your request. Please try again.')
+    } finally {
+      setIsSubmittingRequest(false)
+    }
+  }
 
   async function saveStatus(request: DeliveryRequest) {
     const status = draftStatuses[request.id] ?? request.deliveryStatus
@@ -83,10 +120,32 @@ export default function HospitalDeliveryTrackingView({ hospitalName }: { hospita
           <h1 id="delivery-tracking-title">Delivery Request tracking</h1>
           <p className="pulse-intro">Track blood requests from approval through delivery and completion.</p>
         </div>
-        <span className="pulse-ai-chip"><Truck aria-hidden="true" /> {hospitalName}</span>
+        <div className="delivery-heading-actions">
+          <span className="pulse-ai-chip"><Truck aria-hidden="true" /> {hospitalName}</span>
+          <button className="delivery-create-button" type="button" aria-expanded={isCreating} aria-controls="delivery-create-request" onClick={() => { setIsCreating((open) => !open); setFeedback('') }}>
+            {isCreating ? <X aria-hidden="true" /> : <Plus aria-hidden="true" />}
+            {isCreating ? 'Close form' : 'New request'}
+          </button>
+        </div>
       </header>
 
       <section className="pulse-panel delivery-tracking-panel" aria-label="Delivery request status views">
+        {isCreating && (
+          <form id="delivery-create-request" className="delivery-create-form" onSubmit={submitNewRequest} aria-busy={isSubmittingRequest}>
+            <div className="delivery-create-form-heading">
+              <div><p className="pulse-kicker">NEW REQUEST</p><h2>Create a blood request</h2><p>Enter the product, quantity, timing, and urgency.</p></div>
+            </div>
+            <div className="delivery-create-fields">
+              <label>Blood group<select name="bloodGroup" defaultValue="" required><option value="" disabled>Select blood group</option>{BLOOD_GROUPS.map((group) => <option key={group} value={group}>{group}</option>)}</select></label>
+              <label>Blood component<select name="bloodComponent" defaultValue="" required><option value="" disabled>Select component</option>{BLOOD_COMPONENTS.map((component) => <option key={component} value={component}>{component}</option>)}</select></label>
+              <label>Required units<input name="requiredUnits" type="number" min="1" max="10000" step="1" placeholder="e.g. 4" required /></label>
+              <label>Required by<input name="requiredAt" type="datetime-local" min={new Date(Date.now() - new Date().getTimezoneOffset() * 60_000).toISOString().slice(0, 16)} required /></label>
+              <label>Priority<select name="priority" defaultValue="" required><option value="" disabled>Select priority</option>{REQUEST_PRIORITIES.map((priority) => <option key={priority} value={priority}>{priority}</option>)}</select></label>
+              <div className="delivery-create-submit"><button type="submit" disabled={isSubmittingRequest}>{isSubmittingRequest ? <LoaderCircle className="delivery-spinner" aria-hidden="true" /> : <Plus aria-hidden="true" />}{isSubmittingRequest ? 'Creating…' : 'Create request'}</button></div>
+            </div>
+            <p className="delivery-create-note">Do not include patient identifiers in this request.</p>
+          </form>
+        )}
         <div className="delivery-tabs" role="tablist" aria-label="Filter requests by delivery status">
           {FILTER_TABS.map((tab) => {
             const selected = activeFilter === tab.status
