@@ -1,5 +1,23 @@
 import { sql } from 'drizzle-orm'
-import { check, integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import { boolean, check, integer, pgTable, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core'
+
+export const hospitalAlertPreferences = pgTable(
+  'hospital_alert_preferences',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    userId: text('user_id').notNull().default('hospital-workspace'),
+    alertType: text('alert_type').notNull(),
+    enabled: boolean('enabled').notNull().default(false),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => [
+    check(
+      'hospital_alert_preferences_alert_type_check',
+      sql`${table.alertType} in ('nearby_donors', 'nearby_blood_banks')`,
+    ),
+    unique('hospital_alert_preferences_user_alert_unique').on(table.userId, table.alertType),
+  ],
+)
 
 export const hospitalBloodRequests = pgTable(
   'hospital_blood_requests',
