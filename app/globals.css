@@ -875,7 +875,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .delivery-list-heading p:not(.pulse-kicker) { margin: 5px 0 0; color: #819098; font-size: 10px; }
 .delivery-total { display: inline-flex; align-items: center; gap: 6px; padding: 7px 9px; border: 1px solid var(--pulse-line); border-radius: 999px; color: #526c79; font-size: 9px; font-weight: 750; white-space: nowrap; }
 .delivery-total svg { width: 13px; height: 13px; }
-.delivery-request-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+.delivery-request-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 13px; width: 100%; }
 .delivery-request-card { min-width: 0; padding: 16px; border: 1px solid rgba(29,51,65,.09); border-radius: 17px; background: linear-gradient(145deg, rgba(255,255,255,.88), rgba(248,250,247,.78)); box-shadow: 0 6px 18px rgba(48,70,71,.045); transition: transform .18s ease, box-shadow .18s ease; }
 .delivery-request-card:hover { transform: translateY(-2px); box-shadow: 0 11px 24px rgba(48,70,71,.09); }
 .delivery-request-main { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
