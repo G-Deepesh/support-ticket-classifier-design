@@ -12,6 +12,7 @@ import HospitalDeliveryTrackingView from '@/components/hospital-delivery-trackin
 import HospitalPatientMatchingView from '@/components/hospital-patient-matching-view'
 import DonorBloodBankSearchView from '@/components/donor-blood-bank-search-view'
 import HospitalInventoryAvailabilityView from '@/components/hospital-inventory-availability-view'
+import BloodInventoryManagementView from '@/components/blood-inventory-management-view'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, Cell, Legend as RechartsLegend, Line, LineChart as RechartsLineChart, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
   BarChart3,
@@ -46,7 +47,7 @@ import {
   X,
 } from 'lucide-react'
 
-const pulseDashboardPages = ['Overview', 'Blood inventory', 'Demand forecast', 'Donor matching']
+const pulseDashboardPages = ['Overview', 'Demand forecast', 'Donor matching']
 
 const mainItems = [
   { label: 'Overview', icon: LayoutDashboard },
@@ -110,7 +111,7 @@ const dashboardSections = {
   bloodBank: {
     title: 'Blood bank operations',
     items: [
-      { label: 'Blood inventory', icon: Droplets, badge: '2', description: 'Monitor blood-group inventory and reserve thresholds.', cards: [{ label: 'Units available', value: '1,284', note: 'Across 28 reporting centers' }, { label: 'Groups below reserve', value: '2', note: 'O− and AB− need attention' }, { label: 'Open requests', value: '36', note: '8 marked urgent today' }] },
+      { label: 'Blood Inventory Management', icon: Droplets, description: 'Manage total stock, unit receipts, reservations, quarantine, and transaction history.', cards: [{ label: 'Total inventory', value: '1,284', note: 'Illustrative sample units' }, { label: 'Below reserve', value: '2 groups', note: 'O− and AB− need attention' }, { label: 'Recent transactions', value: '4', note: 'Sample audit history' }] },
       { label: 'Demand forecast', icon: BarChart3, description: 'Review expected demand and plan collection activity.', cards: [{ label: '7-day outlook', value: '1,020 units', note: 'Illustrative forecast' }, { label: 'Peak demand', value: 'Friday', note: 'Projected 163 units' }, { label: 'Reserve gap', value: '9 units', note: 'Plan targeted collections' }] },
       { label: 'Expiry Management', icon: Clock3, badge: '2', description: 'Monitor upcoming product expirations and prioritize safe rotation.', cards: [{ label: 'Expiring soon', value: '2 groups', note: 'Illustrative inventory data' }, { label: 'First expiry', value: 'In 3 days', note: 'Verify dates against facility records' }, { label: 'Next step', value: 'Review rotation', note: 'Follow your organization’s handling protocols' }] },
       { label: 'Collection schedule', icon: CalendarDays, description: 'Coordinate upcoming collection sessions and center capacity.', cards: [{ label: 'Upcoming sessions', value: '6', note: 'Illustrative schedule' }, { label: 'Seats available', value: '24', note: 'Across scheduled sessions' }, { label: 'Next session', value: 'Tomorrow', note: 'Confirm with the collection team' }] },
@@ -382,6 +383,7 @@ type DashboardFeature = { label: string; icon: typeof Inbox; badge?: string; des
 function DashboardFeatureView({ profileId, profileTitle, profileName, feature, onDonorNameChange }: { profileId: DashboardProfileId; profileTitle: string; profileName: string; feature: DashboardFeature; onDonorNameChange: (name: string) => void }) {
   if (profileId === 'hospital' && feature.label === 'Blood request') return <HospitalBloodRequestView hospitalName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Inventory availability') return <HospitalInventoryAvailabilityView hospitalName={profileName} />
+  if (profileId === 'bloodBank' && feature.label === 'Blood Inventory Management') return <BloodInventoryManagementView profileName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Delivery Request tracking') return <HospitalDeliveryTrackingView hospitalName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Patient matching') return <HospitalPatientMatchingView hospitalName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Donor & Blood bank search') return <DonorBloodBankSearchView profileName={profileName} />

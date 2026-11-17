@@ -1151,3 +1151,89 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .availability-filter-buttons button { flex: 1 1 auto; justify-content: center; }
   .availability-grid, .availability-bank-list { grid-template-columns: 1fr; }
 }
+
+.blood-inventory-management { gap: 14px; }
+.blood-inventory-section { min-width: 0; padding: 16px; border: 1px solid rgba(255,255,255,.82); border-radius: 18px; background: rgba(255,255,255,.76); box-shadow: 0 13px 34px rgba(48,62,70,.055), inset 0 1px 0 rgba(255,255,255,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.blood-inventory-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.blood-inventory-section-heading .pulse-kicker { margin-bottom: 6px; }
+.blood-inventory-section-heading h2 { margin: 0; color: #183043; font-size: 15px; letter-spacing: -.03em; }
+.blood-inventory-section-heading p:not(.pulse-kicker) { margin: 4px 0 0; color: #819098; font-size: 9px; line-height: 1.45; }
+.blood-inventory-updated { display: inline-flex; align-items: center; gap: 5px; color: #71818a; font-size: 8px; white-space: nowrap; }
+.blood-inventory-updated svg { width: 12px; height: 12px; color: #24715f; }
+.blood-inventory-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.blood-inventory-stat { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 10px; border: 1px solid rgba(29,51,65,.08); border-radius: 12px; background: rgba(255,255,255,.8); }
+.blood-inventory-stat-icon { display: grid; flex: 0 0 auto; width: 30px; height: 30px; place-items: center; border-radius: 9px; background: #edf2f3; color: #456273; }
+.blood-inventory-stat.available .blood-inventory-stat-icon { background: #e8f1ed; color: #24715f; }
+.blood-inventory-stat.reserved .blood-inventory-stat-icon { background: #edf0f8; color: #5968a4; }
+.blood-inventory-stat.quarantined .blood-inventory-stat-icon { background: #fff2e1; color: #a7722b; }
+.blood-inventory-stat-icon svg { width: 14px; height: 14px; }
+.blood-inventory-stat > span:last-child { display: grid; gap: 3px; min-width: 0; }
+.blood-inventory-stat small { color: #7b8b92; font-size: 8px; }
+.blood-inventory-stat strong { color: #183043; font-size: 17px; line-height: 1; }
+.blood-inventory-stat em { overflow: hidden; color: #8a989e; font-size: 7px; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+.blood-inventory-forms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.blood-inventory-form-panel { padding: 14px; }
+.blood-inventory-action-icon { display: grid; flex: 0 0 auto; width: 30px; height: 30px; place-items: center; border-radius: 9px; background: #faeeee; color: #a9414b; }
+.blood-inventory-action-icon svg { width: 14px; height: 14px; }
+.blood-inventory-form { display: grid; gap: 9px; }
+.blood-inventory-form label, .blood-inventory-filter { display: grid; gap: 5px; min-width: 0; color: #70818a; font-size: 8px; font-weight: 700; }
+.blood-inventory-form input, .blood-inventory-form select, .blood-inventory-filter select { width: 100%; min-width: 0; height: 34px; padding: 0 9px; border: 1px solid rgba(29,51,65,.12); border-radius: 8px; background: rgba(255,255,255,.86); color: #37505d; font: inherit; font-size: 9px; }
+.blood-inventory-form input:focus-visible, .blood-inventory-form select:focus-visible, .blood-inventory-filter select:focus-visible { outline: 3px solid rgba(36,113,95,.18); border-color: rgba(36,113,95,.42); }
+.blood-inventory-form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; gap: 8px; }
+.blood-inventory-submit { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 0; min-height: 34px; padding: 7px 10px; border: 0; border-radius: 8px; background: #24715f; color: #fff; font: inherit; font-size: 8px; font-weight: 750; cursor: pointer; }
+.blood-inventory-submit:hover { background: #1e6252; }
+.blood-inventory-submit:focus-visible { outline: 3px solid rgba(36,113,95,.3); outline-offset: 2px; }
+.blood-inventory-submit svg { width: 13px; height: 13px; }
+.blood-inventory-feedback { margin: 0; padding: 9px 11px; border: 1px solid rgba(36,113,95,.14); border-radius: 10px; background: rgba(232,241,237,.8); color: #24715f; font-size: 9px; }
+.blood-inventory-filter { width: min(100%, 180px); }
+.blood-inventory-table-wrap { overflow-x: auto; border: 1px solid rgba(29,51,65,.08); border-radius: 11px; }
+.blood-inventory-table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
+.blood-inventory-table th, .blood-inventory-table td { padding: 9px 10px; border-bottom: 1px solid rgba(29,51,65,.07); color: #647984; font-size: 8px; }
+.blood-inventory-table thead th { background: rgba(244,247,247,.8); color: #7b8b92; font-size: 7px; font-weight: 750; }
+.blood-inventory-table tbody tr:last-child th, .blood-inventory-table tbody tr:last-child td { border-bottom: 0; }
+.blood-inventory-table tbody th { font-weight: 700; }
+.blood-group-mark { display: inline-grid; min-width: 31px; min-height: 24px; place-items: center; border-radius: 7px; background: #faeeee; color: #a9414b; font-size: 9px; }
+.blood-inventory-table .stock-available-cell { color: #24715f; font-weight: 750; }
+.blood-inventory-status { display: inline-flex; padding: 4px 7px; border-radius: 99px; background: #e8f1ed; color: #24715f; font-size: 7px; font-weight: 750; }
+.blood-inventory-status.low { background: #faeeee; color: #a9414b; }
+.blood-component-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.blood-component-card { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 8px; min-width: 0; padding: 10px; border: 1px solid rgba(29,51,65,.08); border-radius: 12px; background: rgba(255,255,255,.8); }
+.blood-component-icon { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 9px; background: #faeeee; color: #a9414b; }
+.blood-component-icon svg { width: 13px; height: 13px; }
+.blood-component-card > div:nth-child(2) { display: grid; gap: 3px; min-width: 0; }
+.blood-component-card > div:nth-child(2) strong { overflow: hidden; color: #345367; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.blood-component-card > div:nth-child(2) small { color: #819098; font-size: 7px; }
+.blood-component-counts { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding-top: 7px; border-top: 1px solid rgba(29,51,65,.07); }
+.blood-component-counts span { display: grid; gap: 3px; }
+.blood-component-counts strong { color: #345367; font-size: 9px; }
+.blood-component-counts small { color: #819098; font-size: 7px; }
+.blood-transaction-list { display: grid; }
+.blood-transaction-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 10px; min-width: 0; padding: 9px 2px; border-bottom: 1px solid rgba(29,51,65,.07); }
+.blood-transaction-row:last-child { border-bottom: 0; }
+.blood-transaction-icon { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 9px; background: #e8f1ed; color: #24715f; }
+.blood-transaction-icon.negative { background: #fff2e1; color: #a7722b; }
+.blood-transaction-icon.neutral { background: #edf0f8; color: #5968a4; }
+.blood-transaction-icon svg { width: 13px; height: 13px; }
+.blood-transaction-copy { display: grid; gap: 3px; min-width: 0; }
+.blood-transaction-copy strong { color: #345367; font-size: 8px; }
+.blood-transaction-copy span { overflow: hidden; color: #819098; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.blood-transaction-quantity { font-size: 8px; font-weight: 750; white-space: nowrap; }
+.blood-transaction-quantity.positive { color: #24715f; }
+.blood-transaction-quantity.negative { color: #a9414b; }
+.blood-transaction-quantity.neutral { color: #5968a4; }
+.blood-transaction-row time { display: inline-flex; align-items: center; gap: 4px; color: #819098; font-size: 7px; white-space: nowrap; }
+.blood-transaction-row time svg { width: 11px; height: 11px; }
+.blood-inventory-footnote { display: flex; align-items: flex-start; gap: 6px; margin: 9px 0 0; padding-top: 9px; border-top: 1px solid rgba(29,51,65,.07); color: #7b8b92; font-size: 8px; line-height: 1.45; }
+.blood-inventory-footnote svg { flex: 0 0 auto; width: 12px; height: 12px; color: #a7722b; }
+@media (max-width: 900px) {
+  .blood-inventory-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .blood-component-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .blood-inventory-section { padding: 12px; }
+  .blood-inventory-forms { grid-template-columns: 1fr; }
+  .blood-inventory-section-heading { align-items: flex-start; flex-direction: column; }
+  .blood-inventory-filter { width: 100%; }
+  .blood-transaction-row { grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; }
+  .blood-transaction-row time { grid-column: 2 / -1; }
+}
