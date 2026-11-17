@@ -89,6 +89,8 @@ const initialDashboardProfiles: Record<DashboardProfileId, DashboardProfile> = {
   bloodBank: { name: 'Jordan Davis', occupation: 'Blood Operations Lead', textStyle: 'Modern' },
 }
 
+type DashboardFeature = { label: string; icon: typeof Inbox; badge?: string; description: string; cards: { label: string; value: string; note: string }[]; children?: DashboardFeature[] }
+
 const dashboardSections = {
   donor: {
     title: 'Donor services',
@@ -116,18 +118,19 @@ const dashboardSections = {
       { label: 'Blood Inventory Management', icon: Droplets, description: 'Manage total stock, unit receipts, reservations, quarantine, and transaction history.', cards: [{ label: 'Total inventory', value: '1,284', note: 'Illustrative sample units' }, { label: 'Below reserve', value: '2 groups', note: 'O− and AB− need attention' }, { label: 'Recent transactions', value: '4', note: 'Sample audit history' }] },
       { label: 'Demand forecast', icon: BarChart3, badge: '3', description: 'Forecast need by blood group and component, analyze demand history, and review prediction reports.', cards: [{ label: '7-day outlook', value: '1,107 units', note: 'Illustrative forecast' }, { label: 'Peak demand', value: 'Friday', note: 'Projected 173 units' }, { label: 'Prediction reports', value: '3 available', note: 'Illustrative sample summaries' }] },
       { label: 'Expiry Management', icon: Clock3, badge: '5', description: 'Track unit-level expiry dates, review alerts, and record expired-stock disposal.', cards: [{ label: 'Expiry records', value: '8 active', note: 'Illustrative unit lots' }, { label: 'Expiring soon', value: '28 units', note: 'Within the next 7 days' }, { label: 'Expired units', value: '3', note: 'Awaiting disposal review' }] },
-      { label: 'Blood Request Management', icon: CalendarDays, description: 'Manage incoming blood requests from review through allocation, dispatch, and fulfilment.', cards: [{ label: 'Open requests', value: '36', note: '8 marked urgent' }, { label: 'Pending review', value: '11', note: 'Requests awaiting a decision' }, { label: 'Completed today', value: '19', note: 'Illustrative activity' }] },
-      { label: 'All Incoming Requests', icon: Inbox, description: 'Review every incoming blood request across requesting hospitals.', cards: [{ label: 'Total requests', value: '36', note: 'Across all request statuses' }, { label: 'Urgent requests', value: '8', note: 'Prioritize clinical review' }, { label: 'Received today', value: '12', note: 'Illustrative activity' }] },
-      { label: 'New Requests', icon: ListTodo, description: 'Triage newly submitted requests and verify required details.', cards: [{ label: 'New today', value: '12', note: 'Awaiting initial review' }, { label: 'Incomplete', value: '2', note: 'Follow up for missing details' }, { label: 'Urgent', value: '3', note: 'Review promptly with clinical staff' }] },
-      { label: 'Pending Requests', icon: Clock3, description: 'Track requests awaiting review, inventory confirmation, or additional information.', cards: [{ label: 'Awaiting review', value: '11', note: 'Assigned for assessment' }, { label: 'Awaiting stock', value: '4', note: 'Check available compatible units' }, { label: 'Needs information', value: '2', note: 'Contact the requesting team' }] },
-      { label: 'Approved Requests', icon: Check, description: 'Review approved requests and prepare units for allocation.', cards: [{ label: 'Approved', value: '14', note: 'Ready for unit allocation' }, { label: 'Partially fulfilled', value: '3', note: 'Remaining units need sourcing' }, { label: 'Awaiting dispatch', value: '5', note: 'Coordinate delivery' }] },
-      { label: 'Rejected Requests', icon: X, description: 'Review declined requests and their recorded decisions.', cards: [{ label: 'Rejected this week', value: '4', note: 'Illustrative activity' }, { label: 'Pending follow-up', value: '1', note: 'Notify the requesting team' }, { label: 'Common reason', value: 'Stock unavailable', note: 'Review sourcing alternatives' }] },
-      { label: 'Allocate Blood Units', icon: Droplets, description: 'Coordinate compatible unit allocation for approved requests.', cards: [{ label: 'Ready to allocate', value: '9', note: 'Approved requests awaiting units' }, { label: 'Units reserved', value: '28', note: 'Across active requests' }, { label: 'Compatibility review', value: 'Required', note: 'Confirm through blood-bank protocols' }] },
-      { label: 'Dispatch Management', icon: Truck, description: 'Coordinate dispatch preparation, transport, and delivery status.', cards: [{ label: 'Ready for dispatch', value: '5', note: 'Approved and allocated' }, { label: 'In transit', value: '6', note: 'Coordinate with delivery teams' }, { label: 'Delivery issues', value: '1', note: 'Review and follow up' }] },
-      { label: 'Request Fulfilment History', icon: History, description: 'Review completed request fulfilments and their audit trail.', cards: [{ label: 'Fulfilled today', value: '19', note: 'Illustrative activity' }, { label: 'This week', value: '86', note: 'Completed requests' }, { label: 'Average fulfilment', value: '3.2 hours', note: 'Illustrative operational metric' }] },
+      { label: 'Blood Request Management', icon: CalendarDays, description: 'Manage incoming blood requests from review through allocation, dispatch, and fulfilment.', cards: [{ label: 'Open requests', value: '36', note: '8 marked urgent' }, { label: 'Pending review', value: '11', note: 'Requests awaiting a decision' }, { label: 'Completed today', value: '19', note: 'Illustrative activity' }], children: [
+        { label: 'All Incoming Requests', icon: Inbox, description: 'Review every incoming blood request across requesting hospitals.', cards: [{ label: 'Total requests', value: '36', note: 'Across all request statuses' }, { label: 'Urgent requests', value: '8', note: 'Prioritize clinical review' }, { label: 'Received today', value: '12', note: 'Illustrative activity' }] },
+        { label: 'New Requests', icon: ListTodo, description: 'Triage newly submitted requests and verify required details.', cards: [{ label: 'New today', value: '12', note: 'Awaiting initial review' }, { label: 'Incomplete', value: '2', note: 'Follow up for missing details' }, { label: 'Urgent', value: '3', note: 'Review promptly with clinical staff' }] },
+        { label: 'Pending Requests', icon: Clock3, description: 'Track requests awaiting review, inventory confirmation, or additional information.', cards: [{ label: 'Awaiting review', value: '11', note: 'Assigned for assessment' }, { label: 'Awaiting stock', value: '4', note: 'Check available compatible units' }, { label: 'Needs information', value: '2', note: 'Contact the requesting team' }] },
+        { label: 'Approved Requests', icon: Check, description: 'Review approved requests and prepare units for allocation.', cards: [{ label: 'Approved', value: '14', note: 'Ready for unit allocation' }, { label: 'Partially fulfilled', value: '3', note: 'Remaining units need sourcing' }, { label: 'Awaiting dispatch', value: '5', note: 'Coordinate delivery' }] },
+        { label: 'Rejected Requests', icon: X, description: 'Review declined requests and their recorded decisions.', cards: [{ label: 'Rejected this week', value: '4', note: 'Illustrative activity' }, { label: 'Pending follow-up', value: '1', note: 'Notify the requesting team' }, { label: 'Common reason', value: 'Stock unavailable', note: 'Review sourcing alternatives' }] },
+        { label: 'Allocate Blood Units', icon: Droplets, description: 'Coordinate compatible unit allocation for approved requests.', cards: [{ label: 'Ready to allocate', value: '9', note: 'Approved requests awaiting units' }, { label: 'Units reserved', value: '28', note: 'Across active requests' }, { label: 'Compatibility review', value: 'Required', note: 'Confirm through blood-bank protocols' }] },
+        { label: 'Dispatch Management', icon: Truck, description: 'Coordinate dispatch preparation, transport, and delivery status.', cards: [{ label: 'Ready for dispatch', value: '5', note: 'Approved and allocated' }, { label: 'In transit', value: '6', note: 'Coordinate with delivery teams' }, { label: 'Delivery issues', value: '1', note: 'Review and follow up' }] },
+        { label: 'Request Fulfilment History', icon: History, description: 'Review completed request fulfilments and their audit trail.', cards: [{ label: 'Fulfilled today', value: '19', note: 'Illustrative activity' }, { label: 'This week', value: '86', note: 'Completed requests' }, { label: 'Average fulfilment', value: '3.2 hours', note: 'Illustrative operational metric' }] },
+      ] },
     ],
   },
-} satisfies Record<DashboardProfileId, { title: string; items: { label: string; icon: typeof Inbox; badge?: string; description: string; cards: { label: string; value: string; note: string }[] }[] }>
+} satisfies Record<DashboardProfileId, { title: string; items: DashboardFeature[] }>
 
 export default function Page() {
   const [active, setActive] = useState('Overview')
@@ -138,7 +141,7 @@ export default function Page() {
   const [dashboardProfiles, setDashboardProfiles] = useState(initialDashboardProfiles)
   const activeProfile = dashboardProfiles[selectedProfile]
   const selectedDashboardSection = dashboardSections[selectedProfile]
-  const activeFeature = selectedDashboardSection.items.find((item) => item.label === active)
+  const activeFeature = selectedDashboardSection.items.flatMap((item) => [item, ...('children' in item ? item.children ?? [] : [])]).find((item) => item.label === active)
   const [analyticsTickets, setAnalyticsTickets] = useState<AnalyticsTicket[]>(initialAnalyticsTickets)
   const [demoMode, setDemoMode] = useState(false)
   const [demoDialogOpen, setDemoDialogOpen] = useState(false)
@@ -387,8 +390,6 @@ function AnalyticsView({ title, tickets }: { title: string; tickets: AnalyticsTi
   </section>
 }
 
-type DashboardFeature = { label: string; icon: typeof Inbox; badge?: string; description: string; cards: { label: string; value: string; note: string }[] }
-
 function DashboardFeatureView({ profileId, profileTitle, profileName, feature, onDonorNameChange }: { profileId: DashboardProfileId; profileTitle: string; profileName: string; feature: DashboardFeature; onDonorNameChange: (name: string) => void }) {
   if (profileId === 'hospital' && feature.label === 'Blood request') return <HospitalBloodRequestView hospitalName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Inventory availability') return <HospitalInventoryAvailabilityView hospitalName={profileName} />
@@ -432,8 +433,8 @@ function DashboardFeatureView({ profileId, profileTitle, profileName, feature, o
   )
 }
 
-function NavGroup({ title, items, active, onSelect }: { title: string; items: { label: string; icon: typeof Inbox; badge?: string }[]; active: string; onSelect: (label: string) => void }) {
-  return <div className="nav-group">{title && <p className="nav-label">{title}</p>}{items.map(({ label, icon: Icon, badge }) => <button className={`nav-item ${active === label ? 'active' : ''}`} key={label} onClick={() => onSelect(label)}><Icon /><span>{label}</span>{badge && <b className="nav-badge">{badge}</b>}</button>)}</div>
+function NavGroup({ title, items, active, onSelect }: { title: string; items: (Pick<DashboardFeature, 'label' | 'icon'> & Partial<Pick<DashboardFeature, 'badge' | 'children'>>)[]; active: string; onSelect: (label: string) => void }) {
+  return <div className="nav-group">{title && <p className="nav-label">{title}</p>}{items.map(({ label, icon: Icon, badge, children }) => <div key={label}><button className={`nav-item ${active === label ? 'active' : ''}`} aria-current={active === label ? 'page' : undefined} onClick={() => onSelect(label)}><Icon /><span>{label}</span>{badge && <b className="nav-badge">{badge}</b>}</button>{children && <div className="nav-submenu" aria-label={`${label} features`}>{children.map(({ label: childLabel, icon: ChildIcon }) => <button className={`nav-item ${active === childLabel ? 'active' : ''}`} aria-current={active === childLabel ? 'page' : undefined} key={childLabel} onClick={() => onSelect(childLabel)}><ChildIcon /><span>{childLabel}</span></button>)}</div>}</div>)}</div>
 }
 function StatCard({ label, value, delta, icon: Icon, positive }: { label: string; value: string; delta: string; icon: typeof Inbox; positive?: boolean }) { return <div className="stat-card glass-panel"><div className="stat-icon"><Icon /></div><div><span>{label}</span><div className="stat-value">{value} <small className={positive ? 'positive' : ''}>{positive ? '↑' : '↑'} {delta}</small></div></div></div> }
 function Legend({ label, value, color }: { label: string; value: string; color: string }) { return <div className="legend-row"><i className={color} aria-hidden="true" /><span>{label}</span><b>{value}</b></div> }
