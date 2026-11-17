@@ -1318,3 +1318,104 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .expiry-timeline-item time { grid-column: 2; }
   .expiry-countdown { grid-column: 3; grid-row: 1 / span 2; }
 }
+
+.demand-forecast-view { gap: 13px; }
+.demand-overview-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.demand-overview-card { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 11px; border: 1px solid rgba(255,255,255,.82); border-radius: 13px; background: rgba(255,255,255,.78); box-shadow: 0 10px 24px rgba(48,62,70,.045); }
+.demand-overview-icon { display: grid; flex: 0 0 auto; width: 32px; height: 32px; place-items: center; border-radius: 10px; background: #e8f1ed; color: #24715f; }
+.demand-overview-icon svg { width: 15px; height: 15px; }
+.demand-overview-icon.peak { background: #fff2e1; color: #a7722b; }
+.demand-overview-icon.gap { background: #faeeee; color: #a9414b; }
+.demand-overview-icon.report { background: #edf0f8; color: #5968a4; }
+.demand-overview-card > div { display: grid; gap: 3px; min-width: 0; }
+.demand-overview-card small { color: #7b8b92; font-size: 8px; }
+.demand-overview-card strong { color: #183043; font-size: 17px; line-height: 1.1; white-space: nowrap; }
+.demand-overview-card strong span { color: #7b8b92; font-size: 8px; font-weight: 600; }
+.demand-overview-card em { overflow: hidden; color: #8a989e; font-size: 7px; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+.demand-panel { min-width: 0; padding: 15px; border: 1px solid rgba(255,255,255,.82); border-radius: 17px; background: rgba(255,255,255,.76); box-shadow: 0 13px 34px rgba(48,62,70,.055), inset 0 1px 0 rgba(255,255,255,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.demand-section-heading { align-items: flex-end; }
+.demand-range-toggle { display: inline-flex; flex: 0 0 auto; gap: 3px; padding: 3px; border: 1px solid rgba(29,51,65,.08); border-radius: 9px; background: rgba(241,245,245,.8); }
+.demand-range-toggle button { padding: 6px 9px; border: 0; border-radius: 7px; background: transparent; color: #71818a; font: inherit; font-size: 8px; font-weight: 700; cursor: pointer; }
+.demand-range-toggle button.active { background: #24715f; color: #fff; box-shadow: 0 2px 5px rgba(36,113,95,.17); }
+.demand-range-toggle button:focus-visible, .demand-report-button:focus-visible { outline: 3px solid rgba(36,113,95,.22); outline-offset: 2px; }
+.demand-chart-legend, .demand-legend-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; color: #7b8b92; font-size: 8px; }
+.demand-chart-legend { margin: -2px 0 7px; }
+.demand-chart-legend span, .demand-legend-row span { display: inline-flex; align-items: center; gap: 5px; }
+.demand-chart-legend i, .demand-legend-row i { display: inline-block; width: 8px; height: 8px; border-radius: 3px; }
+.demand-legend-predicted { background: #a7414b; }
+.demand-legend-reserve { height: 0 !important; border-top: 2px dashed #82928d; border-radius: 0 !important; }
+.demand-legend-stock { background: #7aa495; }
+.demand-main-chart { width: 100%; height: 245px; }
+.demand-group-chart { width: 100%; height: 205px; }
+.demand-history-chart { width: 100%; height: 210px; }
+.demand-chart-tooltip { display: grid; gap: 4px; min-width: 112px; padding: 8px 10px; border: 1px solid #e4e9eb; border-radius: 10px; background: rgba(255,255,255,.97); box-shadow: 0 12px 30px rgba(22,43,57,.12); font-size: 9px; }
+.demand-chart-tooltip strong { margin-bottom: 2px; color: #345367; }
+.demand-chart-foot { display: flex; align-items: center; justify-content: space-between; gap: 9px; padding-top: 8px; border-top: 1px solid rgba(29,51,65,.07); color: #819098; font-size: 8px; }
+.demand-chart-foot span:first-child { display: inline-flex; align-items: center; gap: 5px; color: #345367; font-weight: 700; }
+.demand-chart-foot svg { width: 12px; height: 12px; color: #24715f; }
+.demand-prediction-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; gap: 12px; }
+.demand-group-chart + .demand-legend-row { padding-top: 5px; }
+.demand-component-table-wrap { overflow-x: auto; border: 1px solid rgba(29,51,65,.08); border-radius: 11px; }
+.demand-component-table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
+.demand-component-table th, .demand-component-table td { padding: 10px 9px; border-bottom: 1px solid rgba(29,51,65,.07); color: #647984; font-size: 8px; }
+.demand-component-table thead th { background: rgba(244,247,247,.8); color: #7b8b92; font-size: 7px; font-weight: 750; }
+.demand-component-table tbody tr:last-child th, .demand-component-table tbody tr:last-child td { border-bottom: 0; }
+.demand-component-table tbody th { color: #345367; font-weight: 700; }
+.demand-gap { display: inline-flex; align-items: center; gap: 3px; font-weight: 750; }
+.demand-gap svg { width: 11px; height: 11px; }
+.demand-gap.shortage { color: #a9414b; }
+.demand-gap.surplus { color: #24715f; }
+.demand-component-note { display: flex; align-items: flex-start; gap: 5px; margin: 9px 0 0; color: #819098; font-size: 7px; line-height: 1.5; }
+.demand-component-note svg { flex: 0 0 auto; width: 11px; height: 11px; color: #a7722b; }
+.demand-history-badge { display: inline-flex; align-items: center; gap: 5px; padding: 6px 8px; border: 1px solid rgba(36,113,95,.13); border-radius: 99px; background: #e8f1ed; color: #24715f; font-size: 8px; font-weight: 750; white-space: nowrap; }
+.demand-history-badge svg { width: 12px; height: 12px; }
+.demand-history-chart + .demand-legend-row { padding-top: 7px; border-top: 1px solid rgba(29,51,65,.07); }
+.demand-season-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.demand-season-card { display: grid; gap: 6px; min-width: 0; padding: 11px; border: 1px solid rgba(29,51,65,.08); border-radius: 12px; background: rgba(255,255,255,.75); }
+.demand-season-top { display: flex; align-items: center; justify-content: space-between; gap: 7px; color: #819098; font-size: 7px; }
+.demand-season-icon { display: grid; width: 26px; height: 26px; place-items: center; border-radius: 8px; background: #faeeee; color: #a9414b; }
+.demand-season-icon svg { width: 12px; height: 12px; }
+.demand-season-icon.green { background: #e8f1ed; color: #24715f; }
+.demand-season-icon.blue { background: #edf0f8; color: #5968a4; }
+.demand-season-icon.amber { background: #fff2e1; color: #a7722b; }
+.demand-season-card > strong { color: #345367; font-size: 10px; }
+.demand-season-card p { margin: 0; color: #819098; font-size: 7px; line-height: 1.45; }
+.demand-season-change { display: inline-flex; align-items: center; gap: 3px; color: #a9414b; font-size: 7px; font-weight: 750; }
+.demand-season-change svg { width: 10px; height: 10px; }
+.demand-season-change.green { color: #24715f; }
+.demand-season-change.blue { color: #5968a4; }
+.demand-season-change.amber { color: #a7722b; }
+.demand-ai-report-label { display: inline-flex; align-items: center; gap: 5px; color: #5968a4; font-size: 8px; font-weight: 700; white-space: nowrap; }
+.demand-ai-report-label svg { width: 12px; height: 12px; }
+.demand-report-list { display: grid; }
+.demand-report-card { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 9px; min-width: 0; padding: 10px 1px; border-bottom: 1px solid rgba(29,51,65,.07); }
+.demand-report-card:last-child { border-bottom: 0; }
+.demand-report-icon { display: grid; width: 29px; height: 29px; place-items: center; border-radius: 9px; background: #edf0f8; color: #5968a4; }
+.demand-report-icon svg { width: 13px; height: 13px; }
+.demand-report-copy { display: grid; gap: 4px; min-width: 0; }
+.demand-report-title-row { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+.demand-report-title-row strong { color: #345367; font-size: 8px; }
+.demand-report-copy > span { color: #819098; font-size: 7px; }
+.demand-report-copy > p { max-width: 720px; margin: 3px 0 1px; color: #647984; font-size: 8px; line-height: 1.55; }
+.demand-confidence { padding: 3px 5px; border-radius: 99px; background: #e8f1ed; color: #24715f; font-size: 6px; font-weight: 750; }
+.demand-report-button { min-height: 27px; padding: 5px 8px; border: 1px solid rgba(29,51,65,.1); border-radius: 7px; background: rgba(255,255,255,.75); color: #647984; font: inherit; font-size: 7px; font-weight: 700; cursor: pointer; }
+.demand-report-button:hover { border-color: rgba(36,113,95,.25); color: #24715f; }
+.demand-report-footnote { display: flex; align-items: flex-start; gap: 6px; margin: 9px 0 0; padding-top: 9px; border-top: 1px solid rgba(29,51,65,.07); color: #819098; font-size: 7px; line-height: 1.5; }
+.demand-report-footnote svg { flex: 0 0 auto; width: 12px; height: 12px; color: #a7722b; }
+@media (max-width: 900px) {
+  .demand-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .demand-prediction-grid { grid-template-columns: 1fr; }
+  .demand-season-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .demand-panel { padding: 12px; }
+  .demand-section-heading { align-items: flex-start; flex-direction: column; }
+  .demand-range-toggle { width: 100%; }
+  .demand-range-toggle button { flex: 1; }
+  .demand-main-chart { height: 205px; }
+  .demand-group-chart { height: 185px; }
+  .demand-history-chart { height: 180px; }
+  .demand-chart-foot { align-items: flex-start; flex-direction: column; }
+  .demand-report-card { grid-template-columns: auto minmax(0, 1fr); }
+  .demand-report-button { grid-column: 2; justify-self: start; }
+}
