@@ -1237,3 +1237,84 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .blood-transaction-row { grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; }
   .blood-transaction-row time { grid-column: 2 / -1; }
 }
+
+.blood-expiry-management { gap: 14px; }
+.expiry-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.expiry-summary-card { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 11px; border: 1px solid rgba(255,255,255,.82); border-radius: 13px; background: rgba(255,255,255,.78); box-shadow: 0 10px 24px rgba(48,62,70,.045); }
+.expiry-summary-icon { display: grid; flex: 0 0 auto; width: 32px; height: 32px; place-items: center; border-radius: 10px; background: #edf2f3; color: #456273; }
+.expiry-summary-icon svg { width: 15px; height: 15px; }
+.expiry-summary-icon.soon { background: #fff2e1; color: #a7722b; }
+.expiry-summary-icon.expired { background: #faeeee; color: #a9414b; }
+.expiry-summary-icon.disposed { background: #e8f1ed; color: #24715f; }
+.expiry-summary-card > span:last-child { display: grid; gap: 3px; min-width: 0; }
+.expiry-summary-card small { color: #7b8b92; font-size: 8px; }
+.expiry-summary-card strong { color: #183043; font-size: 18px; line-height: 1; }
+.expiry-summary-card em { overflow: hidden; color: #8a989e; font-size: 7px; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+.expiry-section { min-width: 0; padding: 15px; border: 1px solid rgba(255,255,255,.82); border-radius: 17px; background: rgba(255,255,255,.76); box-shadow: 0 13px 34px rgba(48,62,70,.055), inset 0 1px 0 rgba(255,255,255,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.expiry-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 11px; }
+.expiry-section-heading .pulse-kicker { margin-bottom: 6px; }
+.expiry-section-heading h2 { margin: 0; color: #183043; font-size: 15px; letter-spacing: -.03em; }
+.expiry-section-heading p:not(.pulse-kicker) { margin: 4px 0 0; color: #819098; font-size: 9px; line-height: 1.45; }
+.expiry-date-chip, .expiry-alert-count { display: inline-flex; align-items: center; gap: 5px; color: #71818a; font-size: 8px; white-space: nowrap; }
+.expiry-date-chip svg, .expiry-alert-count svg { width: 12px; height: 12px; color: #24715f; }
+.expiry-timeline { display: grid; }
+.expiry-timeline-item { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto auto; align-items: center; gap: 9px; min-width: 0; padding: 9px 3px; border-bottom: 1px solid rgba(29,51,65,.07); }
+.expiry-timeline-item:last-child { border-bottom: 0; }
+.expiry-timeline-dot { width: 8px; height: 8px; border-radius: 50%; background: #3a907b; box-shadow: 0 0 0 4px rgba(58,144,123,.1); }
+.expiry-timeline-item.soon .expiry-timeline-dot { background: #c18736; box-shadow: 0 0 0 4px rgba(193,135,54,.12); }
+.expiry-timeline-copy { display: grid; gap: 3px; min-width: 0; }
+.expiry-timeline-copy strong { overflow: hidden; color: #345367; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.expiry-timeline-copy span, .expiry-timeline-item time { color: #819098; font-size: 7px; }
+.expiry-countdown { color: #24715f; font-size: 7px; font-weight: 750; white-space: nowrap; }
+.expiry-countdown.soon { color: #a7722b; }
+.expiry-filter-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.expiry-filter-tabs button { display: inline-flex; align-items: center; gap: 7px; min-height: 30px; padding: 6px 9px; border: 1px solid rgba(29,51,65,.1); border-radius: 9px; background: rgba(255,255,255,.72); color: #647984; font: inherit; font-size: 8px; font-weight: 700; cursor: pointer; }
+.expiry-filter-tabs button span { display: inline-grid; min-width: 17px; height: 17px; place-items: center; border-radius: 99px; background: rgba(29,51,65,.07); color: #61757f; font-size: 7px; }
+.expiry-filter-tabs button.active { border-color: rgba(36,113,95,.32); background: #24715f; color: #fff; }
+.expiry-filter-tabs button.active span { background: rgba(255,255,255,.18); color: #fff; }
+.expiry-filter-tabs button:focus-visible, .expiry-dispose-button:focus-visible, .expiry-dismiss-button:focus-visible { outline: 3px solid rgba(36,113,95,.22); outline-offset: 2px; }
+.expiry-table-wrap { overflow-x: auto; border: 1px solid rgba(29,51,65,.08); border-radius: 11px; }
+.expiry-table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
+.expiry-table th, .expiry-table td { padding: 8px; border-bottom: 1px solid rgba(29,51,65,.07); color: #647984; font-size: 7px; }
+.expiry-table thead th { background: rgba(244,247,247,.8); color: #7b8b92; font-size: 7px; font-weight: 750; }
+.expiry-table tbody tr:last-child th, .expiry-table tbody tr:last-child td { border-bottom: 0; }
+.expiry-table tbody th { font-weight: 700; }
+.expiry-unit-id { color: #345367; font-size: 8px; }
+.expiry-table td > strong { display: block; color: #345367; font-size: 7px; }
+.expiry-date-countdown { display: block; margin-top: 3px; color: #819098; font-size: 7px; }
+.expiry-status { display: inline-flex; padding: 4px 6px; border-radius: 99px; background: #e8f1ed; color: #24715f; font-size: 7px; font-weight: 750; }
+.expiry-status.expiring-soon { background: #fff2e1; color: #a7722b; }
+.expiry-status.expired { background: #faeeee; color: #a9414b; }
+.expiry-status.disposed { background: #edf0f8; color: #5968a4; }
+.expiry-dispose-button { display: inline-flex; align-items: center; gap: 4px; padding: 5px 7px; border: 1px solid rgba(169,65,75,.15); border-radius: 7px; background: #faeeee; color: #a9414b; font: inherit; font-size: 7px; font-weight: 750; cursor: pointer; }
+.expiry-dispose-button svg { width: 11px; height: 11px; }
+.expiry-action-complete { display: inline-flex; align-items: center; gap: 4px; color: #24715f; font-size: 7px; font-weight: 700; }
+.expiry-action-complete svg { width: 11px; height: 11px; }
+.expiry-no-action { color: #9aa6ab; }
+.expiry-empty { margin: 0; padding: 18px 10px; color: #819098; font-size: 9px; text-align: center; }
+.expiry-feedback { margin: 0; padding: 9px 11px; border: 1px solid rgba(36,113,95,.14); border-radius: 10px; background: rgba(232,241,237,.8); color: #24715f; font-size: 9px; }
+.expiry-lower-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 12px; }
+.expiry-alert-list, .expiry-disposal-list { display: grid; }
+.expiry-alert-item, .expiry-disposal-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; min-width: 0; padding: 9px 1px; border-bottom: 1px solid rgba(29,51,65,.07); }
+.expiry-alert-item:last-child, .expiry-disposal-row:last-child { border-bottom: 0; }
+.expiry-alert-icon, .expiry-disposal-icon { display: grid; flex: 0 0 auto; width: 28px; height: 28px; place-items: center; border-radius: 9px; background: #fff2e1; color: #a7722b; }
+.expiry-alert-item.expired .expiry-alert-icon { background: #faeeee; color: #a9414b; }
+.expiry-disposal-icon { background: #e8f1ed; color: #24715f; }
+.expiry-alert-icon svg, .expiry-disposal-icon svg { width: 13px; height: 13px; }
+.expiry-alert-copy, .expiry-disposal-copy { display: grid; gap: 3px; min-width: 0; }
+.expiry-alert-copy strong, .expiry-disposal-copy strong { overflow: hidden; color: #345367; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.expiry-alert-copy span, .expiry-disposal-copy span, .expiry-alert-copy small, .expiry-disposal-copy small { overflow: hidden; color: #819098; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.expiry-dismiss-button { display: inline-flex; align-items: center; gap: 4px; padding: 5px 6px; border: 1px solid rgba(29,51,65,.1); border-radius: 7px; background: rgba(255,255,255,.75); color: #647984; font: inherit; font-size: 7px; font-weight: 700; cursor: pointer; }
+.expiry-dismiss-button svg { width: 11px; height: 11px; }
+.expiry-disposal-id { color: #819098; font-size: 7px; white-space: nowrap; }
+@media (max-width: 900px) {
+  .expiry-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .expiry-lower-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .expiry-section { padding: 12px; }
+  .expiry-section-heading { align-items: flex-start; flex-direction: column; }
+  .expiry-timeline-item { grid-template-columns: 14px minmax(0, 1fr) auto; }
+  .expiry-timeline-item time { grid-column: 2; }
+  .expiry-countdown { grid-column: 3; grid-row: 1 / span 2; }
+}
