@@ -11,6 +11,7 @@ import HospitalBloodRequestView from '@/components/hospital-blood-request-view'
 import HospitalDeliveryTrackingView from '@/components/hospital-delivery-tracking-view'
 import HospitalPatientMatchingView from '@/components/hospital-patient-matching-view'
 import DonorBloodBankSearchView from '@/components/donor-blood-bank-search-view'
+import HospitalInventoryAvailabilityView from '@/components/hospital-inventory-availability-view'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, Cell, Legend as RechartsLegend, Line, LineChart as RechartsLineChart, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
   BarChart3,
@@ -380,6 +381,7 @@ type DashboardFeature = { label: string; icon: typeof Inbox; badge?: string; des
 
 function DashboardFeatureView({ profileId, profileTitle, profileName, feature, onDonorNameChange }: { profileId: DashboardProfileId; profileTitle: string; profileName: string; feature: DashboardFeature; onDonorNameChange: (name: string) => void }) {
   if (profileId === 'hospital' && feature.label === 'Blood request') return <HospitalBloodRequestView hospitalName={profileName} />
+  if (profileId === 'hospital' && feature.label === 'Inventory availability') return <HospitalInventoryAvailabilityView hospitalName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Delivery Request tracking') return <HospitalDeliveryTrackingView hospitalName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Patient matching') return <HospitalPatientMatchingView hospitalName={profileName} />
   if (profileId === 'hospital' && feature.label === 'Donor & Blood bank search') return <DonorBloodBankSearchView profileName={profileName} />
