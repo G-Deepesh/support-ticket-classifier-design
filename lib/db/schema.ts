@@ -19,6 +19,24 @@ export const hospitalAlertPreferences = pgTable(
   ],
 )
 
+export const hospitalDeliveryTracking = pgTable(
+  'hospital_delivery_tracking',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    userId: text('user_id').notNull().default('hospital-workspace'),
+    requestId: uuid('request_id').notNull(),
+    deliveryStatus: text('delivery_status').notNull().default('Pending'),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => [
+    check(
+      'hospital_delivery_tracking_status_check',
+      sql`${table.deliveryStatus} in ('Pending', 'Approved', 'Allocated', 'Dispatched', 'Received', 'Completed', 'Cancelled')`,
+    ),
+    unique('hospital_delivery_tracking_user_request_unique').on(table.userId, table.requestId),
+  ],
+)
+
 export const hospitalBloodRequests = pgTable(
   'hospital_blood_requests',
   {

@@ -25,6 +25,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { inventory } from '@/lib/blood-inventory'
 
 const sectionIds: Record<string, string> = {
   Overview: 'pulse-overview-header',
@@ -32,17 +33,6 @@ const sectionIds: Record<string, string> = {
   'Demand forecast': 'demand-forecast',
   'Donor matching': 'donor-matching',
 }
-
-const inventory = [
-  { group: 'O−', units: 42, reserve: 120, status: 'Critical', tone: 'critical' },
-  { group: 'O+', units: 284, reserve: 240, status: 'In range', tone: 'healthy' },
-  { group: 'A−', units: 74, reserve: 100, status: 'Low', tone: 'low' },
-  { group: 'A+', units: 212, reserve: 190, status: 'In range', tone: 'healthy' },
-  { group: 'B−', units: 90, reserve: 100, status: 'Low', tone: 'low' },
-  { group: 'B+', units: 148, reserve: 130, status: 'In range', tone: 'healthy' },
-  { group: 'AB−', units: 24, reserve: 60, status: 'Critical', tone: 'critical' },
-  { group: 'AB+', units: 68, reserve: 80, status: 'Low', tone: 'low' },
-]
 
 const forecast = [
   { day: 'Mon', demand: 112, reserve: 154 },
