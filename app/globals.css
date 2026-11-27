@@ -1762,3 +1762,147 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .alerts-transfer-button { align-self: flex-start; margin-top: auto; color: #61527f; }
 @media (max-width: 1000px) { .alerts-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .alerts-section-grid { grid-template-columns: 1fr; } }
 @media (max-width: 650px) { .alerts-panel { padding: 15px; } .alerts-section-heading { align-items: flex-start; flex-direction: column; } .alerts-summary-card { padding: 10px; } .alerts-summary-icon { flex-basis: 30px; width: 30px; height: 30px; } .alerts-summary-card strong { font-size: 17px; } .alerts-low-stock-card { flex-wrap: wrap; } .alerts-stock-copy { flex-basis: calc(100% - 58px); } .alerts-review-button { margin-left: 48px; } .alerts-transfer-grid { grid-template-columns: 1fr; } .alerts-replenishment-card { flex-wrap: wrap; } .alerts-replenishment-copy { flex-basis: calc(100% - 48px); } .alerts-suggestion-state { margin-left: 35px; } .alerts-table th, .alerts-table td { padding: 9px 8px; } }
+
+:root {
+  color-scheme: light;
+  --background: #f4f8f6;
+  --foreground: #183b38;
+  --muted-foreground: #718783;
+  --border: rgba(39, 105, 94, .13);
+  --primary: #287d70;
+  --accent: #dff2eb;
+  --ring: rgba(40, 125, 112, .3);
+  --radius: 1.35rem;
+}
+
+body {
+  background: #f4f8f6;
+  color: #183b38;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.app-shell {
+  background:
+    radial-gradient(ellipse at 8% 5%, rgba(202, 238, 224, .88), transparent 35%),
+    radial-gradient(ellipse at 94% 88%, rgba(255, 226, 204, .64), transparent 34%),
+    radial-gradient(ellipse at 72% 18%, rgba(255, 255, 255, .94), transparent 42%),
+    linear-gradient(138deg, #eff8f4 0%, #f8fbf8 46%, #eef7f3 100%);
+  color: #183b38;
+}
+
+.aurora-one { background: #c8ede0; opacity: .34; }
+.aurora-two { background: #f6d9c6; opacity: .3; }
+
+.glass-panel,
+.glass-inset,
+:is([class*="-panel"], [class*="-card"], .dash-overview-header, .dash-overview-metric, .dash-overview-card, .alerts-summary-card, .demand-overview-card) {
+  border-color: rgba(255, 255, 255, .78);
+  box-shadow: 0 16px 42px rgba(39, 91, 79, .075), inset 0 1px 0 rgba(255, 255, 255, .82);
+  backdrop-filter: blur(22px) saturate(125%);
+  -webkit-backdrop-filter: blur(22px) saturate(125%);
+}
+
+.glass-panel { background: rgba(255, 255, 255, .68); }
+.glass-inset { background: rgba(255, 255, 255, .48); }
+.sidebar {
+  background: linear-gradient(160deg, rgba(255, 255, 255, .76), rgba(238, 248, 243, .66));
+  border-right-color: rgba(255, 255, 255, .82);
+  box-shadow: 12px 0 38px rgba(42, 99, 87, .075), inset -1px 0 0 rgba(255, 255, 255, .72);
+}
+
+.brand-mark,
+.dash-header-icon,
+.dash-overview-metric .dash-metric-icon,
+.dash-stock-card .dash-stock-state.healthy,
+.demand-range-toggle button.active {
+  background: linear-gradient(145deg, #58ad98, #287d70);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(40, 125, 112, .2);
+}
+.brand-mark { border-radius: 14px; }
+.brand-name,
+.content-area :is(h1, h2, h3, h4),
+.dash-overview-header h1,
+.request-section-heading h2,
+.request-table-heading h2 { color: #183b38; }
+.content-area :is(p, small, .eyebrow, .dash-eyebrow, .dash-card-eyebrow) { text-wrap: pretty; }
+
+.nav-label { color: #68817b; }
+.nav-item,
+.nav-subitem {
+  border-color: transparent;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, .3);
+  color: #31534d;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .48);
+  transition: background .28s ease, color .24s ease, border-color .24s ease, transform .36s cubic-bezier(.2, .8, .2, 1), box-shadow .28s ease;
+}
+.nav-item:hover,
+.nav-subitem:hover { background: rgba(255, 255, 255, .74); color: #1f695d; transform: translateX(2px); }
+.nav-item.active,
+.nav-item[aria-current="page"],
+.nav-subitem.active,
+.nav-subitem[aria-current="page"] {
+  border-color: rgba(255, 255, 255, .88);
+  background: linear-gradient(110deg, rgba(218, 243, 234, .96), rgba(255, 255, 255, .82));
+  color: #216e61;
+  box-shadow: 0 6px 18px rgba(39, 113, 98, .1), inset 0 1px 0 #fff;
+}
+
+.content-area :is(.dash-overview-header, .dash-overview-card, .dash-overview-metric, .demand-panel, .request-workspace-panel, .request-table-panel, .alerts-panel, .glass-panel, .glass-inset) {
+  border-radius: 24px;
+  border-color: rgba(255, 255, 255, .84);
+}
+.dash-overview-header,
+.content-area .dash-overview-card,
+.content-area .dash-overview-metric,
+.demand-overview-card,
+.alerts-summary-card,
+.request-dashboard-stats article {
+  background-color: rgba(255, 255, 255, .72);
+}
+.dash-overview-header { background-image: linear-gradient(118deg, rgba(255,255,255,.88), rgba(228,246,238,.8)); }
+.dash-metric-icon,
+.dash-header-icon,
+.dash-card-icon,
+.dash-reminder-icon,
+.demand-overview-icon,
+.alerts-summary-icon { border-radius: 15px; }
+.dash-card-eyebrow,
+.dash-eyebrow { color: #3b8877; }
+
+.content-area button:not(.sidebar-overlay),
+.content-area a,
+.sidebar button:not(.sidebar-overlay),
+.mobile-topbar button {
+  transition: transform .34s cubic-bezier(.2, .8, .2, 1), box-shadow .28s ease, background-color .24s ease, border-color .24s ease, color .24s ease;
+}
+.content-area button:not(:disabled):active,
+.sidebar button:not(:disabled):active { transform: scale(.975); }
+.content-area :is(button, a, input, select, textarea, [tabindex]):focus-visible,
+.sidebar :is(button, a, [tabindex]):focus-visible {
+  outline: 3px solid rgba(40, 125, 112, .32);
+  outline-offset: 3px;
+}
+.content-area :is(input, select, textarea),
+.content-area [role="combobox"] {
+  border-color: rgba(39, 105, 94, .18);
+  border-radius: 14px;
+  background-color: rgba(255, 255, 255, .76);
+  color: #234640;
+}
+.content-area :is(input, select, textarea):focus {
+  border-color: #58ad98;
+  box-shadow: 0 0 0 4px rgba(40, 125, 112, .12);
+}
+
+@keyframes living-flow-glow {
+  0%, 100% { opacity: .62; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.035); }
+}
+.hero-visual .orbit,
+.lucent-logo { animation-duration: 9s; }
+.dash-overview-header .dash-header-icon { animation: living-flow-glow 5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
