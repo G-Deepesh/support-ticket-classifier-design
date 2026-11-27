@@ -1783,6 +1783,7 @@ body {
 
 .app-shell {
   background:
+    linear-gradient(108deg, rgba(64, 134, 116, .46) 0%, rgba(112, 175, 153, .34) 340px, rgba(177, 218, 201, .04) 520px, transparent 620px),
     radial-gradient(ellipse at 8% 5%, rgba(202, 238, 224, .88), transparent 35%),
     radial-gradient(ellipse at 94% 88%, rgba(255, 226, 204, .64), transparent 34%),
     radial-gradient(ellipse at 72% 18%, rgba(255, 255, 255, .94), transparent 42%),
