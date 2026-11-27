@@ -1419,3 +1419,48 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .demand-report-card { grid-template-columns: auto minmax(0, 1fr); }
   .demand-report-button { grid-column: 2; justify-self: start; }
 }
+
+/* Keep every navigation option inside the sidebar at desktop and mobile widths. */
+.sidebar {
+  box-sizing: border-box;
+  width: 264px;
+  flex: 0 0 264px;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.sidebar-nav,
+.nav-group,
+.nav-group > div {
+  width: 100%;
+  min-width: 0;
+}
+.nav-item,
+.nav-subitem {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+.nav-item > svg,
+.nav-subitem > svg {
+  flex: 0 0 auto;
+}
+.nav-item > span,
+.nav-subitem > span {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+}
+.nav-submenu {
+  min-width: 0;
+  margin-left: 12px;
+}
+@media (max-width: 900px) {
+  .sidebar {
+    width: min(300px, calc(100vw - 24px));
+    flex-basis: min(300px, calc(100vw - 24px));
+  }
+}
