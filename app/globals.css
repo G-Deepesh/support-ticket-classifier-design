@@ -1293,7 +1293,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .expiry-no-action { color: #9aa6ab; }
 .expiry-empty { margin: 0; padding: 18px 10px; color: #819098; font-size: 9px; text-align: center; }
 .expiry-feedback { margin: 0; padding: 9px 11px; border: 1px solid rgba(36,113,95,.14); border-radius: 10px; background: rgba(232,241,237,.8); color: #24715f; font-size: 9px; }
-.expiry-lower-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 12px; }
+.expiry-lower-grid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 12px; }
+.expiry-lower-grid > .expiry-section { width: 100%; }
 .expiry-alert-list, .expiry-disposal-list { display: grid; }
 .expiry-alert-item, .expiry-disposal-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; min-width: 0; padding: 9px 1px; border-bottom: 1px solid rgba(29,51,65,.07); }
 .expiry-alert-item:last-child, .expiry-disposal-row:last-child { border-bottom: 0; }
