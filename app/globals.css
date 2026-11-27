@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-:root { color-scheme: light; --background: #fff8d9; --foreground: #4b3b22; --muted-foreground: #9a8155; --border: rgba(255,255,255,.72); --radius: 1.25rem; }
+:root { color-scheme: light; --background: #fff8d9; --foreground: #4b3b22; --muted-foreground: #9a8155; --border: rgba(255,255,255,.72); --radius: 1.25rem; --chart-1: #a84950; --chart-2: #d6a04e; --chart-3: #73967c; }
 * { box-sizing: border-box; }
 body { margin: 0; background: linear-gradient(132deg, #bd8052 0%, #d2b397 27%, #eee1d0 54%, #d6b18f 77%, #bd8052 100%); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; }
   button { font: inherit; }
@@ -1932,3 +1932,18 @@ body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+.dash-chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 14px 0; }
+.dash-chart-card { min-width: 0; padding: 18px 20px 15px; }
+.dash-chart-card h2 { font-size: 15px; }
+.dash-chart-frame { width: 100%; height: 190px; min-height: 190px; aspect-ratio: auto; margin-top: 8px; }
+.dash-chart-frame .recharts-cartesian-grid-horizontal line { stroke: rgba(91, 76, 59, .12); }
+.dash-chart-frame .recharts-cartesian-axis-tick text { fill: #897d70; font-size: 9px; }
+.dash-chart-frame .recharts-tooltip-cursor { fill: rgba(168, 73, 80, .06); }
+.dash-chart-summary { margin: 2px 0 0; color: #82766a; font-size: 9px; line-height: 1.5; }
+.dash-radial-value { fill: #a84950; font-size: 26px; font-weight: 800; letter-spacing: -.05em; }
+.dash-radial-label { fill: #82766a; font-size: 9px; }
+.donor-milestone-card .dash-chart-frame { max-width: 290px; margin-inline: auto; }
+.hospital-urgency-card .dash-chart-frame { max-width: 330px; margin-inline: auto; }
+@media (max-width: 760px) { .dash-chart-grid { grid-template-columns: 1fr; } }
+@media (max-width: 620px) { .dash-chart-card { padding: 16px; } .dash-chart-frame { height: 180px; min-height: 180px; } }
