@@ -1796,8 +1796,8 @@ body {
 
 .glass-panel,
 .glass-inset,
-:is([class*="-panel"], [class*="-card"], .dash-overview-header, .dash-overview-metric, .dash-overview-card, .alerts-summary-card, .demand-overview-card) {
-  border-color: rgba(255, 255, 255, .78);
+:is([class*="-panel"], .dash-overview-header, .dash-overview-metric, .dash-overview-card, .alerts-summary-card, .demand-overview-card, .request-dashboard-stats article, .pulse-metric-card) {
+  border: 1px solid #101817;
   box-shadow: 0 16px 42px rgba(39, 91, 79, .075), inset 0 1px 0 rgba(255, 255, 255, .82);
   backdrop-filter: blur(22px) saturate(125%);
   -webkit-backdrop-filter: blur(22px) saturate(125%);
@@ -1852,7 +1852,7 @@ body {
 
 .content-area :is(.dash-overview-header, .dash-overview-card, .dash-overview-metric, .demand-panel, .request-workspace-panel, .request-table-panel, .alerts-panel, .glass-panel, .glass-inset) {
   border-radius: 24px;
-  border-color: rgba(255, 255, 255, .84);
+  border-color: #101817;
 }
 .dash-overview-header,
 .content-area .dash-overview-card,
