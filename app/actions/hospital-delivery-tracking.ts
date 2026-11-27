@@ -1,15 +1,21 @@
 'use server'
 
-import { and, desc, eq } from 'drizzle-orm'
+import { and, count, desc, eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db'
-import { hospitalBloodRequests, hospitalDeliveryTracking } from '@/lib/db/schema'
+import { donorRequestResponses, hospitalBloodRequests, hospitalDeliveryTracking } from '@/lib/db/schema'
 import { DELIVERY_STATUSES, type DeliveryStatus } from '@/lib/hospital-delivery-statuses'
 
 const HOSPITAL_WORKSPACE_USER_ID = 'hospital-workspace'
 const DELIVERY_STATUS_SET = new Set<string>(DELIVERY_STATUSES)
 
 export async function getHospitalDeliveryRequests() {
+  const responseCounts = await db
+    .select({ requestId: donorRequestResponses.requestId, total: count() })
+    .from(donorRequestResponses)
+    .groupBy(donorRequestResponses.requestId)
+  const responseCountByRequest = new Map(responseCounts.map((row) => [row.requestId, Number(row.total)]))
+
   const rows = await db
     .select({
       id: hospitalBloodRequests.id,
@@ -40,6 +46,7 @@ export async function getHospitalDeliveryRequests() {
     requiredAt: request.requiredAt.toISOString(),
     createdAt: request.createdAt.toISOString(),
     deliveryUpdatedAt: request.deliveryUpdatedAt?.toISOString() ?? null,
+    donorResponses: responseCountByRequest.get(request.id) ?? 0,
   }))
 }
 

@@ -37,6 +37,17 @@ export const hospitalDeliveryTracking = pgTable(
   ],
 )
 
+export const donorRequestResponses = pgTable(
+  'donor_request_responses',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    donorId: text('donor_id').notNull().default('donor-workspace'),
+    requestId: uuid('request_id').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => [unique('donor_request_responses_donor_request_unique').on(table.donorId, table.requestId)],
+)
+
 export const hospitalBloodRequests = pgTable(
   'hospital_blood_requests',
   {

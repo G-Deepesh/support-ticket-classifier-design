@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import useSWR from 'swr'
+import { getHospitalDeliveryRequests } from '@/app/actions/hospital-delivery-tracking'
 import DashboardOverviewCharts from '@/components/dashboard-overview-charts'
 import {
   Activity, ArrowRight, ArrowUpRight, CalendarDays, Check, Clock3, Droplets,
@@ -39,28 +41,37 @@ function DonorOverview({ name, onNavigate }: { name: string; onNavigate: (sectio
   </section>
 }
 
-const initialRequests = [
-  { id: 'REQ-2841', patient: 'Emergency surgery', group: 'O−', units: '4 units', urgency: 'Critical', eta: 'Awaiting allocation' },
-  { id: 'REQ-2838', patient: 'Maternity ward', group: 'A+', units: '2 units', urgency: 'Urgent', eta: 'In review' },
-  { id: 'REQ-2831', patient: 'Oncology', group: 'B+', units: '3 units', urgency: 'Routine', eta: 'Ready to dispatch' },
-]
+const closedDeliveryStatuses = ['Received', 'Completed', 'Cancelled']
+
+function useLiveRequests() {
+  const { data, isLoading } = useSWR('hospital-delivery-requests', getHospitalDeliveryRequests, { refreshInterval: 10000 })
+  const open = (data ?? []).filter((request) => !closedDeliveryStatuses.includes(request.deliveryStatus))
+  const urgent = open.filter((request) => request.priority !== 'Routine')
+  return { open, urgent, inTransit: open.filter((request) => request.deliveryStatus === 'Dispatched'), isLoading }
+}
 
 function HospitalOverview({ name, onNavigate }: { name: string; onNavigate: (section: string) => void }) {
   const [filter, setFilter] = useState<'All requests' | 'Needs attention'>('All requests')
-  const [received, setReceived] = useState<string[]>([])
-  const requests = initialRequests.filter((request) => !received.includes(request.id) && (filter === 'All requests' || request.urgency !== 'Routine'))
+  const { open, urgent, inTransit } = useLiveRequests()
+  const requests = (filter === 'All requests' ? open : urgent).map((request) => ({
+    id: `HR-${request.id.slice(0, 8).toUpperCase()}`,
+    patient: request.bloodComponent,
+    group: request.bloodGroup,
+    units: `${request.requiredUnits} ${request.requiredUnits === 1 ? 'unit' : 'units'}`,
+    urgency: request.priority === 'Emergency' ? 'Critical' : request.priority === 'Urgent' ? 'Urgent' : 'Routine',
+    eta: request.deliveryStatus,
+  }))
   return <section className="dash-overview hospital-overview" aria-label="Hospital dashboard overview">
     <OverviewHeader eyebrow="HOSPITAL OPERATIONS" title="Care starts with readiness" detail={`${name} · Your blood supply and care coordination, all in one place.`} icon={Hospital}/>
-    <div className="dash-sample-note">Network snapshot · Sample data <span>•</span> Confirm availability and compatibility with your transfusion service.</div>
-    <div className="dash-metric-grid"><Metric label="Open requests" value="12" detail="Across active departments" icon={Activity}/><Metric label="Needs attention" value="3" detail="Critical requests need review" icon={Clock3} tone="red"/><Metric label="Available units" value="1,284" detail="Across 28 reporting centers" icon={Droplets} tone="green"/></div>
+    <div className="dash-sample-note">Requests and deliveries are live <span>•</span> Available units and charts are sample data. Confirm availability with your transfusion service.</div>
+    <div className="dash-metric-grid"><Metric label="Open requests" value={String(open.length)} detail="Live from Blood Request tracking" icon={Activity}/><Metric label="Needs attention" value={String(urgent.length)} detail="Emergency or urgent requests" icon={Clock3} tone="red"/><Metric label="Available units" value="1,284" detail="Sample · across 28 reporting centers" icon={Droplets} tone="green"/></div>
     <DashboardOverviewCharts profile="hospital" />
     <section className="dash-overview-card dash-requests-card"><div className="dash-section-title request-title"><div><p className="dash-card-eyebrow">CARE COORDINATION</p><h2>Active blood requests</h2><p>Prioritize requests and follow each delivery through to receipt.</p></div><button className="dash-action-button compact" type="button" onClick={() => onNavigate('Blood request')}><Plus /> New request</button></div>
       <div className="dash-filter-tabs" role="group" aria-label="Filter blood requests">{(['All requests', 'Needs attention'] as const).map((item) => <button key={item} type="button" className={filter === item ? 'selected' : ''} aria-pressed={filter === item} onClick={() => setFilter(item)}>{item}</button>)}</div>
-      <div className="dash-request-list">{requests.map((request) => <article className="dash-request-row" key={request.id}><span className={`dash-urgency-dot ${request.urgency.toLowerCase()}`} aria-hidden="true"/><div className="dash-request-patient"><strong>{request.patient}</strong><small>{request.id} · {request.urgency} priority</small></div><span className="dash-blood-type">{request.group}<small>{request.units}</small></span><span className="dash-request-status"><i />{request.eta}</span><button className="dash-row-action" type="button" onClick={() => request.eta === 'Ready to dispatch' ? setReceived((list) => [...list, request.id]) : onNavigate('Delivery Request tracking')}>{request.eta === 'Ready to dispatch' ? 'Mark received' : 'Track'} <ArrowRight /></button></article>)}</div>
-      {requests.length === 0 && <p className="dash-empty-state" role="status">No requests match this filter. Try viewing all requests.</p>}
-      {received.length > 0 && <p className="dash-inline-success" role="status"><Check /> Receipt recorded in this demo.</p>}
+      <div className="dash-request-list">{requests.map((request) => <article className="dash-request-row" key={request.id}><span className={`dash-urgency-dot ${request.urgency.toLowerCase()}`} aria-hidden="true"/><div className="dash-request-patient"><strong>{request.patient}</strong><small>{request.id} · {request.urgency} priority</small></div><span className="dash-blood-type">{request.group}<small>{request.units}</small></span><span className="dash-request-status"><i />{request.eta}</span><button className="dash-row-action" type="button" onClick={() => onNavigate('Delivery Request tracking')}>Track <ArrowRight /></button></article>)}</div>
+      {requests.length === 0 && <p className="dash-empty-state" role="status">{open.length === 0 ? 'No open requests yet. Create a new request to get started.' : 'No requests match this filter. Try viewing all requests.'}</p>}
     </section>
-    <div className="dash-hospital-footer"><span><Truck /> 5 deliveries in transit</span><button type="button" onClick={() => onNavigate('Delivery Request tracking')}>Track deliveries <ArrowRight /></button><span><UsersRound /> 8 cases in review</span><button type="button" onClick={() => onNavigate('Patient matching')}>Review matches <ArrowRight /></button></div>
+    <div className="dash-hospital-footer"><span><Truck /> {inTransit.length} {inTransit.length === 1 ? 'delivery' : 'deliveries'} in transit</span><button type="button" onClick={() => onNavigate('Delivery Request tracking')}>Track deliveries <ArrowRight /></button><span><UsersRound /> 8 cases in review (sample)</span><button type="button" onClick={() => onNavigate('Patient matching')}>Review matches <ArrowRight /></button></div>
   </section>
 }
 
@@ -75,12 +86,14 @@ function BloodBankOverview({ name, onNavigate }: { name: string; onNavigate: (se
   const [range, setRange] = useState('7 days')
   const [acknowledged, setAcknowledged] = useState<string[]>([])
   const [stockFilter, setStockFilter] = useState('All groups')
+  const { open } = useLiveRequests()
+  const bankPending = open.filter((request) => request.deliveryStatus === 'Pending')
   const lowStock = stockGroups.filter((stock) => stock.units < stock.reserve)
   const visibleStock = stockFilter === 'Needs restock' ? lowStock : stockGroups
   return <section className="dash-overview bloodbank-overview" aria-label="Blood bank dashboard overview">
     <OverviewHeader eyebrow="BLOOD BANK OPERATIONS" title="Supply, under control." detail={`${name} · A focused operational snapshot to help you act before a shortage becomes urgent.`} icon={Droplets}/>
     <div className="dash-sample-note">Illustrative network snapshot <span>•</span> Review all stock movements and clinical decisions in your source systems.</div>
-    <div className="dash-metric-grid"><Metric label="Total units" value="1,284" detail="Across tracked components" icon={PackageCheck} tone="green"/><Metric label="Below reserve" value="2 groups" detail="O− and AB− need replenishment" icon={Activity} tone="red"/><Metric label="Requests to review" value="11" detail="3 marked urgent" icon={Hospital}/></div>
+    <div className="dash-metric-grid"><Metric label="Total units" value="1,284" detail="Across tracked components" icon={PackageCheck} tone="green"/><Metric label="Below reserve" value="2 groups" detail="O− and AB− need replenishment" icon={Activity} tone="red"/><Metric label="Requests to review" value={String(bankPending.length)} detail={`${bankPending.filter((request) => request.priority !== 'Routine').length} marked urgent · live`} icon={Hospital}/></div>
     <DashboardOverviewCharts profile="bloodBank" />
     <div className="dash-feature-grid bank-feature-grid"><section className="dash-overview-card dash-stock-card"><div className="dash-section-title"><div><p className="dash-card-eyebrow">STOCK HEALTH</p><h2>Inventory by blood group</h2></div><select aria-label="Filter inventory groups" value={stockFilter} onChange={(event) => setStockFilter(event.target.value)}><option>All groups</option><option>Needs restock</option></select></div><div className="dash-stock-list">{visibleStock.map((item) => { const percent = Math.min((item.units / item.reserve) * 100, 100); return <div className="dash-stock-row" key={item.group}><strong>{item.group}</strong><div className="dash-stock-bar" role="progressbar" aria-label={`${item.group} stock against reserve`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.min(Math.round(percent),100)}><span className={item.tone} style={{ width: `${percent}%` }}/></div><span className="dash-stock-count">{item.units}<small> / {item.reserve}</small></span><span className={`dash-stock-state ${item.tone}`}>{item.units < item.reserve ? 'Restock' : 'Healthy'}</span></div> })}</div><button type="button" className="dash-text-action" onClick={() => onNavigate('Blood Inventory Management')}>Open inventory <ArrowRight /></button></section>
       <section className="dash-overview-card dash-demand-card"><div className="dash-section-title"><div><p className="dash-card-eyebrow">DEMAND PLANNING</p><h2>Forecast outlook</h2></div><select aria-label="Forecast period" value={range} onChange={(event) => setRange(event.target.value)}><option>7 days</option><option>14 days</option><option>30 days</option></select></div><div className="dash-forecast-total"><strong>{range === '7 days' ? '1,107' : range === '14 days' ? '2,214' : '4,685'}</strong><span>units projected</span><ArrowUpRight /></div><div className="dash-forecast-bars" aria-label={`Illustrative ${range} blood demand forecast`}>{[38,54,44,68,88,72,58].map((height,index)=><span key={index} style={{height:`${height}%`}} title={`Day ${index+1}`} />)}</div><div className="dash-forecast-caption"><span>Mon</span><span>Wed</span><span>Fri</span><span>Sun</span></div><p className="dash-demand-insight"><Activity /> Expected peak Friday <strong>· 173 units</strong></p><button type="button" className="dash-text-action" onClick={() => onNavigate('Demand forecast')}>Explore forecast <ArrowRight /></button></section></div>

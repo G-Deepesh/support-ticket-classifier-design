@@ -212,7 +212,7 @@ export default function HospitalDeliveryTrackingView({ hospitalName }: { hospita
                     <div><dt>Units</dt><dd>{request.requiredUnits}</dd></div>
                     <div><dt>Priority</dt><dd><span className={`delivery-priority delivery-priority-${request.priority.toLowerCase()}`}>{request.priority}</span></dd></div>
                     <div><dt>Required by</dt><dd><time dateTime={request.requiredAt}>{formatDate(request.requiredAt)}</time></dd></div>
-                    <div><dt>Request workflow</dt><dd>{request.requestStatus}</dd></div>
+                    <div><dt>Donor responses</dt><dd>{request.donorResponses === 0 ? 'None yet' : `${request.donorResponses} ${request.donorResponses === 1 ? 'donor' : 'donors'} responded`}</dd></div>
                   </dl>
 
                   <form
