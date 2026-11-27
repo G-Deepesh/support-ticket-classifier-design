@@ -2,6 +2,7 @@
 
 import { useMemo, useState, type FormEvent } from 'react'
 import PulseOverview from '@/components/pulse-overview'
+import DashboardOverview from '@/components/dashboard-overview'
 import DonorProfileView from '@/components/donor-profile-view'
 import DonationHistoryView from '@/components/donation-history-view'
 import EligibilityStatusView from '@/components/eligibility-status-view'
@@ -15,6 +16,8 @@ import HospitalInventoryAvailabilityView from '@/components/hospital-inventory-a
 import BloodInventoryManagementView from '@/components/blood-inventory-management-view'
 import BloodExpiryManagementView from '@/components/blood-expiry-management-view'
 import BloodDemandForecastView from '@/components/blood-demand-forecast-view'
+import BloodRequestManagementView from '@/components/blood-request-management-view'
+import BloodBankAlertsAnalyticsView from '@/components/blood-bank-alerts-analytics-view'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, Cell, Legend as RechartsLegend, Line, LineChart as RechartsLineChart, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
   BarChart3,
@@ -50,6 +53,27 @@ import {
 } from 'lucide-react'
 
 const pulseDashboardPages = ['Overview', 'Demand forecast', 'Donor matching']
+const bloodRequestDashboardLabels = ['Blood Request Management']
+
+type DashboardDestination = { profile: DashboardProfileId; label: string }
+
+const relatedDashboardDestinations: Record<string, DashboardDestination[]> = {
+  'donor:Donor Profile': [{ profile: 'donor', label: 'Donation history' }, { profile: 'donor', label: 'Eligibility Status' }],
+  'donor:Donation history': [{ profile: 'donor', label: 'Donor Profile' }, { profile: 'donor', label: 'Eligibility Status' }, { profile: 'donor', label: 'Notifications' }],
+  'donor:Eligibility Status': [{ profile: 'donor', label: 'Donor Profile' }, { profile: 'donor', label: 'Donation history' }, { profile: 'donor', label: 'Nearby Blood Requests & Availability' }],
+  'donor:Nearby Blood Requests & Availability': [{ profile: 'donor', label: 'Notifications' }, { profile: 'hospital', label: 'Inventory availability' }, { profile: 'hospital', label: 'Donor & Blood bank search' }],
+  'donor:Notifications': [{ profile: 'donor', label: 'Nearby Blood Requests & Availability' }, { profile: 'donor', label: 'Donation history' }],
+  'hospital:Blood request': [{ profile: 'hospital', label: 'Delivery Request tracking' }, { profile: 'hospital', label: 'Inventory availability' }, { profile: 'hospital', label: 'Patient matching' }, { profile: 'bloodBank', label: 'Blood Request Management' }],
+  'hospital:Patient matching': [{ profile: 'hospital', label: 'Blood request' }, { profile: 'hospital', label: 'Donor & Blood bank search' }, { profile: 'donor', label: 'Nearby Blood Requests & Availability' }, { profile: 'bloodBank', label: 'Blood Request Management' }],
+  'hospital:Inventory availability': [{ profile: 'hospital', label: 'Blood request' }, { profile: 'hospital', label: 'Delivery Request tracking' }, { profile: 'bloodBank', label: 'Blood Inventory Management' }, { profile: 'bloodBank', label: 'Alerts & Analytics' }],
+  'hospital:Delivery Request tracking': [{ profile: 'hospital', label: 'Blood request' }, { profile: 'hospital', label: 'Inventory availability' }, { profile: 'bloodBank', label: 'Blood Request Management' }],
+  'hospital:Donor & Blood bank search': [{ profile: 'hospital', label: 'Patient matching' }, { profile: 'hospital', label: 'Inventory availability' }, { profile: 'donor', label: 'Nearby Blood Requests & Availability' }],
+  'bloodBank:Blood Inventory Management': [{ profile: 'bloodBank', label: 'Expiry Management' }, { profile: 'bloodBank', label: 'Alerts & Analytics' }, { profile: 'bloodBank', label: 'Blood Request Management' }, { profile: 'hospital', label: 'Inventory availability' }],
+  'bloodBank:Demand forecast': [{ profile: 'bloodBank', label: 'Blood Inventory Management' }, { profile: 'bloodBank', label: 'Alerts & Analytics' }, { profile: 'bloodBank', label: 'Blood Request Management' }],
+  'bloodBank:Expiry Management': [{ profile: 'bloodBank', label: 'Blood Inventory Management' }, { profile: 'bloodBank', label: 'Alerts & Analytics' }],
+  'bloodBank:Blood Request Management': [{ profile: 'bloodBank', label: 'Blood Inventory Management' }, { profile: 'bloodBank', label: 'Alerts & Analytics' }, { profile: 'bloodBank', label: 'Demand forecast' }, { profile: 'hospital', label: 'Blood request' }, { profile: 'hospital', label: 'Delivery Request tracking' }],
+  'bloodBank:Alerts & Analytics': [{ profile: 'bloodBank', label: 'Blood Inventory Management' }, { profile: 'bloodBank', label: 'Demand forecast' }, { profile: 'bloodBank', label: 'Blood Request Management' }, { profile: 'hospital', label: 'Inventory availability' }],
+}
 
 const mainItems = [
   { label: 'Overview', icon: LayoutDashboard },
@@ -113,35 +137,38 @@ const dashboardSections = {
     ],
   },
   bloodBank: {
-    title: 'Blood bank operations',
+    title: 'Blood Bank Dashboard',
     items: [
       { label: 'Blood Inventory Management', icon: Droplets, description: 'Manage total stock, unit receipts, reservations, quarantine, and transaction history.', cards: [{ label: 'Total inventory', value: '1,284', note: 'Illustrative sample units' }, { label: 'Below reserve', value: '2 groups', note: 'O− and AB− need attention' }, { label: 'Recent transactions', value: '4', note: 'Sample audit history' }] },
       { label: 'Demand forecast', icon: BarChart3, badge: '3', description: 'Forecast need by blood group and component, analyze demand history, and review prediction reports.', cards: [{ label: '7-day outlook', value: '1,107 units', note: 'Illustrative forecast' }, { label: 'Peak demand', value: 'Friday', note: 'Projected 173 units' }, { label: 'Prediction reports', value: '3 available', note: 'Illustrative sample summaries' }] },
       { label: 'Expiry Management', icon: Clock3, badge: '5', description: 'Track unit-level expiry dates, review alerts, and record expired-stock disposal.', cards: [{ label: 'Expiry records', value: '8 active', note: 'Illustrative unit lots' }, { label: 'Expiring soon', value: '28 units', note: 'Within the next 7 days' }, { label: 'Expired units', value: '3', note: 'Awaiting disposal review' }] },
-      { label: 'Blood Request Management', icon: CalendarDays, description: 'Manage incoming blood requests from review through allocation, dispatch, and fulfilment.', cards: [{ label: 'Open requests', value: '36', note: '8 marked urgent' }, { label: 'Pending review', value: '11', note: 'Requests awaiting a decision' }, { label: 'Completed today', value: '19', note: 'Illustrative activity' }], children: [
-        { label: 'All Incoming Requests', icon: Inbox, description: 'Review every incoming blood request across requesting hospitals.', cards: [{ label: 'Total requests', value: '36', note: 'Across all request statuses' }, { label: 'Urgent requests', value: '8', note: 'Prioritize clinical review' }, { label: 'Received today', value: '12', note: 'Illustrative activity' }] },
-        { label: 'New Requests', icon: ListTodo, description: 'Triage newly submitted requests and verify required details.', cards: [{ label: 'New today', value: '12', note: 'Awaiting initial review' }, { label: 'Incomplete', value: '2', note: 'Follow up for missing details' }, { label: 'Urgent', value: '3', note: 'Review promptly with clinical staff' }] },
-        { label: 'Pending Requests', icon: Clock3, description: 'Track requests awaiting review, inventory confirmation, or additional information.', cards: [{ label: 'Awaiting review', value: '11', note: 'Assigned for assessment' }, { label: 'Awaiting stock', value: '4', note: 'Check available compatible units' }, { label: 'Needs information', value: '2', note: 'Contact the requesting team' }] },
-        { label: 'Approved Requests', icon: Check, description: 'Review approved requests and prepare units for allocation.', cards: [{ label: 'Approved', value: '14', note: 'Ready for unit allocation' }, { label: 'Partially fulfilled', value: '3', note: 'Remaining units need sourcing' }, { label: 'Awaiting dispatch', value: '5', note: 'Coordinate delivery' }] },
-        { label: 'Rejected Requests', icon: X, description: 'Review declined requests and their recorded decisions.', cards: [{ label: 'Rejected this week', value: '4', note: 'Illustrative activity' }, { label: 'Pending follow-up', value: '1', note: 'Notify the requesting team' }, { label: 'Common reason', value: 'Stock unavailable', note: 'Review sourcing alternatives' }] },
-        { label: 'Allocate Blood Units', icon: Droplets, description: 'Coordinate compatible unit allocation for approved requests.', cards: [{ label: 'Ready to allocate', value: '9', note: 'Approved requests awaiting units' }, { label: 'Units reserved', value: '28', note: 'Across active requests' }, { label: 'Compatibility review', value: 'Required', note: 'Confirm through blood-bank protocols' }] },
-        { label: 'Dispatch Management', icon: Truck, description: 'Coordinate dispatch preparation, transport, and delivery status.', cards: [{ label: 'Ready for dispatch', value: '5', note: 'Approved and allocated' }, { label: 'In transit', value: '6', note: 'Coordinate with delivery teams' }, { label: 'Delivery issues', value: '1', note: 'Review and follow up' }] },
-        { label: 'Request Fulfilment History', icon: History, description: 'Review completed request fulfilments and their audit trail.', cards: [{ label: 'Fulfilled today', value: '19', note: 'Illustrative activity' }, { label: 'This week', value: '86', note: 'Completed requests' }, { label: 'Average fulfilment', value: '3.2 hours', note: 'Illustrative operational metric' }] },
-      ] },
+      { label: 'Blood Request Management', icon: CalendarDays, description: 'Manage incoming blood requests from review through allocation, dispatch, and fulfilment.', cards: [{ label: 'Open requests', value: '36', note: '8 marked urgent' }, { label: 'Pending review', value: '11', note: 'Requests awaiting a decision' }, { label: 'Completed today', value: '19', note: 'Illustrative activity' }] },
+      { label: 'Alerts & Analytics', icon: BellRing, badge: '2', description: 'Monitor low stock, forecast shortages, and coordinate replenishment across blood banks.', cards: [{ label: 'Low-stock alerts', value: '2 groups', note: 'O− and AB− below reserve' }, { label: 'Forecast shortages', value: '3 groups', note: 'Next 7-day outlook' }, { label: 'Transfer options', value: '2 available', note: 'Illustrative network matches' }] },
     ],
   },
 } satisfies Record<DashboardProfileId, { title: string; items: DashboardFeature[] }>
 
 export default function Page() {
   const [active, setActive] = useState('Overview')
-  const [featureSwitchBlur, setFeatureSwitchBlur] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
   const [selectedProfile, setSelectedProfile] = useState<DashboardProfileId>('hospital')
   const [dashboardProfiles, setDashboardProfiles] = useState(initialDashboardProfiles)
   const activeProfile = dashboardProfiles[selectedProfile]
   const selectedDashboardSection = dashboardSections[selectedProfile]
-  const activeFeature = selectedDashboardSection.items.flatMap((item) => [item, ...('children' in item ? item.children ?? [] : [])]).find((item) => item.label === active)
+  const activeFeature = selectedDashboardSection.items.find((item) => item.label === active)
+  const relatedDestinations = relatedDashboardDestinations[`${selectedProfile}:${active}`] ?? []
+  const isDashboardFeature = Boolean(activeFeature) || (selectedProfile === 'bloodBank' && (bloodRequestDashboardLabels.includes(active) || active === 'Alerts & Analytics'))
+  const navigateToDashboardFeature = (destination: DashboardDestination) => {
+    setSelectedProfile(destination.profile)
+    setActive(destination.label)
+    setSidebarOpen(false)
+  }
+  const quickAlert = {
+    donor: { label: 'Open notifications', target: 'Notifications' },
+    hospital: { label: 'Open blood requests', target: 'Blood request' },
+    bloodBank: { label: 'Open alerts and analytics', target: 'Alerts & Analytics' },
+  }[selectedProfile]
   const [analyticsTickets, setAnalyticsTickets] = useState<AnalyticsTicket[]>(initialAnalyticsTickets)
   const [demoMode, setDemoMode] = useState(false)
   const [demoDialogOpen, setDemoDialogOpen] = useState(false)
@@ -217,10 +244,8 @@ export default function Page() {
   }
 
   const selectItem = (label: string) => {
-  setFeatureSwitchBlur(true)
-  setActive(label)
-  setSidebarOpen(false)
-  window.setTimeout(() => setFeatureSwitchBlur(false), 60)
+    setActive(label)
+    setSidebarOpen(false)
   }
 
   return (
@@ -228,10 +253,10 @@ export default function Page() {
       <div className="aurora aurora-one" />
       <div className="aurora aurora-two" />
       <div className="mobile-topbar glass-panel">
-        <button className="icon-button" aria-label="Open navigation" onClick={() => setSidebarOpen(true)}><Menu /></button>
+        <button className="icon-button" type="button" aria-label="Open navigation" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(true)}><Menu /></button>
         <div className="brand-mark small"><Sparkles /></div>
-        <span className="mobile-title">Main</span>
-        <button className="icon-button" aria-label="Notifications"><Bell /></button>
+        <span className="mobile-title" aria-live="polite">{active}</span>
+        <button className="icon-button" type="button" aria-label={quickAlert.label} title={quickAlert.label} onClick={() => selectItem(quickAlert.target)}><Bell /></button>
       </div>
 
       <aside className={`sidebar glass-panel ${sidebarOpen ? 'sidebar-open' : ''}`}>
@@ -245,7 +270,7 @@ export default function Page() {
         {profileOpen && <div className="profile-settings glass-panel">
           <p className="profile-settings-title">Choose dashboard</p>
           <div className="dashboard-profile-list" role="group" aria-label="Dashboard profiles">
-            {dashboardProfileOptions.map((profile) => { const ProfileIcon = profile.icon; const profileData = dashboardProfiles[profile.id]; return <button type="button" key={profile.id} className={`dashboard-profile-option ${selectedProfile === profile.id ? 'selected' : ''}`} aria-pressed={selectedProfile === profile.id} onClick={() => { setSelectedProfile(profile.id); setActive('Overview') }}><span className="dashboard-profile-avatar"><ProfileIcon aria-hidden="true" /></span><span><strong>{profile.label}</strong><small>{profileData.occupation}</small></span>{selectedProfile === profile.id && <Check aria-label="Selected" />}</button> })}
+            {dashboardProfileOptions.map((profile) => { const ProfileIcon = profile.icon; const profileData = dashboardProfiles[profile.id]; return <button type="button" key={profile.id} className={`dashboard-profile-option ${selectedProfile === profile.id ? 'selected' : ''}`} aria-pressed={selectedProfile === profile.id} onClick={() => { setSelectedProfile(profile.id); setActive('Overview'); setProfileOpen(false) }}><span className="dashboard-profile-avatar"><ProfileIcon aria-hidden="true" /></span><span><strong>{profile.label}</strong><small>{profileData.occupation}</small></span>{selectedProfile === profile.id && <Check aria-label="Selected" />}</button> })}
           </div>
           <p className="profile-settings-title">Profile settings</p>
           <label>Name<input value={activeProfile.name} onChange={(event) => setDashboardProfiles((current) => ({ ...current, [selectedProfile]: { ...current[selectedProfile], name: event.target.value } }))} /></label>
@@ -266,8 +291,8 @@ export default function Page() {
         <div className="brand-topbar" aria-label="Pulse Share workspace header">
           <div className="brand-pill"><img src="/pulse-share-wordmark-black.png" alt="Pulse Share" /></div>
         </div>
-        <div className={`dashboard-content${featureSwitchBlur ? ' feature-switch-blur' : ''}`}>
-          {pulseDashboardPages.includes(active) && !(selectedProfile === 'bloodBank' && active === 'Demand forecast') ? <PulseOverview activeSection={active} /> : activeFeature ? <DashboardFeatureView profileId={selectedProfile} profileTitle={selectedDashboardSection.title} profileName={activeProfile.name} feature={activeFeature} onDonorNameChange={(name) => setDashboardProfiles((current) => ({ ...current, donor: { ...current.donor, name } }))} /> : active === 'Knowledge base' ? <KnowledgeBaseView /> : active === 'WhatsApp' ? <WhatsAppView /> : active === 'E-mail' ? <EmailView /> : active === 'Website chats' ? <WebsiteChatsView /> : active === 'AI Workflow' ? <AIWorkflowView tickets={analyticsTickets} /> : active === 'Customers' ? <CustomersView /> : active === 'Inbox' ? <><InboxView tickets={analyticsTickets.filter((ticket) => Number.parseInt(ticket.confidence, 10) < 90)} onActionClick={setActionTicket} />{humanOverrideNotice && <div className="override-notice" role="status"><span className="override-notice-icon"><Check /></span><span><strong>Issue has been resolved with human override</strong><small>The ticket has been removed from the inbox.</small></span><button type="button" aria-label="Dismiss notification" onClick={() => setHumanOverrideNotice(false)}><X /></button></div>}{actionTicket && <ActionDialog ticket={actionTicket} onClose={() => setActionTicket(null)} onConfirm={confirmHumanOverride} />}</> : active === 'Analytics' ? <><AnalyticsView title="Ticket analytics" tickets={analyticsTickets} onUpdate={() => undefined} onActionClick={setActionTicket} />{humanOverrideNotice && <div className="override-notice" role="status"><span className="override-notice-icon"><Check /></span><span><strong>Issue has been resolved with human override</strong><small>The ticket has been updated and routed for human review.</small></span><button type="button" aria-label="Dismiss notification" onClick={() => setHumanOverrideNotice(false)}><X /></button></div>}{actionTicket && <div className="action-dialog-backdrop" role="presentation" onMouseDown={() => setActionTicket(null)}><div className="action-dialog" role="dialog" aria-modal="true" aria-labelledby="action-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close action details" onClick={() => setActionTicket(null)}><X /></button><p className="eyebrow">Human action</p><h3 id="action-dialog-title">{Number.parseInt(actionTicket.confidence, 10) < 90 ? 'Action required' : 'Action not required'}</h3><p className="action-dialog-message">{actionTicket.message}</p><dl className="action-dialog-details"><div><dt>Ticket</dt><dd>{actionTicket.id}</dd></div><div><dt>AI confidence</dt><dd>{actionTicket.confidence}</dd></div><div><dt>Reasoning</dt><dd>{actionTicket.reasoning}</dd></div><div><dt>Human override</dt><dd>Fix with human override</dd></div></dl><div className="action-dialog-actions"><button className="text-button" type="button" onClick={() => setActionTicket(null)}>No, keep automated</button><button className="demo-submit override-confirm" type="button" onClick={confirmHumanOverride}>Yes, fix it</button></div></div></div>}</> : active === 'All Tickets' ? <>{humanOverrideNotice && <div className="override-notice" role="status"><span className="override-notice-icon"><Check /></span><span><strong>Issue has been resolved with human override</strong><small>The ticket has been updated and routed for human review.</small></span><button type="button" aria-label="Dismiss notification" onClick={() => setHumanOverrideNotice(false)}><X /></button></div>}<TicketTable tickets={analyticsTickets} onActionClick={setActionTicket} />{actionTicket && <div className="action-dialog-backdrop" role="presentation" onMouseDown={() => setActionTicket(null)}><div className="action-dialog" role="dialog" aria-modal="true" aria-labelledby="all-tickets-action-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close action details" onClick={() => setActionTicket(null)}><X /></button><p className="eyebrow">Human action</p><h3 id="all-tickets-action-title">Action required</h3><p className="action-dialog-message">{actionTicket.message}</p><dl className="action-dialog-details"><div><dt>Ticket</dt><dd>{actionTicket.id}</dd></div><div><dt>AI confidence</dt><dd>{actionTicket.confidence}</dd></div><div><dt>Fix</dt><dd>Fix with human override</dd></div></dl><div className="action-dialog-actions"><button className="text-button" type="button" onClick={() => setActionTicket(null)}>Cancel</button><button className="demo-submit override-confirm" type="button" onClick={confirmHumanOverride}>Yes, fix it</button></div></div></div>}</> : <>
+        <div className="dashboard-content">
+          {active === 'Overview' ? <DashboardOverview profile={selectedProfile} name={activeProfile.name} onNavigate={selectItem} /> : pulseDashboardPages.includes(active) && !(selectedProfile === 'bloodBank' && active === 'Demand forecast') ? <PulseOverview activeSection={active} /> : selectedProfile === 'bloodBank' && bloodRequestDashboardLabels.includes(active) ? <BloodRequestManagementView profileName={activeProfile.name} /> : selectedProfile === 'bloodBank' && active === 'Alerts & Analytics' ? <BloodBankAlertsAnalyticsView profileName={activeProfile.name} /> : activeFeature ? <DashboardFeatureView profileId={selectedProfile} profileTitle={selectedDashboardSection.title} profileName={activeProfile.name} feature={activeFeature} onDonorNameChange={(name) => setDashboardProfiles((current) => ({ ...current, donor: { ...current.donor, name } }))} /> : active === 'Knowledge base' ? <KnowledgeBaseView /> : active === 'WhatsApp' ? <WhatsAppView /> : active === 'E-mail' ? <EmailView /> : active === 'Website chats' ? <WebsiteChatsView /> : active === 'AI Workflow' ? <AIWorkflowView tickets={analyticsTickets} /> : active === 'Customers' ? <CustomersView /> : active === 'Inbox' ? <><InboxView tickets={analyticsTickets.filter((ticket) => Number.parseInt(ticket.confidence, 10) < 90)} onActionClick={setActionTicket} />{humanOverrideNotice && <div className="override-notice" role="status"><span className="override-notice-icon"><Check /></span><span><strong>Issue has been resolved with human override</strong><small>The ticket has been removed from the inbox.</small></span><button type="button" aria-label="Dismiss notification" onClick={() => setHumanOverrideNotice(false)}><X /></button></div>}{actionTicket && <ActionDialog ticket={actionTicket} onClose={() => setActionTicket(null)} onConfirm={confirmHumanOverride} />}</> : active === 'Analytics' ? <><AnalyticsView title="Ticket analytics" tickets={analyticsTickets} onActionClick={setActionTicket} />{humanOverrideNotice && <div className="override-notice" role="status"><span className="override-notice-icon"><Check /></span><span><strong>Issue has been resolved with human override</strong><small>The ticket has been updated and routed for human review.</small></span><button type="button" aria-label="Dismiss notification" onClick={() => setHumanOverrideNotice(false)}><X /></button></div>}{actionTicket && <div className="action-dialog-backdrop" role="presentation" onMouseDown={() => setActionTicket(null)}><div className="action-dialog" role="dialog" aria-modal="true" aria-labelledby="action-dialog-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close action details" onClick={() => setActionTicket(null)}><X /></button><p className="eyebrow">Human action</p><h3 id="action-dialog-title">{Number.parseInt(actionTicket.confidence, 10) < 90 ? 'Action required' : 'Action not required'}</h3><p className="action-dialog-message">{actionTicket.message}</p><dl className="action-dialog-details"><div><dt>Ticket</dt><dd>{actionTicket.id}</dd></div><div><dt>AI confidence</dt><dd>{actionTicket.confidence}</dd></div><div><dt>Reasoning</dt><dd>{actionTicket.reasoning}</dd></div><div><dt>Human override</dt><dd>Fix with human override</dd></div></dl><div className="action-dialog-actions"><button className="text-button" type="button" onClick={() => setActionTicket(null)}>No, keep automated</button><button className="demo-submit override-confirm" type="button" onClick={confirmHumanOverride}>Yes, fix it</button></div></div></div>}</> : active === 'All Tickets' ? <>{humanOverrideNotice && <div className="override-notice" role="status"><span className="override-notice-icon"><Check /></span><span><strong>Issue has been resolved with human override</strong><small>The ticket has been updated and routed for human review.</small></span><button type="button" aria-label="Dismiss notification" onClick={() => setHumanOverrideNotice(false)}><X /></button></div>}<TicketTable tickets={analyticsTickets} onActionClick={setActionTicket} />{actionTicket && <div className="action-dialog-backdrop" role="presentation" onMouseDown={() => setActionTicket(null)}><div className="action-dialog" role="dialog" aria-modal="true" aria-labelledby="all-tickets-action-title" onMouseDown={(event) => event.stopPropagation()}><button className="demo-dialog-close" type="button" aria-label="Close action details" onClick={() => setActionTicket(null)}><X /></button><p className="eyebrow">Human action</p><h3 id="all-tickets-action-title">Action required</h3><p className="action-dialog-message">{actionTicket.message}</p><dl className="action-dialog-details"><div><dt>Ticket</dt><dd>{actionTicket.id}</dd></div><div><dt>AI confidence</dt><dd>{actionTicket.confidence}</dd></div><div><dt>Fix</dt><dd>Fix with human override</dd></div></dl><div className="action-dialog-actions"><button className="text-button" type="button" onClick={() => setActionTicket(null)}>Cancel</button><button className="demo-submit override-confirm" type="button" onClick={confirmHumanOverride}>Yes, fix it</button></div></div></div>}</> : <>
           <section className="hero-card glass-panel">
             <div className="hero-copy">
               <h2>Every conversation,<br /><em>understood.</em></h2>
@@ -290,9 +315,30 @@ export default function Page() {
             <div className="channels-card glass-panel"><div className="section-heading"><div><p className="eyebrow">Live overview</p><h3>By channel</h3></div></div><div className="pie-wrap"><div className="pie-visual"><div className="pie-chart" role="img" aria-label="642 conversations this week: Website chats 48 percent, E-mail 32 percent, WhatsApp 20 percent" /><div className="pie-total"><strong>642</strong><span>this week</span></div></div><div className="channel-legend"><Legend label="Website chats" value="48%" color="pink" /><Legend label="E-mail" value="32%" color="purple" /><Legend label="WhatsApp" value="20%" color="blue" /></div></div><div className="mini-insight"><Sparkles /><span>Website chats are up <b>24%</b> this week</span></div></div>
           </section>
           </>}
+          {active !== 'Overview' && isDashboardFeature && relatedDestinations.length > 0 && <RelatedWorkflowPanel profile={selectedProfile} destinations={relatedDestinations} onNavigate={navigateToDashboardFeature} />}
         </div>
       </section>
     </main>
+  )
+}
+
+function RelatedWorkflowPanel({ profile, destinations, onNavigate }: { profile: DashboardProfileId; destinations: DashboardDestination[]; onNavigate: (destination: DashboardDestination) => void }) {
+  const profileLabels: Record<DashboardProfileId, string> = { donor: 'Donor', hospital: 'Hospital', bloodBank: 'Blood bank' }
+
+  return (
+    <nav className="related-workflows" aria-label="Related workflows">
+      <div className="related-workflows-heading">
+        <div><p className="pulse-kicker">CONNECTED WORKFLOWS</p><h2>Continue to a related feature</h2><p>Move between the steps and teams that work together on this task.</p></div>
+      </div>
+      <div className="related-workflows-list">
+        {destinations.map((destination) => (
+          <button type="button" key={`${destination.profile}:${destination.label}`} onClick={() => onNavigate(destination)}>
+            <span><small>{profileLabels[destination.profile]} dashboard{destination.profile === profile ? ' · current workspace' : ''}</small><strong>{destination.label}</strong></span>
+            <ChevronRight aria-hidden="true" />
+          </button>
+        ))}
+      </div>
+    </nav>
   )
 }
 
@@ -377,7 +423,7 @@ function TicketTable({ tickets, onActionClick }: { tickets: AnalyticsTicket[]; o
   return <section className="analytics-view glass-panel" aria-labelledby="all-tickets-title"><div className="analytics-heading"><div><p className="eyebrow">Workspace tickets</p><h2 id="all-tickets-title">All tickets</h2><p>Review every classified conversation and its current status.</p></div><span className="analytics-count">{tickets.length} tickets</span></div><div className="analytics-table-wrap"><table className="analytics-table"><thead><tr><th>ID</th><th>Customer message</th><th>Category</th><th>Department</th><th>Priority</th><th>AI confidence</th><th>Reasoning</th><th>Status</th><th>Human action</th></tr></thead><tbody>{tickets.map((ticket) => { const actionRequired = Number.parseInt(ticket.confidence, 10) < 90; return <tr key={ticket.id}><td className="ticket-id">{ticket.id}</td><td className="message-cell">{ticket.message}</td><td>{ticket.category}</td><td>{ticket.department}</td><td><span className={`table-priority ${ticket.priority.toLowerCase()}`}><i />{ticket.priority}</span></td><td className="confidence-cell">{ticket.confidence}</td><td className="reasoning-cell">{ticket.reasoning}</td><td><span className={`table-status-select ${ticket.status.toLowerCase().replace(' ', '-')}`}>{ticket.status}</span></td><td className="human-action-cell"><button type="button" className={`human-action-badge ${actionRequired ? 'required' : 'not-required'}`} onClick={() => onActionClick(ticket)}>{actionRequired ? 'Action required' : 'Action not required'}</button></td></tr>})}</tbody></table></div></section>
 }
 
-function AnalyticsView({ title, tickets }: { title: string; tickets: AnalyticsTicket[]; onUpdate: (id: string, status: string) => void; onActionClick: (ticket: AnalyticsTicket) => void }) {
+function AnalyticsView({ title, tickets }: { title: string; tickets: AnalyticsTicket[]; onActionClick: (ticket: AnalyticsTicket) => void }) {
   const [chartType, setChartType] = useState<'bar' | 'line' | 'pie'>('bar')
   const chartData = useMemo(() => Object.entries(tickets.reduce<Record<string, number>>((counts, ticket) => { counts[ticket.category] = (counts[ticket.category] ?? 0) + 1; return counts }, {} )).map(([category, count]) => ({ category, value: count })), [tickets])
   const colors = ['#5968df', '#83a7c8', '#d9a85d', '#9a7bc1', '#6bb18b']
@@ -433,8 +479,8 @@ function DashboardFeatureView({ profileId, profileTitle, profileName, feature, o
   )
 }
 
-function NavGroup({ title, items, active, onSelect }: { title: string; items: (Pick<DashboardFeature, 'label' | 'icon'> & Partial<Pick<DashboardFeature, 'badge' | 'children'>>)[]; active: string; onSelect: (label: string) => void }) {
-  return <div className="nav-group">{title && <p className="nav-label">{title}</p>}{items.map(({ label, icon: Icon, badge, children }) => <div key={label}><button className={`nav-item ${active === label ? 'active' : ''}`} aria-current={active === label ? 'page' : undefined} onClick={() => onSelect(label)}><Icon /><span>{label}</span>{badge && <b className="nav-badge">{badge}</b>}</button>{children && <div className="nav-submenu" aria-label={`${label} features`}>{children.map(({ label: childLabel, icon: ChildIcon }) => <button className={`nav-item ${active === childLabel ? 'active' : ''}`} aria-current={active === childLabel ? 'page' : undefined} key={childLabel} onClick={() => onSelect(childLabel)}><ChildIcon /><span>{childLabel}</span></button>)}</div>}</div>)}</div>
+function NavGroup({ title, items, active, onSelect }: { title: string; items: (Pick<DashboardFeature, 'label' | 'icon'> & Partial<Pick<DashboardFeature, 'badge'>>)[]; active: string; onSelect: (label: string) => void }) {
+  return <div className="nav-group">{title && <p className="nav-label">{title}</p>}{items.map(({ label, icon: Icon, badge }) => <button key={label} className={`nav-item ${active === label ? 'active' : ''}`} aria-current={active === label ? 'page' : undefined} onClick={() => onSelect(label)}><Icon /><span>{label}</span>{badge && <b className="nav-badge">{badge}</b>}</button>)}</div>
 }
 function StatCard({ label, value, delta, icon: Icon, positive }: { label: string; value: string; delta: string; icon: typeof Inbox; positive?: boolean }) { return <div className="stat-card glass-panel"><div className="stat-icon"><Icon /></div><div><span>{label}</span><div className="stat-value">{value} <small className={positive ? 'positive' : ''}>{positive ? '↑' : '↑'} {delta}</small></div></div></div> }
 function Legend({ label, value, color }: { label: string; value: string; color: string }) { return <div className="legend-row"><i className={color} aria-hidden="true" /><span>{label}</span><b>{value}</b></div> }

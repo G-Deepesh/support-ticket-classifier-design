@@ -1,9 +1,21 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import useSWR from 'swr'
 import { AlertTriangle, BellRing, CheckCircle2, Clock3, Droplets, MapPin, ShieldCheck } from 'lucide-react'
+import { getOpenRequestsForDonors, respondToHospitalRequest } from '@/app/actions/donor-requests'
+
+function formatRelative(iso: string) {
+  const minutes = Math.max(1, Math.round((Date.now() - new Date(iso).getTime()) / 60000))
+  if (minutes < 60) return `${minutes} min ago`
+  const hours = Math.round(minutes / 60)
+  if (hours < 24) return `${hours} hr ago`
+  return `${Math.round(hours / 24)} d ago`
+}
 
 type NearbyRequest = {
+  live?: boolean
+  liveId?: string
   id: string
   bloodGroup: string
   units: number
@@ -21,7 +33,7 @@ const sampleRequests: NearbyRequest[] = [
 ]
 
 const bloodGroups = ['All blood groups', 'O−', 'O+', 'A−', 'A+', 'B−', 'B+', 'AB−', 'AB+']
-const locations = ['All locations', 'Downtown', 'Riverside', 'Northside', 'West End']
+const locations = ['All locations', 'Hospital network', 'Downtown', 'Riverside', 'Northside', 'West End']
 type RequestView = 'all' | 'emergency' | 'accepted'
 type Availability = 'available' | 'unavailable'
 
@@ -33,17 +45,48 @@ export default function NearbyRequestsView({ profileName }: { profileName: strin
   const [availability, setAvailability] = useState<Availability>('unavailable')
   const [availabilityMessage, setAvailabilityMessage] = useState('Availability is set to Unavailable in this preview.')
 
-  const visibleRequests = useMemo(() => sampleRequests.filter((request) => {
+  const [respondError, setRespondError] = useState('')
+  const { data: liveData, mutate: refreshLive } = useSWR('open-requests-for-donors', getOpenRequestsForDonors, { refreshInterval: 15000 })
+
+  const liveRequests = useMemo<NearbyRequest[]>(() => (liveData ?? []).map((request) => ({
+    live: true,
+    liveId: request.id,
+    id: `HR-${request.id.slice(0, 8).toUpperCase()}`,
+    bloodGroup: request.bloodGroup,
+    units: request.requiredUnits,
+    location: 'Hospital network',
+    distance: request.bloodComponent,
+    requested: formatRelative(request.createdAt),
+    urgency: request.priority === 'Emergency' ? 'Emergency' : request.priority === 'Urgent' ? 'Urgent' : 'Standard',
+  })), [liveData])
+
+  const respondedLiveIds = useMemo(
+    () => (liveData ?? []).filter((request) => request.hasResponded).map((request) => `HR-${request.id.slice(0, 8).toUpperCase()}`),
+    [liveData],
+  )
+  const respondedIds = useMemo(() => [...acceptedIds, ...respondedLiveIds], [acceptedIds, respondedLiveIds])
+
+  const visibleRequests = useMemo(() => [...liveRequests, ...sampleRequests].filter((request) => {
     const matchesBloodGroup = bloodGroup === 'All blood groups' || request.bloodGroup === bloodGroup
     const matchesLocation = location === 'All locations' || request.location === location
     const matchesView = requestView === 'all'
       || (requestView === 'emergency' && request.urgency === 'Emergency')
-      || (requestView === 'accepted' && acceptedIds.includes(request.id))
+      || (requestView === 'accepted' && respondedIds.includes(request.id))
     return matchesBloodGroup && matchesLocation && matchesView
-  }), [acceptedIds, bloodGroup, location, requestView])
+  }), [liveRequests, respondedIds, bloodGroup, location, requestView])
 
-  const acceptRequest = (requestId: string) => {
-    setAcceptedIds((current) => current.includes(requestId) ? current : [...current, requestId])
+  const acceptRequest = async (request: NearbyRequest) => {
+    setRespondError('')
+    if (request.live && request.liveId) {
+      const result = await respondToHospitalRequest(request.liveId)
+      if (!result.ok) {
+        setRespondError(result.message)
+        return
+      }
+      await refreshLive()
+      return
+    }
+    setAcceptedIds((current) => current.includes(request.id) ? current : [...current, request.id])
   }
 
   const updateAvailability = (nextAvailability: Availability) => {
@@ -57,7 +100,7 @@ export default function NearbyRequestsView({ profileName }: { profileName: strin
         <div>
           <p className="pulse-kicker"><span className="pulse-kicker-dot" /> DONOR SERVICES · LOCAL REQUESTS</p>
           <h1 id="nearby-requests-title">Nearby Blood Requests &amp; Availability</h1>
-          <p className="pulse-intro">Browse example requests by blood group, urgency, and location. Contact a donation center to confirm any real need.</p>
+          <p className="pulse-intro">Browse live hospital requests and sample requests by blood group, urgency, and location. Contact a donation center to confirm any real need.</p>
         </div>
         <span className="pulse-ai-chip"><ShieldCheck aria-hidden="true" /> {profileName}</span>
       </header>
@@ -80,18 +123,19 @@ export default function NearbyRequestsView({ profileName }: { profileName: strin
         <div className="nearby-request-tabs" role="group" aria-label="Request list">
           <button type="button" className={requestView === 'all' ? 'active' : ''} aria-pressed={requestView === 'all'} onClick={() => setRequestView('all')}>All Nearby Requests</button>
           <button type="button" className={requestView === 'emergency' ? 'active' : ''} aria-pressed={requestView === 'emergency'} onClick={() => setRequestView('emergency')}><AlertTriangle aria-hidden="true" /> Emergency Requests</button>
-          <button type="button" className={requestView === 'accepted' ? 'active' : ''} aria-pressed={requestView === 'accepted'} onClick={() => setRequestView('accepted')}>Accepted Requests <span>{acceptedIds.length}</span></button>
+          <button type="button" className={requestView === 'accepted' ? 'active' : ''} aria-pressed={requestView === 'accepted'} onClick={() => setRequestView('accepted')}>Accepted Requests <span>{respondedIds.length}</span></button>
         </div>
       </section>
 
       <section className="nearby-request-results" aria-labelledby="request-details-title">
         <div className="pulse-section-heading nearby-request-results-heading">
-          <div><p className="pulse-kicker">REQUESTS · DEMO</p><h2 id="request-details-title">Request Details</h2><p aria-live="polite">{visibleRequests.length} {visibleRequests.length === 1 ? 'request' : 'requests'} shown</p></div>
+          <div><p className="pulse-kicker">REQUESTS · {liveRequests.length} LIVE FROM HOSPITALS</p><h2 id="request-details-title">Request Details</h2><p aria-live="polite">{visibleRequests.length} {visibleRequests.length === 1 ? 'request' : 'requests'} shown</p></div>
         </div>
+        {respondError && <p className="nearby-availability-feedback" role="alert">{respondError}</p>}
         {visibleRequests.length > 0 ? (
           <div className="nearby-request-list">
             {visibleRequests.map((request) => {
-              const hasResponded = acceptedIds.includes(request.id)
+              const hasResponded = respondedIds.includes(request.id)
               return (
                 <article className="nearby-request-card" key={request.id}>
                   <div className="nearby-request-card-header">
@@ -103,8 +147,8 @@ export default function NearbyRequestsView({ profileName }: { profileName: strin
                   </div>
                   <div className="nearby-request-blood"><span className="nearby-request-blood-icon"><Droplets aria-hidden="true" /></span><strong>{request.bloodGroup}</strong><span>{request.units} units requested</span></div>
                   <div className="nearby-request-meta"><span><MapPin aria-hidden="true" /> {request.location} · {request.distance}</span><span><Clock3 aria-hidden="true" /> {request.requested}</span></div>
-                  <div className="nearby-request-status"><span>Request Status</span><strong className={hasResponded ? 'responded' : ''}>{hasResponded ? 'Response noted (demo)' : 'Open · demo request'}</strong></div>
-                  <button className="pulse-primary-link nearby-respond-button" type="button" disabled={hasResponded} onClick={() => acceptRequest(request.id)}>
+                  <div className="nearby-request-status"><span>Request Status</span><strong className={hasResponded ? 'responded' : ''}>{request.live ? (hasResponded ? 'Response sent to hospital' : 'Open · live hospital request') : (hasResponded ? 'Response noted (demo)' : 'Open · demo request')}</strong></div>
+                  <button className="pulse-primary-link nearby-respond-button" type="button" disabled={hasResponded} onClick={() => acceptRequest(request)}>
                     {hasResponded ? <><CheckCircle2 aria-hidden="true" /> Response noted</> : 'Respond to Request'}
                   </button>
                 </article>
@@ -134,7 +178,7 @@ export default function NearbyRequestsView({ profileName }: { profileName: strin
         <div className="pulse-match-callout"><BellRing aria-hidden="true" /><span><strong>Demo status only</strong><small>Your selection stays in this preview and is not sent to a donation center or saved to an account.</small></span></div>
       </section>
 
-      <div className="pulse-demo-note" role="note"><span className="pulse-demo-badge">Sample data</span> Requests and responses are illustrative. This demo does not contact centers or save availability.</div>
+      <div className="pulse-demo-note" role="note"><span className="pulse-demo-badge">Sample data</span> Requests labelled HR- are live hospital requests and your responses are shared with the hospital. DEMO- requests are illustrative, and availability is not saved.</div>
     </section>
   )
 }

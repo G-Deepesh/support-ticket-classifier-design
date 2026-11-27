@@ -2,7 +2,7 @@
 
 import { and, desc, eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
-import { hospitalAlertPreferences, hospitalBloodRequests } from '@/lib/db/schema'
+import { hospitalAlertPreferences, hospitalBloodRequests, hospitalDeliveryTracking } from '@/lib/db/schema'
 
 const HOSPITAL_WORKSPACE_USER_ID = 'hospital-workspace'
 const alertTypes = ['nearby_donors', 'nearby_blood_banks'] as const
@@ -22,10 +22,18 @@ export async function getHospitalMatchingDashboardData() {
         requiredUnits: hospitalBloodRequests.requiredUnits,
         requiredAt: hospitalBloodRequests.requiredAt,
         priority: hospitalBloodRequests.priority,
-        status: hospitalBloodRequests.status,
+        requestStatus: hospitalBloodRequests.status,
+        deliveryStatus: hospitalDeliveryTracking.deliveryStatus,
         createdAt: hospitalBloodRequests.createdAt,
       })
       .from(hospitalBloodRequests)
+      .leftJoin(
+        hospitalDeliveryTracking,
+        and(
+          eq(hospitalDeliveryTracking.requestId, hospitalBloodRequests.id),
+          eq(hospitalDeliveryTracking.userId, HOSPITAL_WORKSPACE_USER_ID),
+        ),
+      )
       .where(eq(hospitalBloodRequests.userId, HOSPITAL_WORKSPACE_USER_ID))
       .orderBy(desc(hospitalBloodRequests.createdAt))
       .limit(100),
@@ -38,8 +46,9 @@ export async function getHospitalMatchingDashboardData() {
       nearby_donors: preferenceMap.get('nearby_donors') ?? false,
       nearby_blood_banks: preferenceMap.get('nearby_blood_banks') ?? false,
     },
-    requests: requests.map((request) => ({
+    requests: requests.map(({ requestStatus, deliveryStatus, ...request }) => ({
       ...request,
+      status: deliveryStatus ?? requestStatus,
       requiredAt: request.requiredAt.toISOString(),
       createdAt: request.createdAt.toISOString(),
     })),
