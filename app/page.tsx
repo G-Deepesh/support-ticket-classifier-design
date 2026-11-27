@@ -55,6 +55,26 @@ import {
 const pulseDashboardPages = ['Overview', 'Demand forecast', 'Donor matching']
 const bloodRequestDashboardLabels = ['Blood Request Management']
 
+type DashboardDestination = { profile: DashboardProfileId; label: string }
+
+const relatedDashboardDestinations: Record<string, DashboardDestination[]> = {
+  'donor:Donor Profile': [{ profile: 'donor', label: 'Donation history' }, { profile: 'donor', label: 'Eligibility Status' }],
+  'donor:Donation history': [{ profile: 'donor', label: 'Donor Profile' }, { profile: 'donor', label: 'Eligibility Status' }, { profile: 'donor', label: 'Notifications' }],
+  'donor:Eligibility Status': [{ profile: 'donor', label: 'Donor Profile' }, { profile: 'donor', label: 'Donation history' }, { profile: 'donor', label: 'Nearby Blood Requests & Availability' }],
+  'donor:Nearby Blood Requests & Availability': [{ profile: 'donor', label: 'Notifications' }, { profile: 'hospital', label: 'Inventory availability' }, { profile: 'hospital', label: 'Donor & Blood bank search' }],
+  'donor:Notifications': [{ profile: 'donor', label: 'Nearby Blood Requests & Availability' }, { profile: 'donor', label: 'Donation history' }],
+  'hospital:Blood request': [{ profile: 'hospital', label: 'Delivery Request tracking' }, { profile: 'hospital', label: 'Inventory availability' }, { profile: 'hospital', label: 'Patient matching' }, { profile: 'bloodBank', label: 'Blood Request Management' }],
+  'hospital:Patient matching': [{ profile: 'hospital', label: 'Blood request' }, { profile: 'hospital', label: 'Donor & Blood bank search' }, { profile: 'donor', label: 'Nearby Blood Requests & Availability' }, { profile: 'bloodBank', label: 'Blood Request Management' }],
+  'hospital:Inventory availability': [{ profile: 'hospital', label: 'Blood request' }, { profile: 'hospital', label: 'Delivery Request tracking' }, { profile: 'bloodBank', label: 'Blood Inventory Management' }, { profile: 'bloodBank', label: 'Alerts & Analytics' }],
+  'hospital:Delivery Request tracking': [{ profile: 'hospital', label: 'Blood request' }, { profile: 'hospital', label: 'Inventory availability' }, { profile: 'bloodBank', label: 'Blood Request Management' }],
+  'hospital:Donor & Blood bank search': [{ profile: 'hospital', label: 'Patient matching' }, { profile: 'hospital', label: 'Inventory availability' }, { profile: 'donor', label: 'Nearby Blood Requests & Availability' }],
+  'bloodBank:Blood Inventory Management': [{ profile: 'bloodBank', label: 'Expiry Management' }, { profile: 'bloodBank', label: 'Alerts & Analytics' }, { profile: 'bloodBank', label: 'Blood Request Management' }, { profile: 'hospital', label: 'Inventory availability' }],
+  'bloodBank:Demand forecast': [{ profile: 'bloodBank', label: 'Blood Inventory Management' }, { profile: 'bloodBank', label: 'Alerts & Analytics' }, { profile: 'bloodBank', label: 'Blood Request Management' }],
+  'bloodBank:Expiry Management': [{ profile: 'bloodBank', label: 'Blood Inventory Management' }, { profile: 'bloodBank', label: 'Alerts & Analytics' }],
+  'bloodBank:Blood Request Management': [{ profile: 'bloodBank', label: 'Blood Inventory Management' }, { profile: 'bloodBank', label: 'Alerts & Analytics' }, { profile: 'bloodBank', label: 'Demand forecast' }, { profile: 'hospital', label: 'Blood request' }, { profile: 'hospital', label: 'Delivery Request tracking' }],
+  'bloodBank:Alerts & Analytics': [{ profile: 'bloodBank', label: 'Blood Inventory Management' }, { profile: 'bloodBank', label: 'Demand forecast' }, { profile: 'bloodBank', label: 'Blood Request Management' }, { profile: 'hospital', label: 'Inventory availability' }],
+}
+
 const mainItems = [
   { label: 'Overview', icon: LayoutDashboard },
 ]
@@ -138,6 +158,13 @@ export default function Page() {
   const activeProfile = dashboardProfiles[selectedProfile]
   const selectedDashboardSection = dashboardSections[selectedProfile]
   const activeFeature = selectedDashboardSection.items.find((item) => item.label === active)
+  const relatedDestinations = relatedDashboardDestinations[`${selectedProfile}:${active}`] ?? []
+  const isDashboardFeature = Boolean(activeFeature) || (selectedProfile === 'bloodBank' && (bloodRequestDashboardLabels.includes(active) || active === 'Alerts & Analytics'))
+  const navigateToDashboardFeature = (destination: DashboardDestination) => {
+    setSelectedProfile(destination.profile)
+    setActive(destination.label)
+    setSidebarOpen(false)
+  }
   const quickAlert = {
     donor: { label: 'Open notifications', target: 'Notifications' },
     hospital: { label: 'Open blood requests', target: 'Blood request' },
@@ -291,9 +318,30 @@ export default function Page() {
             <div className="channels-card glass-panel"><div className="section-heading"><div><p className="eyebrow">Live overview</p><h3>By channel</h3></div></div><div className="pie-wrap"><div className="pie-visual"><div className="pie-chart" role="img" aria-label="642 conversations this week: Website chats 48 percent, E-mail 32 percent, WhatsApp 20 percent" /><div className="pie-total"><strong>642</strong><span>this week</span></div></div><div className="channel-legend"><Legend label="Website chats" value="48%" color="pink" /><Legend label="E-mail" value="32%" color="purple" /><Legend label="WhatsApp" value="20%" color="blue" /></div></div><div className="mini-insight"><Sparkles /><span>Website chats are up <b>24%</b> this week</span></div></div>
           </section>
           </>}
+          {active !== 'Overview' && isDashboardFeature && relatedDestinations.length > 0 && <RelatedWorkflowPanel profile={selectedProfile} destinations={relatedDestinations} onNavigate={navigateToDashboardFeature} />}
         </div>
       </section>
     </main>
+  )
+}
+
+function RelatedWorkflowPanel({ profile, destinations, onNavigate }: { profile: DashboardProfileId; destinations: DashboardDestination[]; onNavigate: (destination: DashboardDestination) => void }) {
+  const profileLabels: Record<DashboardProfileId, string> = { donor: 'Donor', hospital: 'Hospital', bloodBank: 'Blood bank' }
+
+  return (
+    <nav className="related-workflows" aria-label="Related workflows">
+      <div className="related-workflows-heading">
+        <div><p className="pulse-kicker">CONNECTED WORKFLOWS</p><h2>Continue to a related feature</h2><p>Move between the steps and teams that work together on this task.</p></div>
+      </div>
+      <div className="related-workflows-list">
+        {destinations.map((destination) => (
+          <button type="button" key={`${destination.profile}:${destination.label}`} onClick={() => onNavigate(destination)}>
+            <span><small>{profileLabels[destination.profile]} dashboard{destination.profile === profile ? ' · current workspace' : ''}</small><strong>{destination.label}</strong></span>
+            <ChevronRight aria-hidden="true" />
+          </button>
+        ))}
+      </div>
+    </nav>
   )
 }
 

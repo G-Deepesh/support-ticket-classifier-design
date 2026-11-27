@@ -914,6 +914,21 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .hospital-alert-copy p { margin: 0; color: #819098; font-size: 9px; line-height: 1.5; }
 .hospital-alert-state { display: inline-flex; margin-top: 8px; color: #87949a; font-size: 8px; font-weight: 750; }
 .hospital-alert-state.enabled { color: #347d68; }
+
+.related-workflows { margin-top: 18px; padding: 20px; border: 1px solid rgba(255,255,255,.82); border-radius: 22px; background: rgba(255,255,255,.76); box-shadow: 0 13px 34px rgba(48,62,70,.07), inset 0 1px 0 rgba(255,255,255,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.related-workflows-heading { margin-bottom: 15px; }
+.related-workflows-heading .pulse-kicker { margin: 0 0 7px; }
+.related-workflows-heading h2 { margin: 0; color: #284456; font-size: 17px; letter-spacing: -.02em; }
+.related-workflows-heading p:not(.pulse-kicker) { margin: 6px 0 0; color: #788991; font-size: 12px; }
+.related-workflows-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 10px; }
+.related-workflows-list button { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 14px; border: 1px solid rgba(36,64,77,.1); border-radius: 14px; background: rgba(255,255,255,.64); color: #294657; text-align: left; cursor: pointer; transition: border-color .18s ease, background .18s ease, transform .18s ease; }
+.related-workflows-list button:hover { transform: translateY(-1px); border-color: rgba(164,65,75,.34); background: #fff; }
+.related-workflows-list button:focus-visible { outline: 3px solid rgba(164,65,75,.35); outline-offset: 2px; }
+.related-workflows-list button span { display: flex; min-width: 0; flex-direction: column; gap: 4px; }
+.related-workflows-list button small { color: #85939a; font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.related-workflows-list button strong { overflow-wrap: anywhere; font-size: 12px; line-height: 1.35; }
+.related-workflows-list button > svg { flex: 0 0 16px; width: 16px; height: 16px; color: #a7414b; }
+@media (prefers-reduced-motion: reduce) { .related-workflows-list button { transition: none; } }
 .hospital-alert-switch { display: inline-flex; flex: 0 0 36px; align-items: center; width: 36px; height: 21px; margin-top: 2px; padding: 2px; border: 1px solid #c9d3d1; border-radius: 999px; background: #dce4e1; cursor: pointer; transition: background .18s ease, border-color .18s ease; }
 .hospital-alert-switch span { width: 15px; height: 15px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(26,52,71,.2); transition: transform .18s ease; }
 .hospital-alert-switch.enabled { border-color: #347d68; background: #347d68; }
