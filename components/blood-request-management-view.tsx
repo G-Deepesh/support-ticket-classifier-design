@@ -32,15 +32,16 @@ const sectionStatuses: Record<string, string[]> = {
   'Request Fulfilment History': ['Dispatched', 'Fulfilled'],
 }
 
-export default function BloodRequestManagementView({ activeSection, profileName, onNavigate }: { activeSection: string; profileName: string; onNavigate: (label: string) => void }) {
+export default function BloodRequestManagementView({ profileName }: { profileName: string }) {
   const [search, setSearch] = useState('')
-  const selected = sections.find((section) => section.label === activeSection)
+  const [activeQueue, setActiveQueue] = useState<(typeof sections)[number]['label']>('All Incoming Requests')
+  const selected = sections.find((section) => section.label === activeQueue)
   const visibleRequests = useMemo(() => requests.filter((request) => {
     const matchesSearch = `${request.id} ${request.hospital} ${request.group} ${request.component}`.toLowerCase().includes(search.toLowerCase())
-    const statuses = sectionStatuses[activeSection]
+    const statuses = sectionStatuses[activeQueue]
     return matchesSearch && (!statuses || statuses.includes(request.status))
-  }), [activeSection, search])
-  const heading = selected?.label ?? 'Blood Request Management'
+  }), [activeQueue, search])
+  const heading = selected?.label ?? 'All Incoming Requests'
   const HeadingIcon = selected?.icon ?? CalendarDays
 
   return (
@@ -64,7 +65,7 @@ export default function BloodRequestManagementView({ activeSection, profileName,
       <section className="pulse-panel request-workspace-panel" aria-label="Request management sections">
         <div className="request-section-heading"><div><p className="pulse-kicker">WORK QUEUES</p><h2>{heading}</h2><p>{selected?.detail ?? 'Choose a work queue to see requests at that stage.'}</p></div><span className="request-queue-count">{selected?.count ?? 36} <small>items</small></span></div>
         <div className="request-queue-grid">
-          {sections.map(({ label, icon: Icon, count }) => <button type="button" key={label} className={`request-queue-card ${activeSection === label ? 'selected' : ''}`} onClick={() => onNavigate(label)} aria-pressed={activeSection === label}>
+          {sections.map(({ label, icon: Icon, count }) => <button type="button" key={label} className={`request-queue-card ${activeQueue === label ? 'selected' : ''}`} onClick={() => setActiveQueue(label)} aria-pressed={activeQueue === label}>
             <span className="request-queue-icon"><Icon aria-hidden="true" /></span><span className="request-queue-copy"><strong>{label}</strong><small>{count} requests</small></span><ChevronRight aria-hidden="true" />
           </button>)}
         </div>
@@ -73,7 +74,7 @@ export default function BloodRequestManagementView({ activeSection, profileName,
       <section className="pulse-panel request-table-panel" aria-labelledby="request-table-title">
         <div className="request-table-heading"><div><p className="pulse-kicker">REQUESTS</p><h2 id="request-table-title">{heading}</h2><p>Sample activity for dashboard preview; verify decisions with your transfusion service.</p></div><label className="request-search"><Search aria-hidden="true" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search requests" aria-label="Search requests" /></label></div>
         <div className="request-table-wrap"><table className="request-table"><thead><tr><th>Request</th><th>Blood product</th><th>Units</th><th>Priority</th><th>Status</th><th>Received</th><th><span className="sr-only">Open request</span></th></tr></thead><tbody>
-          {visibleRequests.length ? visibleRequests.map((request) => <tr key={request.id}><td><strong>{request.id}</strong><small>{request.hospital}</small></td><td><span className="request-blood-group">{request.group}</span>{request.component}</td><td>{request.units}</td><td><span className={`request-priority ${request.priority.toLowerCase()}`}>{request.priority}</span></td><td><span className={`request-status ${request.status.toLowerCase()}`}>{request.status}</span></td><td>{request.time}</td><td><button type="button" className="request-open-button" aria-label={`Open request ${request.id}`} onClick={() => onNavigate(request.status === 'New' ? 'New Requests' : request.status === 'Pending' ? 'Pending Requests' : request.status === 'Approved' ? 'Allocate Blood Units' : 'Dispatch Management')}><ChevronRight aria-hidden="true" /></button></td></tr>) : <tr><td className="request-empty" colSpan={7}>No requests match this queue and search.</td></tr>}
+          {visibleRequests.length ? visibleRequests.map((request) => <tr key={request.id}><td><strong>{request.id}</strong><small>{request.hospital}</small></td><td><span className="request-blood-group">{request.group}</span>{request.component}</td><td>{request.units}</td><td><span className={`request-priority ${request.priority.toLowerCase()}`}>{request.priority}</span></td><td><span className={`request-status ${request.status.toLowerCase()}`}>{request.status}</span></td><td>{request.time}</td><td><button type="button" className="request-open-button" aria-label={`Open request ${request.id}`} onClick={() => setActiveQueue(request.status === 'New' ? 'New Requests' : request.status === 'Pending' ? 'Pending Requests' : request.status === 'Approved' ? 'Allocate Blood Units' : 'Dispatch Management')}><ChevronRight aria-hidden="true" /></button></td></tr>) : <tr><td className="request-empty" colSpan={7}>No requests match this queue and search.</td></tr>}
         </tbody></table></div>
         <div className="request-dashboard-footnote"><span>Showing {visibleRequests.length} sample requests</span><span>Last updated just now</span></div>
       </section>
