@@ -1,48 +1,71 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { ArrowDownRight, ArrowUpRight, CalendarDays, Check, ChevronRight, Clock3, Droplets, Inbox, ListTodo, Search, Truck, X } from 'lucide-react'
+import useSWR from 'swr'
+import { ArrowUpRight, CalendarDays, Check, ChevronRight, Clock3, Droplets, Inbox, ListTodo, LoaderCircle, Search, Truck, X } from 'lucide-react'
+import { getHospitalDeliveryRequests, updateHospitalDeliveryStatus } from '@/app/actions/hospital-delivery-tracking'
+import { DELIVERY_STATUSES, type DeliveryStatus } from '@/lib/hospital-delivery-statuses'
 
 const sections = [
-  { label: 'All Incoming Requests', icon: Inbox, count: 36, detail: 'Review every request across the network.' },
-  { label: 'New Requests', icon: ListTodo, count: 12, detail: 'Triage newly submitted requests.' },
-  { label: 'Pending Requests', icon: Clock3, count: 11, detail: 'Follow up on requests awaiting review or stock.' },
-  { label: 'Approved Requests', icon: Check, count: 14, detail: 'Prepare approved requests for allocation.' },
-  { label: 'Rejected Requests', icon: X, count: 4, detail: 'Review declined requests and recorded decisions.' },
-  { label: 'Allocate Blood Units', icon: Droplets, count: 9, detail: 'Coordinate allocation for approved requests.' },
-  { label: 'Dispatch Management', icon: Truck, count: 5, detail: 'Coordinate dispatch and delivery status.' },
-  { label: 'Request Fulfilment History', icon: CalendarDays, count: 19, detail: 'Review completed request fulfilments.' },
+  { label: 'All Incoming Requests', icon: Inbox, detail: 'Review every request submitted by the hospital workspace.' },
+  { label: 'New Requests', icon: ListTodo, detail: 'Triage requests submitted by the hospital team.' },
+  { label: 'Pending Requests', icon: Clock3, detail: 'Follow up on requests awaiting review or stock.' },
+  { label: 'Approved Requests', icon: Check, detail: 'Prepare approved requests for allocation.' },
+  { label: 'Cancelled Requests', icon: X, detail: 'Review cancelled requests.' },
+  { label: 'Allocate Blood Units', icon: Droplets, detail: 'Coordinate allocation for approved requests.' },
+  { label: 'Dispatch Management', icon: Truck, detail: 'Coordinate dispatch and delivery status.' },
+  { label: 'Request Fulfilment History', icon: CalendarDays, detail: 'Review received and completed requests.' },
 ] as const
 
-const requests = [
-  { id: 'BR-2048', hospital: 'Northside Medical Center', group: 'O−', component: 'Red blood cells', units: 4, priority: 'Emergency', status: 'New', time: '8 min ago' },
-  { id: 'BR-2047', hospital: 'St. Mary’s Hospital', group: 'A+', component: 'Platelets', units: 6, priority: 'Urgent', status: 'Pending', time: '24 min ago' },
-  { id: 'BR-2046', hospital: 'Riverside General', group: 'B−', component: 'Plasma', units: 2, priority: 'Routine', status: 'Approved', time: '41 min ago' },
-  { id: 'BR-2045', hospital: 'Central City Hospital', group: 'AB+', component: 'Whole blood', units: 3, priority: 'Urgent', status: 'Allocated', time: '1 hr ago' },
-  { id: 'BR-2044', hospital: 'Valley Children’s', group: 'O+', component: 'Red blood cells', units: 8, priority: 'Routine', status: 'Dispatched', time: '2 hrs ago' },
-]
+type QueueLabel = (typeof sections)[number]['label']
+type Request = Awaited<ReturnType<typeof getHospitalDeliveryRequests>>[number]
 
-const sectionStatuses: Record<string, string[]> = {
-  'New Requests': ['New'],
-  'Pending Requests': ['Pending'],
-  'Approved Requests': ['Approved'],
-  'Rejected Requests': ['Rejected'],
-  'Allocate Blood Units': ['Approved', 'Allocated'],
-  'Dispatch Management': ['Allocated', 'Dispatched'],
-  'Request Fulfilment History': ['Dispatched', 'Fulfilled'],
+function matchesQueue(request: Request, queue: QueueLabel) {
+  if (queue === 'All Incoming Requests') return true
+  if (queue === 'New Requests') return request.requestStatus === 'Submitted'
+  if (queue === 'Pending Requests') return request.deliveryStatus === 'Pending'
+  if (queue === 'Approved Requests') return request.deliveryStatus === 'Approved'
+  if (queue === 'Cancelled Requests') return request.deliveryStatus === 'Cancelled'
+  if (queue === 'Allocate Blood Units') return ['Approved', 'Allocated'].includes(request.deliveryStatus)
+  if (queue === 'Dispatch Management') return ['Allocated', 'Dispatched'].includes(request.deliveryStatus)
+  return ['Received', 'Completed'].includes(request.deliveryStatus)
 }
 
 export default function BloodRequestManagementView({ profileName }: { profileName: string }) {
+  const { data: requests, error, isLoading, mutate } = useSWR('hospital-delivery-requests', getHospitalDeliveryRequests)
   const [search, setSearch] = useState('')
-  const [activeQueue, setActiveQueue] = useState<(typeof sections)[number]['label']>('All Incoming Requests')
-  const selected = sections.find((section) => section.label === activeQueue)
-  const visibleRequests = useMemo(() => requests.filter((request) => {
-    const matchesSearch = `${request.id} ${request.hospital} ${request.group} ${request.component}`.toLowerCase().includes(search.toLowerCase())
-    const statuses = sectionStatuses[activeQueue]
-    return matchesSearch && (!statuses || statuses.includes(request.status))
-  }), [activeQueue, search])
-  const heading = selected?.label ?? 'All Incoming Requests'
-  const HeadingIcon = selected?.icon ?? CalendarDays
+  const [activeQueue, setActiveQueue] = useState<QueueLabel>('All Incoming Requests')
+  const [savingRequestId, setSavingRequestId] = useState<string | null>(null)
+  const [feedback, setFeedback] = useState('')
+  const selected = sections.find((section) => section.label === activeQueue) ?? sections[0]
+  const visibleRequests = useMemo(() => (requests ?? []).filter((request) => {
+    const matchesSearch = `${request.id} ${request.bloodGroup} ${request.bloodComponent}`.toLowerCase().includes(search.toLowerCase())
+    return matchesSearch && matchesQueue(request, activeQueue)
+  }), [activeQueue, requests, search])
+  const queueCounts = useMemo(() => Object.fromEntries(sections.map(({ label }) => [label, (requests ?? []).filter((request) => matchesQueue(request, label)).length])) as Record<QueueLabel, number>, [requests])
+  const activeCount = (requests ?? []).filter((request) => !['Completed', 'Cancelled'].includes(request.deliveryStatus)).length
+  const pendingCount = (requests ?? []).filter((request) => request.deliveryStatus === 'Pending').length
+  const fulfilledCount = (requests ?? []).filter((request) => ['Received', 'Completed'].includes(request.deliveryStatus)).length
+  const heading = selected.label
+  const HeadingIcon = selected.icon
+
+  async function saveStatus(request: Request, status: DeliveryStatus) {
+    setSavingRequestId(request.id)
+    setFeedback('')
+    try {
+      const result = await updateHospitalDeliveryStatus(request.id, status)
+      if (!result.ok) {
+        setFeedback(result.message)
+        return
+      }
+      setFeedback(`Request HR-${request.id.slice(0, 8).toUpperCase()} updated to ${status}.`)
+      await mutate()
+    } catch {
+      setFeedback('We could not update this request. Please try again.')
+    } finally {
+      setSavingRequestId(null)
+    }
+  }
 
   return (
     <section className="pulse-overview request-dashboard" aria-labelledby="blood-request-dashboard-title">
@@ -50,33 +73,34 @@ export default function BloodRequestManagementView({ profileName }: { profileNam
         <div>
           <p className="pulse-kicker"><span className="pulse-kicker-dot" /> BLOOD BANK OPERATIONS</p>
           <h1 id="blood-request-dashboard-title">Blood Request Management</h1>
-          <p className="pulse-intro">A single workspace to review, approve, allocate, and fulfil hospital requests.</p>
+          <p className="pulse-intro">Review hospital requests and update the shared delivery workflow.</p>
         </div>
         <span className="pulse-ai-chip"><HeadingIcon aria-hidden="true" /> {profileName}</span>
       </header>
 
       <div className="request-dashboard-stats" aria-label="Request summary">
-        <article><span>Open requests</span><strong>36</strong><small><ArrowUpRight aria-hidden="true" /> 8 urgent need review</small></article>
-        <article><span>Pending review</span><strong>11</strong><small><Clock3 aria-hidden="true" /> 4 awaiting stock check</small></article>
-        <article><span>Fulfilled today</span><strong>19</strong><small><ArrowUpRight aria-hidden="true" /> 12% vs. yesterday</small></article>
-        <article><span>Average fulfilment</span><strong>3.2h</strong><small><ArrowDownRight aria-hidden="true" /> 18 min faster this week</small></article>
+        <article><span>Active requests</span><strong>{activeCount}</strong><small><ArrowUpRight aria-hidden="true" /> Submitted by hospitals</small></article>
+        <article><span>Pending review</span><strong>{pendingCount}</strong><small><Clock3 aria-hidden="true" /> Awaiting a decision</small></article>
+        <article><span>Fulfilled</span><strong>{fulfilledCount}</strong><small><Check aria-hidden="true" /> Received or completed</small></article>
+        <article><span>All queues</span><strong>{sections.length}</strong><small><Inbox aria-hidden="true" /> Shared request pipeline</small></article>
       </div>
 
       <section className="pulse-panel request-workspace-panel" aria-label="Request management sections">
-        <div className="request-section-heading"><div><p className="pulse-kicker">WORK QUEUES</p><h2>{heading}</h2><p>{selected?.detail ?? 'Choose a work queue to see requests at that stage.'}</p></div><span className="request-queue-count">{selected?.count ?? 36} <small>items</small></span></div>
+        <div className="request-section-heading"><div><p className="pulse-kicker">WORK QUEUES</p><h2>{heading}</h2><p>{selected.detail}</p></div><span className="request-queue-count">{queueCounts[activeQueue] ?? 0} <small>requests</small></span></div>
         <div className="request-queue-grid">
-          {sections.map(({ label, icon: Icon, count }) => <button type="button" key={label} className={`request-queue-card ${activeQueue === label ? 'selected' : ''}`} onClick={() => setActiveQueue(label)} aria-pressed={activeQueue === label}>
-            <span className="request-queue-icon"><Icon aria-hidden="true" /></span><span className="request-queue-copy"><strong>{label}</strong><small>{count} requests</small></span><ChevronRight aria-hidden="true" />
+          {sections.map(({ label, icon: Icon }) => <button type="button" key={label} className={`request-queue-card ${activeQueue === label ? 'selected' : ''}`} onClick={() => setActiveQueue(label)} aria-pressed={activeQueue === label}>
+            <span className="request-queue-icon"><Icon aria-hidden="true" /></span><span className="request-queue-copy"><strong>{label}</strong><small>{queueCounts[label] ?? 0} requests</small></span><ChevronRight aria-hidden="true" />
           </button>)}
         </div>
       </section>
 
       <section className="pulse-panel request-table-panel" aria-labelledby="request-table-title">
-        <div className="request-table-heading"><div><p className="pulse-kicker">REQUESTS</p><h2 id="request-table-title">{heading}</h2><p>Sample activity for dashboard preview; verify decisions with your transfusion service.</p></div><label className="request-search"><Search aria-hidden="true" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search requests" aria-label="Search requests" /></label></div>
-        <div className="request-table-wrap"><table className="request-table"><thead><tr><th>Request</th><th>Blood product</th><th>Units</th><th>Priority</th><th>Status</th><th>Received</th><th><span className="sr-only">Open request</span></th></tr></thead><tbody>
-          {visibleRequests.length ? visibleRequests.map((request) => <tr key={request.id}><td><strong>{request.id}</strong><small>{request.hospital}</small></td><td><span className="request-blood-group">{request.group}</span>{request.component}</td><td>{request.units}</td><td><span className={`request-priority ${request.priority.toLowerCase()}`}>{request.priority}</span></td><td><span className={`request-status ${request.status.toLowerCase()}`}>{request.status}</span></td><td>{request.time}</td><td><button type="button" className="request-open-button" aria-label={`Open request ${request.id}`} onClick={() => setActiveQueue(request.status === 'New' ? 'New Requests' : request.status === 'Pending' ? 'Pending Requests' : request.status === 'Approved' ? 'Allocate Blood Units' : 'Dispatch Management')}><ChevronRight aria-hidden="true" /></button></td></tr>) : <tr><td className="request-empty" colSpan={7}>No requests match this queue and search.</td></tr>}
+        <div className="request-table-heading"><div><p className="pulse-kicker">LIVE HOSPITAL REQUESTS</p><h2 id="request-table-title">{heading}</h2><p>Updates here are shared with Hospital delivery tracking.</p></div><label className="request-search"><Search aria-hidden="true" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search requests" aria-label="Search requests" /></label></div>
+        {feedback && <p className="delivery-feedback" role="status" aria-live="polite">{feedback}</p>}
+        <div className="request-table-wrap"><table className="request-table"><thead><tr><th>Request</th><th>Blood product</th><th>Units</th><th>Priority</th><th>Status</th><th>Required by</th><th>Update status</th></tr></thead><tbody>
+          {error ? <tr><td className="request-empty" colSpan={7}>Could not load hospital requests. <button type="button" onClick={() => void mutate()}>Retry</button></td></tr> : isLoading ? <tr><td className="request-empty" colSpan={7}><LoaderCircle aria-hidden="true" /> Loading hospital requests…</td></tr> : visibleRequests.length ? visibleRequests.map((request) => <tr key={request.id}><td><strong>HR-{request.id.slice(0, 8).toUpperCase()}</strong><small>Hospital workspace</small></td><td><span className="request-blood-group">{request.bloodGroup}</span>{request.bloodComponent}</td><td>{request.requiredUnits}</td><td><span className={`request-priority ${request.priority.toLowerCase()}`}>{request.priority}</span></td><td><span className={`request-status ${request.deliveryStatus.toLowerCase()}`}>{request.deliveryStatus}</span></td><td>{new Date(request.requiredAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</td><td><label className="sr-only" htmlFor={`bank-status-${request.id}`}>Status for request HR-{request.id.slice(0, 8).toUpperCase()}</label><select id={`bank-status-${request.id}`} value={request.deliveryStatus} disabled={savingRequestId === request.id} onChange={(event) => void saveStatus(request, event.target.value as DeliveryStatus)}>{DELIVERY_STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}</select></td></tr>) : <tr><td className="request-empty" colSpan={7}>No hospital requests match this queue and search.</td></tr>}
         </tbody></table></div>
-        <div className="request-dashboard-footnote"><span>Showing {visibleRequests.length} sample requests</span><span>Last updated just now</span></div>
+        <div className="request-dashboard-footnote"><span>Showing {visibleRequests.length} live requests</span><button type="button" className="request-open-button" onClick={() => void mutate()}>Refresh</button></div>
       </section>
     </section>
   )
