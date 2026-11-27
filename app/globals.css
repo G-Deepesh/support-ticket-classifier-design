@@ -1456,6 +1456,11 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .blood-expiry-management .expiry-filter-tabs button { min-height: 40px; padding: 8px 12px; }
 .blood-expiry-management .expiry-dispose-button, .blood-expiry-management .expiry-dismiss-button { min-height: 36px; padding: 7px 10px; }
 
+.nearby-requests-view :is(.nearby-request-filter-panel, .nearby-request-card, .nearby-request-empty, .nearby-request-status-panel, .nearby-availability-fieldset),
+.hospital-matching-view :is(.hospital-matching-section, .hospital-alert-card),
+.blood-inventory-management :is(.blood-inventory-section, .blood-inventory-stat, .blood-component-card, .blood-inventory-table-wrap),
+.blood-expiry-management :is(.expiry-summary-card, .expiry-section, .expiry-table-wrap) { border-width: 2px; }
+
 .demand-forecast-view { gap: 13px; }
 .demand-overview-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .demand-overview-card { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 11px; border: 1px solid rgba(255,255,255,.82); border-radius: 13px; background: rgba(255,255,255,.78); box-shadow: 0 10px 24px rgba(48,62,70,.045); }
