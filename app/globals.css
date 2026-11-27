@@ -778,6 +778,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 }
 
 .hospital-matching-view { gap: 16px; }
+.hospital-matching-header-actions { display: flex; align-items: center; gap: 10px; }
+.hospital-matching-header-actions .hospital-matching-refresh { margin-top: 0; }
 .hospital-matching-section { min-width: 0; padding: 20px; border: 1px solid rgba(255,255,255,.82); border-radius: 22px; background: rgba(255,255,255,.76); box-shadow: 0 13px 34px rgba(48,62,70,.07), inset 0 1px 0 rgba(255,255,255,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
 .hospital-matching-section .pulse-section-heading { align-items: center; margin-bottom: 16px; }
 .hospital-matching-section .pulse-section-heading h2 { font-size: 17px; }

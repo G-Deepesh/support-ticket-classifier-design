@@ -35,7 +35,7 @@ function statusClass(status: string) {
 }
 
 export default function HospitalPatientMatchingView({ hospitalName }: { hospitalName: string }) {
-  const { data, error, isLoading, mutate } = useSWR('hospital-patient-matching-dashboard', getHospitalMatchingDashboardData)
+  const { data, error, isLoading, isValidating, mutate } = useSWR('hospital-patient-matching-dashboard', getHospitalMatchingDashboardData)
   const [savingType, setSavingType] = useState<HospitalAlertType | null>(null)
   const [preferenceMessage, setPreferenceMessage] = useState('')
   const requests = data?.requests ?? []
@@ -66,7 +66,12 @@ export default function HospitalPatientMatchingView({ hospitalName }: { hospital
           <h1 id="hospital-matching-title">Patient matching</h1>
           <p className="pulse-intro">Manage nearby match alerts and follow your emergency blood requests.</p>
         </div>
-        <span className="pulse-ai-chip"><Activity aria-hidden="true" /> {hospitalName}</span>
+        <div className="hospital-matching-header-actions">
+          <button className="hospital-matching-refresh" type="button" onClick={() => void mutate()} disabled={isValidating}>
+            <RefreshCw aria-hidden="true" /> {isValidating ? 'Refreshing…' : 'Refresh data'}
+          </button>
+          <span className="pulse-ai-chip"><Activity aria-hidden="true" /> {hospitalName}</span>
+        </div>
       </header>
 
       <section className="hospital-matching-section" aria-labelledby="nearby-notifications-title">
@@ -180,9 +185,6 @@ export default function HospitalPatientMatchingView({ hospitalName }: { hospital
             ) : (
               <div className="hospital-matching-empty"><History aria-hidden="true" /><div><strong>No emergency request history yet</strong><p>Submitted emergency requests will be recorded here.</p></div></div>
             )}
-            <button className="hospital-matching-refresh" type="button" onClick={() => void mutate()} disabled={isLoading}>
-              <RefreshCw aria-hidden="true" /> Refresh request data
-            </button>
           </section>
         </div>
       )}
