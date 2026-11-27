@@ -1420,21 +1420,32 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .demand-report-button { grid-column: 2; justify-self: start; }
 }
 
-/* Keep every navigation option inside the sidebar at desktop and mobile widths. */
+/* Match the sidebar to the active screen height on desktop; keep the mobile drawer viewport-bound. */
 .sidebar {
   box-sizing: border-box;
   width: 264px;
   flex: 0 0 264px;
-  height: 100vh;
-  height: 100dvh;
-  max-height: 100dvh;
+  align-self: stretch;
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-height: none;
   overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  overflow-y: visible;
 }
 .sidebar::-webkit-scrollbar {
   display: none;
+}
+@media (max-width: 900px) {
+  .sidebar {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    max-height: 100dvh;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
 }
 .sidebar-nav,
 .nav-group,
