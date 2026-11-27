@@ -902,13 +902,13 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .hospital-matching-view { gap: 16px; }
 .hospital-matching-header-actions { display: flex; align-items: center; gap: 10px; }
 .hospital-matching-header-actions .hospital-matching-refresh { margin-top: 0; }
-.hospital-matching-section { min-width: 0; padding: 20px; border: 1px solid rgba(255,255,255,.82); border-radius: 22px; background: rgba(255,255,255,.76); box-shadow: 0 13px 34px rgba(48,62,70,.07), inset 0 1px 0 rgba(255,255,255,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.hospital-matching-section { min-width: 0; padding: 20px; border: 1.5px solid #000; border-radius: 22px; background: rgba(255,255,255,.76); box-shadow: 0 13px 34px rgba(48,62,70,.07), inset 0 1px 0 rgba(255,255,255,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
 .hospital-matching-section .pulse-section-heading { align-items: center; margin-bottom: 16px; }
 .hospital-matching-section .pulse-section-heading h2 { font-size: 17px; }
 .hospital-matching-section-icon { display: grid; flex: 0 0 34px; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: #e8eff1; color: #537585; }
 .hospital-matching-section-icon svg { width: 16px; height: 16px; }
 .hospital-alert-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.hospital-alert-card { display: flex; min-width: 0; align-items: flex-start; gap: 11px; padding: 15px; border: 1px solid rgba(29,51,65,.09); border-radius: 16px; background: rgba(255,255,255,.62); }
+.hospital-alert-card { display: flex; min-width: 0; align-items: flex-start; gap: 11px; padding: 15px; border: 1.5px solid #000; border-radius: 16px; background: rgba(255,255,255,.62); }
 .hospital-alert-icon { display: grid; flex: 0 0 34px; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: #f8e9e7; color: #a3424c; }
 .hospital-alert-icon svg { width: 16px; height: 16px; }
 .hospital-alert-copy { flex: 1; min-width: 0; }
