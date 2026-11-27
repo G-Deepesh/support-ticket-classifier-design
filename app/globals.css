@@ -6,6 +6,8 @@
 
 :root { color-scheme: light; --background: #fff8d9; --foreground: #4b3b22; --muted-foreground: #9a8155; --border: rgba(255,255,255,.72); --radius: 1.25rem; --chart-1: #a84950; --chart-2: #d6a04e; --chart-3: #73967c; }
 * { box-sizing: border-box; }
+html { scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar { display: none; }
 body { margin: 0; background: linear-gradient(132deg, #bd8052 0%, #d2b397 27%, #eee1d0 54%, #d6b18f 77%, #bd8052 100%); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; }
   button { font: inherit; }
   .feature-switch-blur { animation: feature-switch-blue-blur 60ms ease-out both; }
