@@ -1560,8 +1560,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 /* Match the sidebar to the active screen height on desktop; keep the mobile drawer viewport-bound. */
 .sidebar {
   box-sizing: border-box;
-  width: 264px;
-  flex: 0 0 264px;
+  width: 340px;
+  flex: 0 0 340px;
   align-self: stretch;
   height: auto;
   min-height: 100vh;
