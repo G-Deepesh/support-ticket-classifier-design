@@ -1817,7 +1817,7 @@ body {
   border: 1.5px solid #101817;
   box-shadow: 12px 0 38px rgba(42, 99, 87, .075), inset -1px 0 0 rgba(255, 255, 255, .72);
 }
-.blood-inventory-management :is(.blood-inventory-section, .blood-inventory-stat, .blood-component-card, .blood-inventory-table-wrap) {
+.blood-inventory-management .blood-inventory-section {
   border: 1.5px solid #101817;
 }
 .brand-mark,
