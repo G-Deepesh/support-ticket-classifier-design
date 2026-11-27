@@ -1797,7 +1797,7 @@ body {
 .glass-panel,
 .glass-inset,
 :is([class*="-panel"], .dash-overview-header, .dash-overview-metric, .dash-overview-card, .alerts-summary-card, .demand-overview-card, .request-dashboard-stats article, .pulse-metric-card) {
-  border: 1px solid #101817;
+  border: 2px solid #101817;
   box-shadow: 0 16px 42px rgba(39, 91, 79, .075), inset 0 1px 0 rgba(255, 255, 255, .82);
   backdrop-filter: blur(22px) saturate(125%);
   -webkit-backdrop-filter: blur(22px) saturate(125%);
@@ -1807,7 +1807,7 @@ body {
 .glass-inset { background: rgba(255, 255, 255, .48); }
 .sidebar {
   background: linear-gradient(160deg, rgba(255, 255, 255, .76), rgba(238, 248, 243, .66));
-  border: 1px solid #101817;
+  border: 2px solid #101817;
   box-shadow: 12px 0 38px rgba(42, 99, 87, .075), inset -1px 0 0 rgba(255, 255, 255, .72);
 }
 
