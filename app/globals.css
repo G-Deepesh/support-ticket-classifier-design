@@ -1322,6 +1322,20 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .expiry-countdown { grid-column: 3; grid-row: 1 / span 2; }
 }
 
+/* Keep inventory and expiry controls readable alongside the rest of the dashboard. */
+.blood-inventory-management :is(.blood-inventory-section-heading h2, .blood-inventory-section-heading p:not(.pulse-kicker), .blood-inventory-updated, .blood-inventory-stat small, .blood-inventory-stat em, .blood-inventory-form label, .blood-inventory-filter, .blood-inventory-form input, .blood-inventory-form select, .blood-inventory-filter select, .blood-inventory-submit, .blood-inventory-feedback, .blood-inventory-table th, .blood-inventory-table td, .blood-inventory-status, .blood-component-card > div:nth-child(2) strong, .blood-component-card > div:nth-child(2) small, .blood-component-counts strong, .blood-component-counts small, .blood-transaction-copy strong, .blood-transaction-copy span, .blood-transaction-quantity, .blood-transaction-row time, .blood-inventory-footnote) { font-size: 12px; }
+.blood-inventory-management .blood-inventory-stat strong { font-size: 24px; }
+.blood-inventory-management .blood-inventory-table thead th { font-size: 11px; }
+.blood-inventory-management .blood-inventory-section-heading h2 { font-size: 19px; }
+.blood-inventory-management .blood-inventory-form input, .blood-inventory-management .blood-inventory-form select, .blood-inventory-management .blood-inventory-filter select { height: 42px; padding-inline: 12px; }
+.blood-inventory-management .blood-inventory-submit { min-height: 42px; padding: 9px 14px; }
+.blood-expiry-management :is(.expiry-summary-card small, .expiry-summary-card em, .expiry-section-heading p:not(.pulse-kicker), .expiry-date-chip, .expiry-alert-count, .expiry-timeline-copy strong, .expiry-timeline-copy span, .expiry-timeline-item time, .expiry-countdown, .expiry-filter-tabs button, .expiry-filter-tabs button span, .expiry-table th, .expiry-table td, .expiry-unit-id, .expiry-table td > strong, .expiry-date-countdown, .expiry-status, .expiry-dispose-button, .expiry-action-complete, .expiry-empty, .expiry-feedback, .expiry-alert-copy strong, .expiry-disposal-copy strong, .expiry-alert-copy span, .expiry-disposal-copy span, .expiry-alert-copy small, .expiry-disposal-copy small, .expiry-dismiss-button, .expiry-disposal-id) { font-size: 12px; }
+.blood-expiry-management .expiry-section-heading h2 { font-size: 19px; }
+.blood-expiry-management .expiry-summary-card strong { font-size: 24px; }
+.blood-expiry-management .expiry-table thead th { font-size: 11px; }
+.blood-expiry-management .expiry-filter-tabs button { min-height: 40px; padding: 8px 12px; }
+.blood-expiry-management .expiry-dispose-button, .blood-expiry-management .expiry-dismiss-button { min-height: 36px; padding: 7px 10px; }
+
 .demand-forecast-view { gap: 13px; }
 .demand-overview-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .demand-overview-card { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 11px; border: 1px solid rgba(255,255,255,.82); border-radius: 13px; background: rgba(255,255,255,.78); box-shadow: 0 10px 24px rgba(48,62,70,.045); }
